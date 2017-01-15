@@ -24,6 +24,27 @@
 #' @param ... arbitrary number of \code{data.frame}s or filenames.
 #' @param col.mapping column mapping (see Details).
 #' @export
+#' @seealso \code{\link{translate}} to apply the dictionary to the data files and
+#'      \code{\link{save.dict}} to save the dictionary itself.
+#' @examples
+#' # Build accession dictionary from all files in a directory
+#' dict.dir <- accession.dictionary.dir("dir",
+#'                  col.mapping = c(gene.symbol = "Gene_Symbol"))
+#'
+#' # Build accession dictionary from a list of files
+#' dict.files <- accession.dictionary.files(
+#'      "accs_no_1947.txt",
+#'      "accs_no_2007.txt",
+#'      "accs_no_2047.txt",
+#'      col.mapping = c(gene.symbol = "Gene_Symbol")
+#' )
+#'
+#' # Build dictionary from already read-in data.frames
+#' df.1947 <- read.delim("accs_no_1947.txt")
+#' df.2007 <- read.delim("accs_no_2007.txt")
+#' dict.data <- accession.dictionary(df.1947, df.2007,
+#'                  col.mapping = c(gene.symbol = "Gene_Symbol"))
+#'
 accession.dictionary <- function(..., col.mapping) {
     # Validate the column mapping
     col.mapping <- .get.col.mapping(col.mapping)
@@ -212,11 +233,10 @@ accession.dictionary <- function(..., col.mapping) {
         stringsAsFactors = FALSE
     )
 
-    colnames(dict.df) <- c("PG", na.omit(col.mapping[c("group.identifier", "accession.nr",
-                                                       "protein.name", "gene.symbol")]))
-
     return(structure(list(
-        dictionary = dict.df
+        dictionary = dict.df,
+        col.mapping = col.mapping,
+        call = match.call(expand.dots = TRUE)
     ), class = "accession.dict"))
 }
 
@@ -247,6 +267,7 @@ accession.dictionary.dir <- function(dir, col.mapping) {
 
     ret.obj <- accession.dictionary.files(files, col.mapping = col.mapping)
     ret.obj$directory <- dir
+    ret.obj$call <- match.call(expand.dots = FALSE)
     return(ret.obj)
 }
 
@@ -277,9 +298,10 @@ accession.dictionary.files <- function(..., col.mapping) {
         files
     }
 
-    ret <- accession.dictionary(dfs, col.mapping = col.mapping)
-    ret$files <- files
-    return(ret)
+    ret.obj <- accession.dictionary(dfs, col.mapping = col.mapping)
+    ret.obj$files <- files
+    ret.obj$call <- match.call(expand.dots = TRUE)
+    return(ret.obj)
 }
 
 
