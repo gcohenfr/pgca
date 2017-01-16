@@ -1,4 +1,7 @@
-#' Create a dictionary for the accession groups
+#' Link Protein Groups Created from MS/MS Data
+#'
+#' Build a dictionary for protein groups from MS/MS data.
+#' Details of the algorithm can be found in XX, YY (2017).
 #'
 #' If the \code{group.identifier} column is logical (i.e., \code{TRUE} or \code{FALSE}),
 #' the \code{TRUE} accessions are assumed to be a "master gene" and the
@@ -7,7 +10,7 @@
 #'
 #' The \code{col.mapping} maps the column names in the data files to a specific function.
 #' It nees to be a named character vector, whereas the name of each item is the "function"
-#' of the given column name. The accession dictionary knows about the following columns:
+#' of the given column name. The algorithm knows about the following columns:
 #' \describe{
 #'      \item{\code{"group.identifier"}}{Column containing the group identifier.}
 #'      \item{\code{"accession.nr"}}{Column containing the accession nr.}
@@ -23,29 +26,69 @@
 #'
 #' @param ... arbitrary number of \code{data.frame}s or filenames.
 #' @param col.mapping column mapping (see Details).
+#' @param dir path to the directory.
+#'
+#' @return An object of type \code{accession.dict}.
+#'
 #' @export
+#'
+#' @references XX, YY (2017). xxx.
 #' @seealso \code{\link{translate}} to apply the dictionary to the data files and
 #'      \code{\link{save.dict}} to save the dictionary itself.
-#' @examples
-#' # Build accession dictionary from all files in a directory
-#' dict.dir <- accession.dictionary.dir("dir",
-#'                  col.mapping = c(gene.symbol = "Gene_Symbol"))
 #'
-#' # Build accession dictionary from a list of files
-#' dict.files <- accession.dictionary.files(
-#'      "accs_no_1947.txt",
-#'      "accs_no_2007.txt",
-#'      "accs_no_2047.txt",
+#' @examples
+#' # Build the dictionary from all files in a directory
+#' # and specifying the column "Gene_Symbol" holds the `gene.symbol`.
+#' dict.dir <- pgca(
+#'          system.file("extdata", package = "pgca"),
+#'          col.mapping = c(gene.symbol = "Gene_Symbol")
+#' )
+#'
+#' # Build the dictionary from a list of files
+#' dict.files <- pgca.files(
+#'      system.file("extdata", "accs_no_1947.txt", package = "pgca"),
+#'      system.file("extdata", "accs_no_2007.txt", package = "pgca"),
+#'      system.file("extdata", "accs_no_2047.txt", package = "pgca"),
 #'      col.mapping = c(gene.symbol = "Gene_Symbol")
 #' )
 #'
-#' # Build dictionary from already read-in data.frames
-#' df.1947 <- read.delim("accs_no_1947.txt")
-#' df.2007 <- read.delim("accs_no_2007.txt")
-#' dict.data <- accession.dictionary(df.1947, df.2007,
-#'                  col.mapping = c(gene.symbol = "Gene_Symbol"))
+#' # Build the dictionary from already read-in data.frames
+#' df.1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package = "pgca"))
+#' df.2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package = "pgca"))
+#' dict.data <- pgca.data(df.1947, df.2007,
+#'                        col.mapping = c(gene.symbol = "Gene_Symbol"))
 #'
-accession.dictionary <- function(..., col.mapping) {
+pgca <- function(dir, col.mapping) {
+    # Check parameter `dir`
+    if (length(dir) != 1L || anyNA(dir) || !is.character(dir)) {
+        stop("`dir` must be a single path")
+    }
+
+    # Check if `dir` points to an existing path
+    dir <- path.expand(dir)
+    if (!file.exists(dir)) {
+        stop(sprintf("Directory %s does not exist", dir))
+    }
+
+    # Check if `dir` points to a populated directory
+    files <- dir(dir, full.names = TRUE)
+    if (length(files) == 0L) {
+        stop(sprintf("Directory %s is empty", dir))
+    }
+
+    # Check if any of the items in the directory are directories itself and remove them
+    dirs.in.dir <- list.dirs(dir, recursive = FALSE)
+    files <- setdiff(files, dirs.in.dir)
+
+    ret.obj <- pgca.files(files, col.mapping = col.mapping)
+    ret.obj$directory <- dir
+    ret.obj$call <- match.call(expand.dots = FALSE)
+    return(ret.obj)
+}
+
+#' @export
+#' @describeIn pgca Use data given as \code{data.frame}s.
+pgca.data <- function(..., col.mapping) {
     # Validate the column mapping
     col.mapping <- .get.col.mapping(col.mapping)
     col.mapping.na <- col.mapping[!is.na(col.mapping)]
@@ -60,6 +103,12 @@ accession.dictionary <- function(..., col.mapping) {
         }
         return(list(df))
     }), recursive = FALSE, use.names = TRUE)
+
+    dfs.names <- if (!is.null(names(dfs))) {
+        names(dfs)
+    } else {
+        as.character(seq_along(dfs))
+    }
 
     # Check that
     #   - each item is a data.frame
@@ -83,7 +132,7 @@ accession.dictionary <- function(..., col.mapping) {
             warning(sprintf("Accession Nr. column '%s' in data set '%s' is not a character or a factor",
                             col.mapping["accession.nr"], name))
         }
-        if (is.character(df[[col.mapping["accession.nr"]]])) {
+        if (!is.character(df[[col.mapping["accession.nr"]]])) {
             df[[col.mapping["accession.nr"]]] <- as.character(df[[col.mapping["accession.nr"]]])
         }
 
@@ -100,7 +149,7 @@ accession.dictionary <- function(..., col.mapping) {
         }
 
         return(df)
-    }, dfs, names(dfs), SIMPLIFY = FALSE)
+    }, dfs, dfs.names, SIMPLIFY = FALSE)
 
     ##
     ## Work with a smaller data set since we only need to have
@@ -237,44 +286,14 @@ accession.dictionary <- function(..., col.mapping) {
         dictionary = dict.df,
         col.mapping = col.mapping,
         call = match.call(expand.dots = TRUE)
-    ), class = "accession.dict"))
+    ), class = "pgca.dict"))
 }
 
-#' @describeIn accession.dictionary Read in data from all files in the given directory
-#' @param dir path to the directory.
-#' @export
-accession.dictionary.dir <- function(dir, col.mapping) {
-    # Check parameter `dir`
-    if (length(dir) != 1L || anyNA(dir) || !is.character(dir)) {
-        stop("`dir` must be a single path")
-    }
 
-    # Check if `dir` points to an existing path
-    dir <- path.expand(dir)
-    if (!file.exists(dir)) {
-        stop(sprintf("Directory %s does not exist", dir))
-    }
-
-    # Check if `dir` points to a populated directory
-    files <- dir(dir, full.names = TRUE)
-    if (length(files) == 0L) {
-        stop(sprintf("Directory %s is empty", dir))
-    }
-
-    # Check if any of the items in the directory are directories itself and remove them
-    dirs.in.dir <- list.dirs(dir, recursive = FALSE)
-    files <- setdiff(files, dirs.in.dir)
-
-    ret.obj <- accession.dictionary.files(files, col.mapping = col.mapping)
-    ret.obj$directory <- dir
-    ret.obj$call <- match.call(expand.dots = FALSE)
-    return(ret.obj)
-}
-
-#' @describeIn accession.dictionary Read in data from the given files
+#' @describeIn pgca Read in data from the given files
 #' @importFrom utils read.delim
 #' @export
-accession.dictionary.files <- function(..., col.mapping) {
+pgca.files <- function(..., col.mapping) {
     # Check all files
     files <- c(...)
 
@@ -298,15 +317,15 @@ accession.dictionary.files <- function(..., col.mapping) {
         files
     }
 
-    ret.obj <- accession.dictionary(dfs, col.mapping = col.mapping)
+    ret.obj <- pgca.data(dfs, col.mapping = col.mapping)
     ret.obj$files <- files
     ret.obj$call <- match.call(expand.dots = TRUE)
     return(ret.obj)
 }
 
 
-#' Helper function to merge the user-supplied column mapping
-#' with the default column mapping and validate the mapping.
+## Helper function to merge the user-supplied column mapping
+## with the default column mapping and validate the mapping.
 .get.col.mapping <- function(col.mapping) {
     default.col.mapping <- c(
         group.identifier = "N",

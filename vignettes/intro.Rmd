@@ -1,0 +1,16 @@
+---
+title: "Introduction to the PGCA Package"
+author: AUTHOR_XXX
+date: "`r Sys.Date()`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Introduction}
+output: knitr:::html_vignette
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+

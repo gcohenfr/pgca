@@ -1,0 +1,603 @@
+N	Accession	Gene_Symbol	Protein_Name	Unused
+1	IPI00478003.1	A2M	Alpha-2-macroglobulin precursor	143.91
+2	IPI00643525.1	C4A	Complement component 4A	141.24
+3	IPI00021885.1	FGA	Isoform 1 of Fibrinogen alpha chain precursor	120.40
+3	IPI00029717.1	FGA	Isoform 2 of Fibrinogen alpha chain precursor	0.00
+4	IPI00017601.1	CP	Ceruloplasmin precursor	105.73
+5	IPI00414283.5	FN1	fibronectin 1 isoform 4 preproprotein	104.45
+5	IPI00845263.1	FN1	fibronectin 1 isoform 2 preproprotein	0.00
+5	IPI00339223.1	FN1	Isoform 3 of Fibronectin precursor	0.00
+5	IPI00022418.1	FN1	Isoform 1 of Fibronectin precursor	0.00
+5	IPI00855777.1	FN1	Isoform 14 of Fibronectin precursor	0.00
+5	IPI00339228.1	FN1	Isoform 8 of Fibronectin precursor	0.00
+6	IPI00298497.3	FGB	Fibrinogen beta chain precursor	93.36
+7	IPI00029739.5	CFH	Isoform 1 of Complement factor H precursor	85.68
+8	IPI00022488.1	HPX	Hemopexin precursor	75.29
+9	IPI00032291.2	C5	Complement C5 precursor	74.30
+10	IPI00294193.4	ITIH4	Isoform 1 of Inter-alpha-trypsin inhibitor heavy chain H4 precursor	69.45
+11	IPI00304273.2	APOA4	Apolipoprotein A-IV precursor	66.68
+12	IPI00019580.1	PLG	Plasminogen precursor	62.97
+13	IPI00639937.1	CFB	B-factor, properdin	61.71
+13	IPI00019591.1	CFB	Isoform 1 of Complement factor B precursor (Fragment)	0.00
+14	IPI00555812.4	GC	Vitamin D-binding protein precursor	60.54
+15	IPI00877792.1	FGG	50 kDa protein	57.40
+15	IPI00877703.1	FGG	52 kDa protein	0.00
+15	IPI00219713.1	FGG	Isoform Gamma-A of Fibrinogen gamma chain precursor	0.00
+15	IPI00021891.5	FGG	Isoform Gamma-B of Fibrinogen gamma chain precursor	0.00
+16	IPI00645038.1	ITIH2	Inter-alpha (Globulin) inhibitor H2	57.04
+16	IPI00305461.2	ITIH2	Inter-alpha-trypsin inhibitor heavy chain H2 precursor	0.00
+17	IPI00798430.1	TF	Transferrin variant (Fragment)	55.32
+17	IPI00022463.1	TF	Serotransferrin precursor	0.00
+18	IPI00797833.3	KNG1	Kininogen 1	54.54
+18	IPI00215894.1	KNG1	Isoform LMW of Kininogen-1 precursor	0.00
+19	IPI00019568.1	F2	Prothrombin precursor (Fragment)	51.77
+20	IPI00292530.1	ITIH1	Inter-alpha-trypsin inhibitor heavy chain H1 precursor	48.84
+21	IPI00026314.1	GSN	Isoform 1 of Gelsolin precursor	47.82
+22	IPI00550991.3	SERPINA3	Alpha-1-antichymotrypsin precursor	47.30
+22	IPI00847635.1	SERPINA3	Isoform 1 of Alpha-1-antichymotrypsin precursor	0.00
+23	IPI00472610.2	IGHM	IGHM protein	43.76
+24	IPI00032179.2	SERPINC1	Antithrombin III variant	42.77
+25	IPI00641737.1	HP	Haptoglobin precursor	42.25
+25	IPI00478493.3	HP	HP protein	0.00
+26	IPI00009920.2	C6	Complement component 6 precursor	41.92
+27	IPI00019943.1	AFM	Afamin precursor	38.38
+28	IPI00296165.5	C1R;C17orf13;ACYP1	Complement C1r subcomponent precursor	37.97
+29	IPI00291866.5	SERPING1	Plasma protease C1 inhibitor precursor	34.94
+29	IPI00879931.1	SERPING1	cDNA FLJ78023, highly similar to Homo sapiens serine (or cysteine) proteinase inhibitor, clade G (C1inhibitor), member 1, (angioedema, hereditary) (SERPING1), mRNA	0.00
+30	IPI00296608.6	C7	Complement component C7 precursor	33.82
+31	IPI00828205.1	IGHM	IGHM protein	33.40
+32	IPI00292950.4	SERPIND1	Serpin peptidase inhibitor, clade D (Heparin cofactor), member 1	33.26
+32	IPI00879573.1	SERPIND1	Heparin cofactor 2 precursor	0.00
+33	IPI00745872.2	ALB	Isoform 1 of Serum albumin precursor	33.15
+33	IPI00022434.4	ALB	Uncharacterized protein ALB	0.00
+34	IPI00298971.1	VTN	Vitronectin precursor	33.05
+35	IPI00745089.2	A1BG	alpha 1B-glycoprotein precursor	32.86
+35	IPI00022895.7	A1BG	Alpha-1B-glycoprotein precursor	0.00
+36	IPI00022395.1	C9	Complement component C9 precursor	32.71
+37	IPI00022431.1	AHSG	Alpha-2-HS-glycoprotein precursor	31.00
+38	IPI00879231.1	SERPINF2	Alpha-2-antiplasmin precursor	30.46
+38	IPI00029863.4	SERPINF2	SERPINF2 protein	0.00
+39	IPI00021841.1	APOA1	Apolipoprotein A-I precursor	29.20
+40	IPI00028413.8	ITIH3	Isoform 1 of Inter-alpha-trypsin inhibitor heavy chain H3 precursor	28.58
+40	IPI00876950.1	ITIH3	Isoform 2 of Inter-alpha-trypsin inhibitor heavy chain H3 precursor	0.00
+41	IPI00017696.1	C1S	Complement C1s subcomponent precursor	28.41
+41	IPI00749179.2	C1S	Uncharacterized protein C1S	0.00
+42	IPI00022371.1	HRG	Histidine-rich glycoprotein precursor	26.63
+43	IPI00294395.1	C8B	Complement component C8 beta chain precursor	26.04
+44	IPI00032220.3	AGT	Angiotensinogen precursor	26.04
+45	IPI00298828.3	APOH	Beta-2-glycoprotein 1 precursor	25.50
+46	IPI00291867.3	CFI	Complement factor I precursor	25.04
+46	IPI00872555.2	CFI	cDNA FLJ76262, highly similar to Homo sapiens I factor (complement) (IF), mRNA	0.00
+47	IPI00019581.1	F12	Coagulation factor XII precursor	23.12
+48	IPI00400826.1	CLU	clusterin isoform 1	23.03
+48	IPI00291262.3	CLU	Clusterin precursor	0.00
+48	IPI00795633.1	CLU	CLU	0.00
+49	IPI00386879.1	IGHV3OR16-13;IGHA1	CDNA FLJ14473 fis, clone MAMMA1001080, highly similar to Homo sapiens SNC73 protein (SNC73) mRNA	22.96
+49	IPI00430842.3	IGHV3OR16-13;IGHA1	IGHA1 protein	0.38
+49	IPI00744561.1	IGHV3OR16-13;IGHA1	IGHA1 protein	0.01
+49	IPI00449920.1	IGHV3OR16-13;IGHA1	CDNA FLJ90170 fis, clone MAMMA1000370, highly similar to Ig alpha-1 chain C region	0.00
+49	IPI00426060.3	IGHV3OR16-13;IGHA1	Putative uncharacterized protein DKFZp686J11235 (Fragment)	0.00
+49	IPI00719233.1	IGHV3OR16-13;IGHA1	IGHA1 protein	0.00
+49	IPI00423460.3	IGHV3OR16-13;IGHA1	Putative uncharacterized protein DKFZp686G21220 (Fragment)	0.00
+50	IPI00761125.2	IGKC	IGKC protein	22.24
+50	IPI00784985.1	IGK@	IGK@ protein	0.00
+51	IPI00654888.4	KLKB1	Plasma kallikrein precursor	22.11
+52	IPI00020996.3	IGFALS	Insulin-like growth factor-binding protein complex acid labile chain precursor	21.69
+53	IPI00480192.1	RBP4	Retinol binding protein 4, plasma	21.28
+53	IPI00022420.3	RBP4	Plasma retinol-binding protein precursor	0.00
+53	IPI00844536.2	RBP4	Uncharacterized protein RBP4	0.00
+54	IPI00328609.3	SERPINA4	Kallistatin precursor	21.08
+55	IPI00829626.1	IGL@	IGL@ protein	20.15
+55	IPI00550162.2	IGLV3-25	IGLV3-25 protein	0.01
+56	IPI00303963.1	C2	Complement C2 precursor (Fragment)	19.94
+57	IPI00011252.1	C8A	Complement component C8 alpha chain precursor	19.43
+58	IPI00645849.1	ECM1	Extracellular matrix protein 1	17.82
+58	IPI00003351.2	ECM1	Extracellular matrix protein 1 precursor	0.00
+59	IPI00022391.1	APCS	Serum amyloid P-component precursor	17.52
+60	IPI00022429.3	ORM1	Alpha-1-acid glycoprotein 1 precursor	16.40
+61	IPI00020986.2	LUM	Lumican precursor	16.34
+62	IPI00006114.4	SERPINF1	Pigment epithelium-derived factor precursor	16.05
+63	IPI00553177.1	SERPINA1	Isoform 1 of Alpha-1-antitrypsin precursor	15.37
+64	IPI00292946.1	SERPINA7	Thyroxine-binding globulin precursor	15.32
+65	IPI00163207.1	PGLYRP2	Isoform 1 of N-acetylmuramoyl-L-alanine amidase precursor	15.21
+65	IPI00394992.1	PGLYRP2	Isoform 2 of N-acetylmuramoyl-L-alanine amidase precursor	0.00
+66	IPI00011261.2	C8G	Complement component C8 gamma chain precursor	14.22
+67	IPI00784998.1	-	Putative uncharacterized protein DKFZp686M24218	13.86
+68	IPI00009028.1	CLEC3B	Tetranectin precursor	12.47
+69	IPI00027235.1	ATRN	Isoform 1 of Attractin precursor	12.21
+69	IPI00162735.3	ATRN	Isoform 2 of Attractin precursor	0.00
+69	IPI00218460.6	ATRN	Isoform 3 of Attractin precursor	0.00
+70	IPI00025426.2	PZP	Pregnancy zone protein precursor	12.02
+71	IPI00023019.1	SHBG	Isoform 1 of Sex hormone-binding globulin precursor	11.95
+72	IPI00855916.1	-	Transthyretin	11.47
+72	IPI00022432.1	TTR	Transthyretin precursor	0.00
+73	IPI00022426.1	AMBP	AMBP protein precursor	11.42
+74	IPI00010295.1	CPN1	Carboxypeptidase N catalytic chain precursor	10.30
+75	IPI00299503.2	GPLD1	Isoform 1 of Phosphatidylinositol-glycan-specific phospholipase D precursor	10.13
+76	IPI00021727.1	C4BPA	C4b-binding protein alpha chain precursor	9.61
+77	IPI00654755.3	HBB	Hemoglobin subunit beta	9.23
+78	IPI00873445.1	PROS1	80 kDa protein	8.90
+78	IPI00294004.1	PROS1	Vitamin K-dependent protein S precursor	0.00
+78	IPI00878131.1	PROS1	PS24	0.00
+79	IPI00218732.3	PON1	Serum paraoxonase/arylesterase 1	8.73
+80	IPI00026199.1	GPX3	Glutathione peroxidase 3 precursor	8.67
+81	IPI00011694.1	PRSS1	Trypsin-1 precursor	8.66
+82	IPI00019576.1	F10	Coagulation factor X precursor	8.37
+83	IPI00410714.5	HBA2;HBA1	Hemoglobin subunit alpha	8.35
+83	IPI00853068.1	HBA2;HBA1	Alpha 2 globin variant (Fragment)	0.00
+84	IPI00643948.2	C1QB	Complement component 1, q subcomponent, B chain	8.34
+84	IPI00477992.1	C1QB	complement component 1, q subcomponent, B chain precursor	0.00
+85	IPI00004373.1	MBL2	Mannose-binding protein C precursor	8.26
+86	IPI00743766.2	FETUB	Fetuin-B precursor	7.98
+86	IPI00552199.3	FETUB	GUGU beta form	0.00
+87	IPI00448938.1	IGHG1	IGHG1 protein	7.88
+88	IPI00029260.2	CD14	Monocyte differentiation antigen CD14 precursor	7.39
+89	IPI00032293.1	CST3	Cystatin-C precursor	6.70
+90	IPI00020019.1	ADIPOQ	Adiponectin precursor	6.55
+91	IPI00242956.4	FCGBP	IgGFc-binding protein precursor	6.38
+91	IPI00788189.1	FCGBP	similar to Fc fragment of IgG binding protein	0.00
+92	IPI00009793.3	C1RL	Complement C1r-like protein	6.32
+92	IPI00872573.1	C1RL	48 kDa protein	0.00
+92	IPI00795055.1	C1RL	CDNA FLJ14022 fis, clone HEMBA1003538, weakly similar to COMPLEMENT C1R COMPONENT	0.00
+93	IPI00007240.2	F13B	Coagulation factor XIII B chain precursor	6.15
+94	IPI00022394.2	C1QC	Complement C1q subcomponent subunit C precursor	6.15
+95	IPI00329775.7	CPB2	Isoform 1 of Carboxypeptidase B2 precursor	6.10
+95	IPI00293057.5	CPB2	Isoform 2 of Carboxypeptidase B2 precursor	0.00
+96	IPI00746623.2	HABP2	Hyaluronan-binding protein 2 precursor	6.05
+97	IPI00166729.4	AZGP1	alpha-2-glycoprotein 1, zinc	6.05
+97	IPI00871596.1	AZGP1	Uncharacterized protein AZGP1 (Fragment)	0.03
+98	IPI00829640.1	IGL@	IGL@ protein	6.03
+98	IPI00784589.1	-	Putative uncharacterized protein DKFZp781M0386	0.02
+98	IPI00719373.1	IGL@	IGL@ protein	0.00
+98	IPI00785164.1	-	Putative uncharacterized protein	0.00
+98	IPI00784627.1	-	Putative uncharacterized protein	0.00
+98	IPI00745660.2	IGL@	IGL@ protein	0.00
+98	IPI00852577.1	IGLC1	IGLC1 protein	0.00
+98	IPI00784983.1	-	Putative uncharacterized protein	0.00
+98	IPI00784713.1	-	Putative uncharacterized protein	0.00
+99	IPI00179357.2	TTN	Isoform 7 of Titin	6.03
+99	IPI00759542.1	TTN	Isoform 8 of Titin	0.01
+99	IPI00759754.1	TTN	Isoform 1 of Titin	0.01
+99	IPI00023283.3	TTN	Isoform 2 of Titin	0.01
+99	IPI00759613.1	TTN	Isoform 5 of Titin	0.01
+99	IPI00375499.2	TTN	titin isoform novex-2	0.01
+99	IPI00375498.2	TTN	titin isoform novex-1	0.01
+99	IPI00455173.4	TTN	Isoform 3 of Titin	0.01
+99	IPI00749039.2	TTN	titin isoform N2-A	0.00
+99	IPI00759637.1	TTN	Isoform 4 of Titin	0.00
+99	IPI00412307.8	TTN	2268 kDa protein	0.00
+100	IPI00296534.1	FBLN1	Isoform D of Fibulin-1 precursor	6.01
+100	IPI00218803.2	FBLN1	Isoform B of Fibulin-1 precursor	0.00
+101	IPI00029193.1	HGFAC	Hepatocyte growth factor activator precursor	6.00
+102	IPI00022389.1	CRP	Isoform 1 of C-reactive protein precursor	5.89
+102	IPI00642842.1	CRP	C-reactive protein, pentraxin-related	0.00
+102	IPI00218876.3	CRP	Isoform 2 of C-reactive protein precursor	0.00
+103	IPI00021304.1	KRT2	Keratin, type II cytoskeletal 2 epidermal	5.70
+104	IPI00788786.1	VWF	309 kDa protein	5.58
+104	IPI00023014.1	VWF	von Willebrand factor precursor	0.00
+105	IPI00844156.2	SERPINC1	SERPINC1 protein	5.54
+106	IPI00163446.3	IGHD	IGHD protein	5.52
+106	IPI00418422.3	IGHD	IGHD protein	0.00
+106	IPI00829636.1	IGHD	FLJ00382 protein (Fragment)	0.00
+107	IPI00385253.1	-	Ig kappa chain V-III region CLL precursor	5.39
+107	IPI00549330.4	IGKV3D-15	Myosin-reactive immunoglobulin light chain variable region	0.00
+107	IPI00384401.1	-	Myosin-reactive immunoglobulin kappa chain variable region (Fragment)	0.00
+107	IPI00387119.1	-	Ig kappa chain V-III region POM	0.00
+107	IPI00024138.4	-	Uncharacterized protein ENSP00000374816	0.00
+108	IPI00021440.1	ACTG1;PSPHL	Actin, cytoplasmic 2	5.28
+108	IPI00021439.1	ACTB	Actin, cytoplasmic 1	0.00
+108	IPI00878173.1	ACTA1	Actin, alpha 1, skeletal muscle	0.00
+108	IPI00514530.5	ACTA1	Uncharacterized protein ACTA1	0.00
+108	IPI00414057.3	ACTA1	Actin alpha 1 skeletal muscle protein	0.00
+108	IPI00025416.3	ACTG2	Actin, gamma-enteric smooth muscle	0.00
+108	IPI00023006.1	ACTC1	Actin, alpha cardiac muscle 1	0.00
+108	IPI00021428.1	ACTA1	Actin, alpha skeletal muscle	0.00
+108	IPI00008603.1	ACTA2	Actin, aortic smooth muscle	0.00
+108	IPI00796881.1	ACTG1;PSPHL	16 kDa protein	0.00
+108	IPI00790339.1	ACTG1;PSPHL	22 kDa protein	0.00
+108	IPI00645534.1	ACTA2	Actin, alpha 2, smooth muscle, aorta	0.00
+109	IPI00784894.1	-	Putative uncharacterized protein	5.23
+109	IPI00472345.1	IGHG3	IGHG3 protein	0.04
+109	IPI00418153.1	IGHM	Putative uncharacterized protein DKFZp686I15212	0.00
+109	IPI00829850.1	IGHG3	Protein	0.00
+109	IPI00168728.1	IGHM	FLJ00385 protein (Fragment)	0.00
+109	IPI00829940.1	IGHG3	Uncharacterized protein IGHG3 (Fragment)	0.00
+109	IPI00829716.1	IGHG3	Uncharacterized protein IGHG3 (Fragment)	0.00
+109	IPI00827754.2	IGHG3	C gamma 3	0.00
+109	IPI00830033.1	IGHM	Full-length cDNA clone CS0DI019YF20 of Placenta of Homo sapiens (Fragment)	0.00
+110	IPI00738433.1	CPN2	similar to Carboxypeptidase N subunit 2 precursor	5.00
+110	IPI00479116.1	CPN2	Carboxypeptidase N subunit 2 precursor	0.00
+111	IPI00847381.1	SEPP1	selenoprotein P isoform 2	4.99
+111	IPI00029061.2	SEPP1	Selenoprotein P precursor	0.00
+112	IPI00032311.4	LBP	Lipopolysaccharide-binding protein precursor	4.94
+113	IPI00064667.4	CNDP1	Beta-Ala-His dipeptidase precursor	4.88
+114	IPI00022417.4	LRG1	Leucine-rich alpha-2-glycoprotein precursor	4.79
+115	IPI00215983.3	CA1	Carbonic anhydrase 1	4.75
+116	IPI00220327.3	KRT1	Keratin, type II cytoskeletal 1	4.43
+117	IPI00829956.1	-	Rheumatoid factor C6 light chain (Fragment)	4.40
+117	IPI00829912.1	IGKV1-5	Ig kappa chain V-I region HK102 precursor	0.00
+117	IPI00387026.1	-	Ig kappa chain V-I region EU	0.00
+118	IPI00844400.1	C1QA	23 kDa protein	4.38
+118	IPI00022392.1	C1QA	Complement C1q subcomponent subunit A precursor	0.00
+119	IPI00016334.2	MCAM	Isoform 1 of Cell surface glycoprotein MUC18 precursor	4.36
+120	IPI00884176.1	F13A1	coagulation factor XIII A1 subunit precursor	4.29
+120	IPI00297550.8	F13A1	Coagulation factor XIII A chain precursor	0.00
+121	IPI00008494.4	ICAM1	Intercellular adhesion molecule 1 precursor	4.05
+121	IPI00642425.1	ICAM1	Cell surface glycoprotein	0.00
+122	IPI00478809.3	F5	Coagulation factor V precursor	4.03
+122	IPI00022937.4	F5	Coagulation factor V	0.00
+123	IPI00007199.4	SERPINA10	Protein Z-dependent protease inhibitor precursor	4.03
+124	IPI00003590.2	QSOX1	Isoform 1 of Sulfhydryl oxidase 1 precursor	4.02
+124	IPI00872013.1	QSOX1	Uncharacterized protein QSOX1	0.00
+124	IPI00465016.7	QSOX1	Isoform 2 of Sulfhydryl oxidase 1 precursor	0.00
+125	IPI00556155.2	IGFBP3	insulin-like growth factor binding protein 3 isoform a precursor	3.83
+125	IPI00018305.4	IGFBP3	Insulin-like growth factor-binding protein 3 precursor	0.00
+125	IPI00855835.1	-	Insulin-like growth factor binding protein 3 isoform b	0.00
+126	IPI00419744.4	FCN3	Isoform 2 of Ficolin-3 precursor	3.54
+126	IPI00293925.2	FCN3	Isoform 1 of Ficolin-3 precursor	0.00
+127	IPI00868938.1	-	Beta-2-microglobulin	3.52
+127	IPI00796379.1	B2M	B2M protein	0.00
+127	IPI00004656.2	B2M	Beta-2-microglobulin	0.00
+128	IPI00655927.1	PRG4	Isoform B of Proteoglycan-4 precursor	3.45
+128	IPI00024825.2	PRG4	Isoform A of Proteoglycan-4 precursor	0.00
+128	IPI00656092.1	PRG4	Isoform F of Proteoglycan-4 precursor	0.00
+128	IPI00655976.1	PRG4	Isoform C of Proteoglycan-4 precursor	0.00
+128	IPI00655676.1	PRG4	Isoform D of Proteoglycan-4 precursor	0.00
+128	IPI00656111.1	PRG4	Isoform E of Proteoglycan-4 precursor	0.00
+129	IPI00220839.2	PRSS3	Protease, serine, 3	3.42
+129	IPI00015614.3	PRSS3	Isoform A of Trypsin-3 precursor	0.00
+129	IPI00385250.1	PRSS3	Protease serine 4 isoform B	0.00
+129	IPI00843764.1	PRSS3	Isoform C of Trypsin-3 precursor	0.00
+130	IPI00021817.1	PROC	Vitamin K-dependent protein C precursor	3.23
+131	IPI00020091.1	ORM2	Alpha-1-acid glycoprotein 2 precursor	3.22
+132	IPI00884433.1	-	13 kDa protein	3.05
+132	IPI00419424.3	IGKV1-5	IGKV1-5 protein	0.01
+132	IPI00854806.1	IGKV1-5	IGKV1-5 protein	0.01
+132	IPI00743389.1	IGKV1-5	Ig kappa chain V-II region GM607 precursor (Fragment)	0.01
+132	IPI00827829.1	-	HRV Fab N8-VL (Fragment)	0.01
+132	IPI00827773.1	-	Cold agglutinin FS-1 L-chain (Fragment)	0.01
+132	IPI00829947.1	-	13 kDa protein	0.01
+132	IPI00829600.1	-	Uncharacterized protein ENSP00000374803	0.00
+132	IPI00743194.2	-	Kappa light chain variable region (Fragment)	0.00
+132	IPI00430808.2	IGKC	Immunoblobulin light chain (Fragment)	0.00
+132	IPI00550731.2	-	Putative uncharacterized protein	0.00
+132	IPI00384397.1	-	Myosin-reactive immunoglobulin light chain variable region (Fragment)	0.00
+132	IPI00736885.1	LOC440786	Ig kappa chain V-II region TEW	0.00
+132	IPI00387107.3	IGKV2-40	Ig kappa chain V-II region Cum	0.00
+132	IPI00829663.1	-	Uncharacterized protein ENSP00000374801	0.00
+132	IPI00854709.1	-	Uncharacterized protein ENSP00000374799 (Fragment)	0.00
+132	IPI00387111.5	-	Uncharacterized protein ENSP00000333154	0.00
+133	IPI00007221.1	SERPINA5	Plasma serine protease inhibitor precursor	2.97
+134	IPI00165972.3	CFD	Complement factor D preproprotein	2.89
+135	IPI00847179.1	APOA4	apolipoprotein A-IV precursor	2.82
+136	IPI00294713.4	MASP2	Isoform 1 of Mannan-binding lectin serine protease 2 precursor	2.80
+136	IPI00871597.1	MASP2	Uncharacterized protein MASP2 (Fragment)	0.00
+136	IPI00306378.5	MASP2	Isoform 2 of Mannan-binding lectin serine protease 2 precursor	0.00
+137	IPI00387120.1	-	Ig kappa chain V-IV region Len	2.71
+137	IPI00386133.1	-	Ig kappa chain V-IV region B17 precursor	0.00
+137	IPI00386132.1	-	Ig kappa chain V-IV region JI precursor	0.00
+137	IPI00026197.7	IGKV4-1	Similar to Ig kappa chain V-IV region precursor	0.00
+137	IPI00385143.1	-	Microfibrillar protein 2 (Fragment)	0.00
+138	IPI00470652.1	-	Single-chain Fv (Fragment)	2.58
+138	IPI00061977.1	IGHV3OR16-13;IGHA1	IGHA1 protein	0.00
+138	IPI00830130.1	-	Rheumatoid factor RF-ET7	0.00
+138	IPI00829701.1	-	Uncharacterized protein ENSP00000375014	0.00
+138	IPI00384410.1	-	Myosin-reactive immunoglobulin heavy chain variable region (Fragment)	0.00
+138	IPI00384409.1	-	Myosin-reactive immunoglobulin heavy chain variable region (Fragment)	0.00
+139	IPI00025864.5	BCHE	Cholinesterase precursor	2.58
+139	IPI00604549.1	LOC646743;INPP5D	Isoform 2 of Phosphatidylinositol-3,4,5-trisphosphate 5-phosphatase 1	0.02
+139	IPI00329213.2	LOC646743;INPP5D	Isoform 1 of Phosphatidylinositol-3,4,5-trisphosphate 5-phosphatase 1	0.02
+140	IPI00878609.1	ITIH4	Protein	2.42
+140	IPI00878152.1	ITIH4	71 kDa protein	0.00
+141	IPI00023673.1	LGALS3BP	Galectin-3-binding protein precursor	2.41
+142	IPI00387025.1	-	Ig kappa chain V-I region DEE	2.40
+143	IPI00296176.2	F9	Coagulation factor IX precursor	2.27
+143	IPI00816532.1	F9	Coagulation factor IX (Fragment)	0.00
+144	IPI00021854.1	APOA2	Apolipoprotein A-II precursor	2.25
+145	IPI00010471.5	LCP1	Plastin-2	2.18
+145	IPI00646259.1	LCP1	Lymphocyte cytosolic protein 1	0.00
+146	IPI00783993.1	IGHA2	IGHA2 protein	2.15
+146	IPI00384952.1	-	Putative uncharacterized protein DKFZp686K04218 (Fragment)	0.01
+146	IPI00785067.1	IGH@	IGH@ protein	0.00
+146	IPI00784950.1	LOC100126583	Putative uncharacterized protein DKFZp686L19235	0.00
+146	IPI00784830.1	LOC100126583	CDNA FLJ41981 fis, clone SMINT2011888, highly similar to Protein Tro alpha1 H,myeloma	0.00
+146	IPI00784758.1	LOC100126583	Putative uncharacterized protein DKFZp686M08189	0.00
+146	IPI00784969.1	LOC100126583	Putative uncharacterized protein	0.00
+146	IPI00642017.1	IGHA2	Putative uncharacterized protein DKFZp686C02218 (Fragment)	0.00
+146	IPI00641229.3	IGHA2	Ig alpha-2 chain C region	0.00
+146	IPI00423461.3	IGHA2	Putative uncharacterized protein DKFZp686C02220 (Fragment)	0.00
+146	IPI00829711.1	IGHA2	Uncharacterized protein IGHA2 (Fragment)	0.00
+147	IPI00644296.1	TNXB	Tenascin XB	2.15
+147	IPI00743248.5	TNXB	DJ34F7.1.1	0.00
+147	IPI00025276.1	TNXB	Isoform XB of Tenascin-X precursor	0.00
+148	IPI00784807.1	-	Putative uncharacterized protein	2.10
+148	IPI00399007.5	IGHG2	Putative uncharacterized protein DKFZp686I04196 (Fragment)	0.00
+148	IPI00426051.3	-	Putative uncharacterized protein DKFZp686C15213	0.00
+148	IPI00784942.1	-	Putative uncharacterized protein DKFZp686E23209	0.00
+148	IPI00829767.1	IGHG2	Uncharacterized protein IGHG2 (Fragment)	0.00
+149	IPI00303335.1	NEB	Nebulin	2.10
+149	IPI00873123.1	NEB	nebulin	0.00
+149	IPI00384095.1	NEB	NEB protein (Fragment)	0.00
+150	IPI00449028.2	ADAMTS13	Isoform 1 of ADAMTS-13 precursor	2.08
+150	IPI00453457.2	ADAMTS13	Isoform 2 of ADAMTS-13 precursor	0.00
+150	IPI00427822.2	ADAMTS13	Isoform 3 of ADAMTS-13 precursor	0.00
+150	IPI00645987.1	ADAMTS13	25 kDa protein	0.00
+150	IPI00642388.1	ADAMTS13	ADAMTS13 protein	0.00
+151	IPI00423462.5	IGHV3OR16-13;IGHA1	Putative uncharacterized protein DKFZp686K18196 (Fragment)	2.06
+151	IPI00784817.1	IGHV4-31	Anti-RhD monoclonal T125 gamma1 heavy chain precursor	0.00
+151	IPI00477090.6	IGHM	IGHM protein	0.00
+151	IPI00829976.1	-	13 kDa protein	0.00
+151	IPI00829806.1	SCFV	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00829747.1	-	Similar to Immunglobulin heavy chain variable region	0.00
+151	IPI00827960.1	-	Immunglobulin heavy chain precursor (Fragment)	0.00
+151	IPI00736507.2	IGHV3-30	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00784513.1	-	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00783023.1	-	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00828061.1	-	Anti-mucin1 heavy chain variable region (Fragment)	0.00
+151	IPI00884022.1	-	Similar to Immunglobulin heavy chain variable region	0.00
+151	IPI00783471.1	-	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00783451.1	-	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00783909.1	-	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00783244.1	IGHV3-30	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00748665.3	IGHV3-30	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00413194.1	-	Myosin-reactive immunoglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00783818.1	-	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00884080.1	-	Similar to Immunglobulin heavy chain variable region	0.00
+151	IPI00783116.1	-	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00382489.1	-	Ig heavy chain V-III region KOL	0.00
+151	IPI00384400.1	-	Myosin-reactive immunoglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00783393.1	-	Immunglobulin heavy chain variable region (Fragment)	0.00
+151	IPI00827846.1	-	Anti-mucin1 heavy chain variable region (Fragment)	0.00
+152	IPI00024284.4	HSPG2	Basement membrane-specific heparan sulfate proteoglycan core protein precursor	2.06
+153	IPI00395488.2	VASN	Vasorin precursor	2.05
+154	IPI00009865.2	KRT10	Keratin, type I cytoskeletal 10	2.04
+155	IPI00879084.1	CP	20 kDa protein	2.02
+156	IPI00418163.3	C4B	C4B1	2.00
+157	IPI00654875.1	C4B	Complement C4-B precursor	2.00
+157	IPI00032258.4	C4A;C4B	Complement C4-A precursor	0.00
+158	IPI00742696.2	GC	vitamin D-binding protein precursor	2.00
+159	IPI00430847.1	IGKC	IGKC protein	2.00
+159	IPI00829650.1	-	Similar to Ig kappa chain V-I region HK101 precursor	0.00
+159	IPI00003470.1	-	Ig kappa chain V-I region Wes	0.00
+160	IPI00827488.1	IGKC	IGKC protein	2.00
+160	IPI00829873.1	-	13 kDa protein	0.00
+161	IPI00385264.1	-	Ig mu heavy chain disease protein	2.00
+162	IPI00169276.2	-	Trypsinogen C	2.00
+163	IPI00296537.3	FBLN1	Isoform C of Fibulin-1 precursor	2.00
+164	IPI00829836.1	-	Uncharacterized protein ENSP00000374797	2.00
+164	IPI00385555.1	-	Ig kappa chain V-I region BAN	0.00
+165	IPI00397808.3	LOC388720	similar to ubiquitin and ribosomal protein S27a precursor	2.00
+165	IPI00418813.2	-	CDNA FLJ46113 fis, clone TESTI2036285, highly similar to Rattus norvegicus ubiquitin C	0.00
+165	IPI00794205.1	-	26 kDa protein	0.00
+165	IPI00873444.1	UBC;RPS27A;UBB	79 kDa protein	0.00
+165	IPI00798155.3	UBC;RPS27A;UBB	Ubiquitin C splice variant	0.00
+165	IPI00798127.1	UBC;RPS27A;UBB	ubiquitin C	0.00
+165	IPI00797482.1	UBC;RPS27A;UBB	cDNA FLJ75516, highly similar to Xenopus tropicalis ubiquitin C, mRNA	0.00
+165	IPI00797400.1	UBC;RPS27A;UBB	19 kDa protein	0.00
+165	IPI00796600.1	UBC;RPS27A;UBB	18 kDa protein	0.00
+165	IPI00796007.1	UBC;RPS27A;UBB	17 kDa protein	0.00
+165	IPI00795527.1	UBC;RPS27A;UBB	21 kDa protein	0.00
+165	IPI00794925.1	UBC;RPS27A;UBB	21 kDa protein	0.00
+165	IPI00794211.1	UBC;RPS27A;UBB	18 kDa protein	0.00
+165	IPI00793810.1	UBC;RPS27A;UBB	19 kDa protein	0.00
+165	IPI00793729.1	UBC;RPS27A;UBB	UBC protein	0.00
+165	IPI00793330.1	UBC;RPS27A;UBB	12 kDa protein	0.00
+165	IPI00792712.1	UBC;RPS27A;UBB	39 kDa protein	0.00
+165	IPI00790633.1	UBC;RPS27A;UBB	25 kDa protein	0.00
+165	IPI00789823.1	UBC;RPS27A;UBB	16 kDa protein	0.00
+165	IPI00789107.1	UBC;RPS27A;UBB	30 kDa protein	0.00
+165	IPI00784990.2	UBC;RPS27A;UBB	Ubiquitin C splice variant	0.00
+165	IPI00744274.1	UBC;RPS27A;UBB	44 kDa protein	0.00
+165	IPI00743650.1	UBC;RPS27A;UBB	44 kDa protein	0.00
+165	IPI00743241.1	UBC;RPS27A;UBB	44 kDa protein	0.00
+165	IPI00719280.2	UBC;RPS27A;UBB	ubiquitin B precursor	0.00
+165	IPI00456429.3	UBA52	ubiquitin and ribosomal protein L40 precursor	0.00
+165	IPI00879555.1	-	9 kDa protein	0.00
+165	IPI00873004.1	UBA52	11 kDa protein	0.00
+165	IPI00792139.1	UBC;RPS27A;UBB	9 kDa protein	0.00
+165	IPI00788210.1	LOC728590	similar to ribosomal protein S27a	0.00
+165	IPI00654754.1	UBC;RPS27A;UBB	RPS27A protein	0.00
+165	IPI00179330.6	UBC;RPS27A;UBB	ubiquitin and ribosomal protein S27a precursor	0.00
+166	IPI00073777.1	PLXDC2	Isoform 2 of Plexin domain-containing protein 2 precursor	2.00
+166	IPI00044369.2	PLXDC2	Isoform 1 of Plexin domain-containing protein 2 precursor	0.00
+167	IPI00219426.1	PVR	Isoform Gamma of Poliovirus receptor precursor	2.00
+167	IPI00299158.1	PVR	Isoform Alpha of Poliovirus receptor precursor	0.00
+167	IPI00219427.1	PVR	Isoform Delta of Poliovirus receptor precursor	0.00
+167	IPI00219425.3	PVR	Isoform Beta of Poliovirus receptor precursor	0.00
+168	IPI00019359.3	KRT9	Keratin, type I cytoskeletal 9	2.00
+169	IPI00852826.2	APOL1	42 kDa protein	2.00
+169	IPI00514475.4	APOL1	Isoform 1 of Apolipoprotein-L1 precursor	0.00
+169	IPI00186903.3	APOL1	Isoform 2 of Apolipoprotein-L1 precursor	0.00
+170	IPI00828192.1	CD44	Isoform 17 of CD44 antigen precursor	2.00
+170	IPI00828117.1	CD44	Isoform 5 of CD44 antigen precursor	0.00
+170	IPI00828064.1	CD44	Isoform 6 of CD44 antigen precursor	0.00
+170	IPI00828056.1	CD44	Isoform 16 of CD44 antigen precursor	0.00
+170	IPI00827658.1	CD44	Isoform 7 of CD44 antigen precursor	0.00
+170	IPI00827650.1	CD44	Isoform 3 of CD44 antigen precursor	0.00
+170	IPI00827555.1	CD44	Isoform 9 of CD44 antigen precursor	0.00
+170	IPI00305064.1	CD44	Isoform CD44 of CD44 antigen precursor	0.00
+170	IPI00827893.1	CD44	Isoform 11 of CD44 antigen precursor	0.00
+170	IPI00827795.1	CD44	Isoform 8 of CD44 antigen precursor	0.00
+170	IPI00419219.3	CD44	Isoform 10 of CD44 antigen precursor	0.00
+170	IPI00418465.4	CD44	Isoform 4 of CD44 antigen precursor	0.00
+170	IPI00828108.1	CD44	Isoform 15 of CD44 antigen precursor	0.00
+170	IPI00827982.1	CD44	Isoform 13 of CD44 antigen precursor	0.00
+170	IPI00827937.1	CD44	Isoform 14 of CD44 antigen precursor	0.00
+170	IPI00297160.4	CD44	Isoform 12 of CD44 antigen precursor	0.00
+170	IPI00798069.1	CD44	CD44 molecule	0.00
+171	IPI00645234.1	SELP	Selectin P	2.00
+171	IPI00644144.1	SELP	Selectin P	0.00
+171	IPI00643835.1	SELP	Selectin P	0.00
+171	IPI00640405.1	SELP	Selectin P	0.00
+171	IPI00514796.1	SELP	Selectin P	0.00
+171	IPI00514233.1	SELP	Selectin P	0.00
+171	IPI00295339.3	SELP	P-selectin precursor	0.00
+171	IPI00646956.1	SELP	Selectin P	0.00
+171	IPI00645768.1	SELE	Selectin E	0.00
+171	IPI00514728.1	SELE	Selectin E	0.00
+171	IPI00514521.1	SELE	Selectin E	0.00
+171	IPI00514342.1	SELE	Selectin E	0.00
+171	IPI00296542.1	SELE	E-selectin precursor	0.00
+171	IPI00218795.1	SELL	L-selectin precursor	0.00
+172	IPI00021364.1	CFP	Properdin precursor	2.00
+173	IPI00643034.2	PLTP	Isoform 1 of Phospholipid transfer protein precursor	2.00
+173	IPI00217778.1	PLTP	Isoform 2 of Phospholipid transfer protein precursor	0.00
+173	IPI00022733.3	PLTP	45 kDa protein	0.00
+174	IPI00339297.1	GALNT4	Polypeptide N-acetylgalactosaminyltransferase 4	2.00
+175	IPI00027482.1	SERPINA6	Corticosteroid-binding globulin precursor	2.00
+176	IPI00216065.3	PROZ	Isoform 2 of Vitamin K-dependent protein Z precursor	2.00
+176	IPI00027843.1	PROZ	Isoform 1 of Vitamin K-dependent protein Z precursor	0.00
+177	IPI00029235.1	IGFBP6	Insulin-like growth factor-binding protein 6 precursor	2.00
+178	IPI00019755.3	GSTO1	Glutathione transferase omega-1	2.00
+179	IPI00011832.1	SPP2	Secreted phosphoprotein 24 precursor	2.00
+180	IPI00794777.1	PRDX2	Uncharacterized protein PRDX2	2.00
+180	IPI00027350.3	PRDX2	Peroxiredoxin-2	0.00
+181	IPI00657670.1	-	13 kDa protein	2.00
+181	IPI00021857.1	APOC3	Apolipoprotein C-III precursor	0.00
+182	IPI00178926.2	IGJ	immunoglobulin J chain	2.00
+183	IPI00022331.1	LCAT	Phosphatidylcholine-sterol acyltransferase precursor	2.00
+184	IPI00152990.7	-	253 kDa protein	1.96
+184	IPI00852930.1	ATG2B	ATG2 autophagy related 2 homolog B	0.00
+184	IPI00872410.1	ATG2B	Autophagy-related protein 2 homolog B	0.00
+185	IPI00479471.2	SPATA13	Spermatogenesis associated 13	1.83
+185	IPI00043546.5	SPATA13	Spermatogenesis-associated protein 13	0.00
+186	IPI00749005.2	SYNE1	1011 kDa protein	1.77
+186	IPI00386444.2	SYNE1	Isoform 1 of Nesprin-1	0.01
+186	IPI00745471.2	SYNE1	Spectrin-like protein of the nuclear envelope and Golgi	0.01
+186	IPI00247295.3	SYNE1	Isoform 4 of Nesprin-1	0.01
+186	IPI00396977.2	SYNE1	Isoform 7 of Nesprin-1	0.00
+186	IPI00247297.3	SYNE1	Isoform 6 of Nesprin-1	0.00
+186	IPI00640830.1	SYNE1	OTTHUMP00000017445	0.00
+186	IPI00247296.1	SYNE1	Isoform 5 of Nesprin-1	0.00
+186	IPI00642043.1	SYNE1	OTTHUMP00000017446	0.00
+187	IPI00014898.2	PLEC1	Isoform 1 of Plectin-1	1.74
+187	IPI00186711.3	PLEC1	plectin 1 isoform 6	0.00
+187	IPI00398779.4	PLEC1	Isoform 4 of Plectin-1	0.00
+187	IPI00398778.3	PLEC1	plectin 1 isoform 10	0.00
+187	IPI00420096.4	PLEC1	plectin 1 isoform 3	0.00
+187	IPI00398777.3	PLEC1	plectin 1 isoform 8	0.00
+187	IPI00398776.3	PLEC1	plectin 1 isoform 7	0.00
+187	IPI00398775.3	PLEC1	plectin 1 isoform 2	0.00
+187	IPI00398002.5	PLEC1	plectin 1 isoform 1	0.00
+188	IPI00642632.1	-	C7 protein	1.70
+189	IPI00218326.1	SP100	Isoform Sp100-C of Nuclear autoantigen Sp-100	1.70
+190	IPI00745209.2	C9orf131	hypothetical protein LOC138724 isoform D	1.70
+190	IPI00398256.2	C9orf131	hypothetical protein LOC138724 isoform A	0.00
+190	IPI00745026.1	C9orf131	hypothetical protein LOC138724 isoform B	0.00
+190	IPI00744439.1	C9orf131	hypothetical protein LOC138724 isoform C	0.00
+190	IPI00743999.2	C9orf131	Uncharacterized protein C9orf131 (Fragment)	0.00
+191	IPI00744685.2	BTD	Uncharacterized protein BTD (Fragment)	1.70
+191	IPI00218413.2	BTD	biotinidase precursor	0.00
+192	IPI00257882.7	PEPD	Xaa-Pro dipeptidase	1.70
+192	IPI00872063.1	PEPD	Uncharacterized protein PEPD (Fragment)	0.00
+193	IPI00783862.2	BLVRB	Flavin reductase	1.70
+193	IPI00219910.2	-	22 kDa protein	0.00
+194	IPI00007128.1	PRKCG	Protein kinase C gamma type	1.55
+195	IPI00025204.1	CD5L	CD5 antigen-like precursor	1.48
+196	IPI00413958.4	FLNC	Isoform 2 of Filamin-C	1.47
+196	IPI00178352.5	FLNC	Isoform 1 of Filamin-C	0.00
+197	IPI00872079.1	SFRS10	38 kDa protein	1.44
+198	IPI00094740.1	RNF31	Isoform 1 of RING finger protein 31	1.43
+199	IPI00854664.1	RP1L1	retinitis pigmentosa 1-like 1	1.42
+199	IPI00398728.1	RP1L1	Isoform 1 of Retinitis pigmentosa 1-like 1 protein	0.00
+200	IPI00785200.1	-	Putative uncharacterized protein	1.40
+200	IPI00784711.1	-	Putative uncharacterized protein	0.00
+200	IPI00386839.1	-	Amyloid lambda 6 light chain variable region SAR (Fragment)	0.00
+200	IPI00385254.1	-	Ig lambda chain V-I region WAH	0.00
+200	IPI00419442.3	IGLV6-57	IGLV6-57 protein	0.00
+200	IPI00382447.1	-	Ig lambda chain V-VI region AR	0.00
+201	IPI00790598.1	-	Conserved hypothetical protein	1.40
+202	IPI00004358.4	PYGB	Glycogen phosphorylase, brain form	1.40
+202	IPI00218130.3	PYGM	Glycogen phosphorylase, muscle form	0.00
+203	IPI00177820.3	SLC14A2	Urea transporter, kidney	1.40
+204	IPI00019176.3	RARRES2	Retinoic acid receptor responder protein 2 precursor	1.40
+205	IPI00872107.1	ILF2	Interleukin enhancer binding factor 2 variant (Fragment)	1.36
+205	IPI00643578.1	ILF2	16 kDa protein	0.00
+205	IPI00005198.2	ILF2	Interleukin enhancer-binding factor 2	0.00
+205	IPI00641665.1	ILF2	12 kDa protein	0.00
+206	IPI00217178.6	C22orf30	Isoform 4 of Uncharacterized protein C22orf30	1.33
+206	IPI00643747.1	C22orf30	Isoform 1 of Uncharacterized protein C22orf30	0.00
+206	IPI00854670.1	C22orf30	Isoform 2 of Uncharacterized protein C22orf30	0.00
+207	IPI00337563.1	BICD1	Isoform 3 of Protein bicaudal D homolog 1	1.31
+207	IPI00018368.1	BICD1	Isoform 1 of Protein bicaudal D homolog 1	0.00
+208	IPI00432374.1	APLN	APELIN	1.30
+209	IPI00872028.1	NUMA1	NUMA1 variant protein	1.29
+209	IPI00292771.4	NUMA1	Isoform 1 of Nuclear mitotic apparatus protein 1	0.00
+210	IPI00876888.1	-	cDNA FLJ78387	1.26
+211	IPI00807609.1	CLEC11A	Aberrant LSLCL	1.25
+212	IPI00879436.1	TCN2	47 kDa protein	1.21
+212	IPI00386630.1	TCN2	TCN2 protein	0.00
+212	IPI00219465.4	TCN2	Transcobalamin-2 precursor	0.00
+213	IPI00013933.2	DSP	Isoform DPI of Desmoplakin	1.18
+214	IPI00032328.2	KNG1	Isoform HMW of Kininogen-1 precursor	1.16
+215	IPI00397836.1	GSG2	Isoform 1 of Serine/threonine-protein kinase haspin	1.16
+216	IPI00787941.1	KCTD7	79 kDa protein	1.15
+216	IPI00418213.1	RABGEF1	Isoform 1 of Rab5 GDP/GTP exchange factor	0.00
+217	IPI00479446.1	ADAM18	Isoform 2 of ADAM 18 precursor	1.15
+217	IPI00003365.1	ADAM18	Isoform 1 of ADAM 18 precursor	0.00
+218	IPI00418614.2	-	67 kDa protein	1.11
+219	IPI00221224.6	ANPEP	Aminopeptidase N	1.08
+220	IPI00184272.1	TP63	Isoform 5 of Tumor protein 63	1.05
+221	IPI00853158.2	PRUNE2	prune homolog 2 isoform 1	1.05
+222	IPI00013371.1	SPRY3	Protein sprouty homolog 3	1.05
+223	IPI00179757.6	KIF1C	Kinesin-like protein KIF1C	1.04
+224	IPI00719643.2	SETX	Isoform 3 of Probable helicase senataxin	1.02
+225	IPI00829979.1	-	Uncharacterized protein ENSP00000375008	1.00
+225	IPI00739205.3	LOC652102	Ig heavy chain V-I region HG3 precursor	0.00
+226	IPI00382481.1	-	Ig heavy chain V-III region BUT	1.00
+227	IPI00104907.3	C14orf106	Isoform 1 of Uncharacterized potential DNA-binding protein C14orf106	1.00
+228	IPI00807610.1	FAM102A	Isoform 2 of Protein FAM102A	1.00
+228	IPI00411980.3	FAM102A	Isoform 1 of Protein FAM102A	0.00
+229	IPI00413671.1	BCLAF1	Isoform 2 of Bcl-2-associated transcription factor 1	0.99
+230	IPI00742944.2	FMN2	Formin-2	0.98
+231	IPI00030915.1	USP8	Ubiquitin carboxyl-terminal hydrolase 8	0.98
+232	IPI00786896.1	NRAP	Isoform 4 of Nebulin-related-anchoring protein	0.96
+232	IPI00745227.4	NRAP	Isoform 1 of Nebulin-related-anchoring protein	0.00
+232	IPI00478974.2	NRAP	Isoform 3 of Nebulin-related-anchoring protein	0.00
+232	IPI00398162.4	NRAP	Isoform 2 of Nebulin-related-anchoring protein	0.00
+233	IPI00006904.1	AVEN	Cell death regulator Aven	0.96
+234	IPI00552575.1	SRRM2	Putative uncharacterized protein DKFZp667L0421	0.95
+235	IPI00004416.1	CHMP2A	Charged multivesicular body protein 2a	0.94
+236	IPI00335800.3	NLRP1	Isoform 2 of NACHT, LRR and PYD domains-containing protein 1	0.93
+236	IPI00328123.4	NLRP1	Isoform 1 of NACHT, LRR and PYD domains-containing protein 1	0.00
+237	IPI00006379.1	NOP5/NOP58	Nucleolar protein 5	0.93
+238	IPI00478226.1	MACF1	Isoform 5 of Microtubule-actin cross-linking factor 1, isoforms 1/2/3/5	0.92
+238	IPI00256861.4	MACF1	Isoform 2 of Microtubule-actin cross-linking factor 1, isoforms 1/2/3/5	0.00
+239	IPI00305944.4	PTENP1	Similar to Phosphatidylinositol-3,4,5-trisphosphate 3-phosphatase and dual- specificity protein phosphatase PTEN	0.92
+240	IPI00877062.1	LMO1	LIM domain only 1 (Fragment)	0.89
+241	IPI00871428.1	-	Uncharacterized protein ENSP00000381438	0.89
+242	IPI00290856.4	LYVE1	Lymphatic vessel endothelial hyaluronic acid receptor 1 precursor	0.89
+243	IPI00844058.2	COL9A2	49 kDa protein	0.88
+244	IPI00409567.1	PKD1	Isoform 2 of Polycystin-1 precursor	0.87
+244	IPI00409566.1	PKD1	Isoform 1 of Polycystin-1 precursor	0.00
+244	IPI00028786.4	PKD1	Isoform 3 of Polycystin-1 precursor	0.00
+245	IPI00827672.1	VWA2	Isoform 3 of von Willebrand factor A domain-containing protein 2 precursor	0.86
+245	IPI00645921.1	VWA2	Isoform 2 of von Willebrand factor A domain-containing protein 2 precursor	0.00
+245	IPI00394834.3	VWA2	Isoform 1 of von Willebrand factor A domain-containing protein 2 precursor	0.00
+246	IPI00785084.1	IGHV4-31	Immunoglobulin heavy variable 4-31	0.83
+247	IPI00827875.1	-	Lambda-chain precursor	0.82
+248	IPI00216999.2	C14orf21	Pumilio domain-containing protein C14orf21	0.80
+249	IPI00879352.1	-	Uncharacterized protein ENSP00000348646	0.80
+249	IPI00478259.5	-	Similar to Sialic acid-binding Ig-like lectin 11 precursor	0.00
+249	IPI00402004.3	-	56 kDa protein	0.00
+250	IPI00873681.2	AKT3	57 kDa protein	0.79
+250	IPI00872713.1	AKT3	59 kDa protein	0.00
+251	IPI00872593.1	LMOD1	leiomodin 1	0.78
+251	IPI00414008.4	LMOD1	70 kDa protein	0.00
+252	IPI00294501.1	DHCR7	7-dehydrocholesterol reductase	0.77
+253	IPI00477896.1	SLC26A6	Anchor protein	0.76
+254	IPI00641363.1	SPTA1	Spectrin, alpha, erythrocytic 1	0.73
+254	IPI00220741.6	SPTA1	spectrin, alpha, erythrocytic 1	0.00
+255	IPI00852848.3	FRMD4B	FERM domain containing 4B	0.72
+256	IPI00872008.1	TMTC4	Uncharacterized protein TMTC4	0.71
+256	IPI00646732.2	TMTC4	Isoform 1 of Transmembrane and TPR repeat-containing protein 4	0.00
+256	IPI00514153.3	TMTC4	transmembrane and tetratricopeptide repeat containing 4 isoform 1	0.00
+257	IPI00792611.2	KIAA0802	Isoform 1 of Uncharacterized protein KIAA0802	0.70
+258	IPI00844523.1	MICALCL	Isoform 1 of MICAL C-terminal-like protein	0.70
+258	IPI00844270.1	MICALCL	Isoform 3 of MICAL C-terminal-like protein	0.00
+258	IPI00816344.2	MICALCL	Isoform 2 of MICAL C-terminal-like protein	0.00
+259	IPI00843995.1	AGBL3	Isoform 1 of Cytosolic carboxypeptidase 3	0.70
+260	IPI00028083.1	EIF2B2	Translation initiation factor eIF-2B subunit beta	0.70
+261	IPI00028122.1	PSIP1	Isoform 1 of PC4 and SFRS1-interacting protein	0.70
+262	IPI00853448.1	RBM39	Uncharacterized protein RBM39	0.70
+262	IPI00328524.1	DKFZp451M2119	Putative uncharacterized protein DKFZp451M2119	0.00

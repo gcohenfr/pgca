@@ -1,8 +1,10 @@
-#' Print information about the accession dictionary
+#' Print information about the PGCA dictionary
 #'
+#' @param x the PGCA dictionary.
+#' @param ... currently not used.
 #' @export
-print.accession.dict <- function(x, ...) {
-    cat(sprintf("Dictionary of %d accession numbers in %d protein groups",
+print.pgca.dict <- function(x, ...) {
+    cat(sprintf("Dictionary mapping %d proteins to %d protein groups",
                 nrow(x$dictionary), max(x$dictionary$pg)))
     if (!is.null(x$directory)) {
         cat(sprintf(' built from %d files in directory "%s"\n', length(x$files), x$directory))
@@ -13,49 +15,51 @@ print.accession.dict <- function(x, ...) {
     cat("\n")
 }
 
-#' Write an accession dictionary to a text file
+#' Write PGCA dictionary to a text file
 #'
-#' Write the accession dictionary to a text file using the \code{\link[utils]{write.table}}
+#' Write the dictionary to a text file using the \code{\link[utils]{write.table}}
 #' function. By default, a tab-separated file is written, but this can be changed
 #' by changing the arguments to \code{\link[utils]{write.table}}.
 #'
-#' @param dict an accession dictionary.
+#' @param dict a PGCA dictionary.
 #' @param file either a character string naming a file or a \code{\link[base]{connection}}
 #'      open for writing. \code{""} indicates output to the console.
 #' @param ... further arguments passed to \code{\link[utils]{write.table}}.
 #' @importFrom utils write.table
 #'
-#' @seealso \code{\link{accession.dictionary}} to create the dictionary, and
+#' @seealso \code{\link{pgca}} to create the dictionary, and
 #'      \code{\link{translate}} to saved translated data files.
 #'
 #' @export
 #'
 #' @examples
 #' # Build accession dictionary from all files in a directory
-#' dict <- accession.dictionary.dir("dir",
-#'                  col.mapping = c(gene.symbol = "Gene_Symbol"))
+#' dict <- pgca(
+#'          system.file("extdata", package = "pgca"),
+#'          col.mapping = c(gene.symbol = "Gene_Symbol")
+#' )
 #'
 #' \dontrun{
 #' # Save dictionary to a file
 #' save.dict(dict, file = "dictionary.txt")
 #'
-#' # Change the separator string
+#' # Change the separator string to a tab
 #' save.dict(dict, file = "dictionary.txt", sep = "\t")
 #' }
 save.dict <- function(dict, file = stop("`file` must be specified"), ...) {
-    if (class(dict) != "accession.dict") {
-        stop("`dict` must be an accession dictionary")
+    if (class(dict) != "pgca.dict") {
+        stop("`dict` must be a PGCA dictionary")
     }
 
+    cn <- dict$col.mapping[c("group.identifier", "accession.nr", "protein.name", "gene.symbol")]
     d <- dict$dictionary
-    colnames(d) <- c("PG", na.omit(col.mapping[c("group.identifier", "accession.nr",
-                                                 "protein.name", "gene.symbol")]))
+    colnames(d) <- c("PG", cn[!is.na(cn)])
 
     write.table(dict$dictionary, file = file, row.names = FALSE, ...)
 }
 
 
-#' Apply the dictionary to data files
+#' Apply a PGCA dictionary to data files
 #'
 #' Apply the dictionary to the data files and write the translated files to disk.
 #'
@@ -71,27 +75,29 @@ save.dict <- function(dict, file = stop("`file` must be specified"), ...) {
 #' list. The function will also return the translated \code{data.frame}s as list if
 #' the \code{out.dir = NULL}.
 #'
-#' @param dict accession dictionary to use.
+#' @param dict the PGCA dictionary to use.
 #' @param out.dir the directory to save the translated files in (see details).
 #'      If \code{NULL}, the translated data frames will be returned directly.
 #' @param out.suffix,out.prefix suffix and prefix that will be added to the translated files.
 #' @param col.mapping the column mapping for the input files. Defaults to the same as used
 #'      to build the dictionary.
 #' @param out.pg.col the name of the column to store the protein group.
-#' @param ...
 #'
 #' @return Either a list of \code{data.frame}s or nothing (see details).
-#' @seealso \code{\link{accession.dictionary}} to create the dictionary
+#' @seealso \code{\link{pgca}} to create the dictionary
 #' @importFrom utils write.table
 #' @export
 #'
 #' @examples
-#' # Build accession dictionary from all files in a directory
-#' dict <- accession.dictionary.dir("dir",
-#'                  col.mapping = c(gene.symbol = "Gene_Symbol"))
+#' # Build PGCA dictionary from all files in a directory
+#' dict <- pgca(
+#'          system.file("extdata", package = "pgca"),
+#'          col.mapping = c(gene.symbol = "Gene_Symbol")
+#' )
 #'
 #' # Translate all files in the directory and return as a list of data.frames
 #' trans <- translate(dict, out.dir = NULL)
+#' str(trans)
 #'
 #' \dontrun{
 #' # Translate all files in the directory and save to another directory
