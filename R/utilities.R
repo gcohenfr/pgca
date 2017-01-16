@@ -106,7 +106,7 @@ save.dict <- function(dict, file = stop("`file` must be specified"), ...) {
 #' # Translate only some files in the directory and return as a list of data.frames
 #' trans <- translate(dict, input = c(
 #'                        system.file("extdata", "accs_no_1947.txt", package = "pgca"),
-#'                        ssystem.file("extdata", "accs_no_2007.txt", package = "pgca")
+#'                        system.file("extdata", "accs_no_2007.txt", package = "pgca")
 #'                    ), out.dir = NULL)
 #' str(trans)
 #'
