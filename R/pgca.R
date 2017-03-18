@@ -3,26 +3,31 @@
 #' Build a dictionary for protein groups from MS/MS data.
 #' Details of the algorithm can be found in XX, YY (2017).
 #'
-#' If the \code{group.identifier} column is logical (i.e., \code{TRUE} or \code{FALSE}),
+#' If the \code{group.identifier} column is logical (i.e., \code{TRUE} or
+#' \code{FALSE}),
 #' the \code{TRUE} accessions are assumed to be a "master gene" and the
-#' data set is assumed to be in the correct order (i.e., all \code{FALSE} values following
-#' the master gene are assumed to belong to the same group).
+#' data set is assumed to be in the correct order (i.e., all \code{FALSE} values
+#' following the master gene are assumed to belong to the same group).
 #'
-#' The \code{col.mapping} maps the column names in the data files to a specific function.
-#' It nees to be a named character vector, whereas the name of each item is the "function"
-#' of the given column name. The algorithm knows about the following columns:
+#' The \code{col.mapping} maps the column names in the data files to a specific
+#' function. It nees to be a named character vector, whereas the name of each
+#' item is the "function" of the given column name. The algorithm knows about
+#' the following columns:
 #' \describe{
-#'      \item{\code{"group.identifier"}}{Column containing the group identifier.}
+#'      \item{\code{"group.identifier"}}{Column containing the group
+#identifier.}
 #'      \item{\code{"accession.nr"}}{Column containing the accession nr.}
 #'      \item{\code{"protein.name"}}{Column containing the protein name.}
-#'      \item{\code{"gene.symbol"}}{Column containing the gene symbol (if any, can be missing)}
+#'      \item{\code{"gene.symbol"}}{Column containing the gene symbol (if any,
+#'                                  can be missing)}
 #' }
-#' The default column mapping is \code{c(group.identifier = "N", accession.nr = "Accession",
-#' protein.name = "Protein_Name")}. The supplied column mapping can miss those columns that are
-#' already correct in the default map. For instance, if the accession nr. is stored in column
-#' \emph{AccessionNr} instead of \emph{Accession}, but the remaining columns are the same as in the
-#' default mapping, specifying \code{col.mapping = c(accession.nr = "AccessionNr")} is
-#' sufficient.
+#' The default column mapping is \code{c(group.identifier = "N", accession.nr =
+#' "Accession", protein.name = "Protein_Name")}. The supplied column mapping can
+#' miss those columns that are already correct in the default map. For instance,
+#' if the accession nr. is stored in column \emph{AccessionNr} instead of
+#' \emph{Accession}, but the remaining columns are the same as in the
+#' default mapping, specifying \code{col.mapping = c(accession.nr =
+#' "AccessionNr")} is sufficient.
 #'
 #' @param ... arbitrary number of \code{data.frame}s or filenames.
 #' @param col.mapping column mapping (see Details).
@@ -33,8 +38,8 @@
 #' @export
 #'
 #' @references XX, YY (2017). xxx.
-#' @seealso \code{\link{translate}} to apply the dictionary to the data files and
-#'      \code{\link{save.dict}} to save the dictionary itself.
+#' @seealso \code{\link{translate}} to apply the dictionary to the data files
+#'      and \code{\link{save.dict}} to save the dictionary itself.
 #'
 #' @examples
 #' # Build the dictionary from all files in a directory
@@ -53,8 +58,10 @@
 #' )
 #'
 #' # Build the dictionary from already read-in data.frames
-#' df.1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package = "pgca"))
-#' df.2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package = "pgca"))
+#' df.1947 <- read.delim(system.file("extdata", "accs_no_1947.txt",
+#'                                   package = "pgca"))
+#' df.2007 <- read.delim(system.file("extdata", "accs_no_2007.txt",
+#'                                   package = "pgca"))
 #' dict.data <- pgca.data(df.1947, df.2007,
 #'                        col.mapping = c(gene.symbol = "Gene_Symbol"))
 #'
@@ -76,7 +83,8 @@ pgca <- function(dir, col.mapping) {
         stop(sprintf("Directory %s is empty", dir))
     }
 
-    # Check if any of the items in the directory are directories itself and remove them
+    # Check if any of the items in the directory are directories itself and
+    # remove them
     dirs.in.dir <- list.dirs(dir, recursive = FALSE)
     files <- setdiff(files, dirs.in.dir)
 
@@ -113,7 +121,8 @@ pgca.data <- function(..., col.mapping) {
     # Check that
     #   - each item is a data.frame
     #   - each data.frame has the correct columns
-    #   - each column has the correct type (we convert logical group identifiers!)
+    #   - each column has the correct type (we convert logical group
+    #     identifiers!)
     dfs <- mapply(function(df, name) {
         if (!is.data.frame(df)) {
             stop(sprintf("Data set '%s' must be a data.frame", name))
@@ -133,11 +142,12 @@ pgca.data <- function(..., col.mapping) {
                             col.mapping["accession.nr"], name))
         }
         if (!is.character(df[[col.mapping["accession.nr"]]])) {
-            df[[col.mapping["accession.nr"]]] <- as.character(df[[col.mapping["accession.nr"]]])
+            df[[col.mapping["accession.nr"]]] <-
+                as.character(df[[col.mapping["accession.nr"]]])
         }
 
-        # If the group identifier is a logical, we assume a "is master-gene" type
-        # of column
+        # If the group identifier is a logical, we assume a "is master-gene"
+        # type of column
         if (is.logical(df[[col.mapping["group.identifier"]]])) {
             if (!isTRUE(df[[col.mapping["group.identifier"]]][1L])) {
                 stop("The first 'is master-gene' value in column '%s' in data set '%s' must be `TRUE`",
@@ -146,6 +156,18 @@ pgca.data <- function(..., col.mapping) {
             df[[col.mapping["group.identifier"]]] <- cumsum(df[[col.mapping["group.identifier"]]])
         } else if (is.character(df[[col.mapping["group.identifier"]]])) {
             df[[col.mapping["group.identifier"]]] <- as.factor(df[[col.mapping["group.identifier"]]])
+        }
+
+        # If the gene.symbol or protein.name is a factor, convert it to
+        # character (otherwise the integer factor level would be converted to
+        # character)
+        if (is.factor(df[[col.mapping["protein.name"]]])) {
+            df[[col.mapping["protein.name"]]] <-
+                as.character(df[[col.mapping["protein.name"]]])
+        }
+        if (is.factor(df[[col.mapping["gene.symbol"]]])) {
+            df[[col.mapping["gene.symbol"]]] <-
+                as.character(df[[col.mapping["gene.symbol"]]])
         }
 
         return(df)
@@ -165,7 +187,8 @@ pgca.data <- function(..., col.mapping) {
         )
     })
     all.accessions <- do.call(cbind, all.accessions)
-    all.accessions <- all.accessions[ , sort.list(all.accessions["accs", ], method = "radix")]
+    all.accessions <- all.accessions[ , sort.list(all.accessions["accs", ],
+                                                  method = "radix")]
     all.accessions <- all.accessions[ , !duplicated(all.accessions["accs", ])]
 
     stripped <- lapply(dfs, function(df) {
@@ -215,9 +238,11 @@ pgca.data <- function(..., col.mapping) {
             #check if the acc# exists already
             accs.matches <- which(state.env$dict[ , "accs"] == x[i, "accs"])
             if (length(accs.matches) == 0L) {
-                # check if rank == 0, if so: it is an isoform, otherwise it is a new PG
+                # check if rank == 0, if so: it is an isoform, otherwise it is
+                # a new PG
                 if (x[i, "rank"] == 0L) {
-                    # (i - 1) > 0 because the first row is always a new protein, thus rank != 0
+                    # (i - 1) > 0 because the first row is always a new protein,
+                    # thus rank != 0
                     x[i, "pg"] <- x[i - 1L, "pg"]
                 } else {
                     state.env$pg.counter <- state.env$pg.counter + 1L
@@ -231,13 +256,14 @@ pgca.data <- function(..., col.mapping) {
 
         # to avoid new isoforms to be called a new PG:
         pos.rank <- which(x[ , "rank"] > 0L)
-        # add total number of rows + 1 (CORRECT IN PREVIOUS VERSIONS!!!!) at the end
+        # add total number of rows + 1 (CORRECT IN PREVIOUS VERSIONS!!!!) at
+        # the end
         pos.rank <- c(pos.rank, nrow(x) + 1L)
 
         for(m in seq_len(length(pos.rank) - 1L)) {
-            # If a group is merged, then we use the minimum PG# in that group and
-            # we need to change the PG# in ALL that set and in the previous version
-            # of the dictionary.
+            # If a group is merged, then we use the minimum PG# in that group
+            # and we need to change the PG# in ALL that set and in the previous
+            # version of the dictionary.
             pos.seq <- seq.int(pos.rank[m], pos.rank[m + 1L] - 1L)
             new.pg <- min(x[pos.seq, "pg"])
             pg.mismatch <- which(x[pos.seq, "pg"] != new.pg)
@@ -247,8 +273,9 @@ pgca.data <- function(..., col.mapping) {
                 for (pgm in pg.mismatch) {
                     x[x[ , "pg"] == pgm, "pg"] <- new.pg
 
-                    # change current dictionary as well: some Acc# may not be present in this
-                    # set but in the dictionary, thus, the old PG# will not be changed there.
+                    # change current dictionary as well: some Acc# may not be
+                    # present in this set but in the dictionary, thus, the old
+                    # PG# will not be changed there.
                     state.env$dict[state.env$dict[ , "pg"] == pgm, "pg"] <- new.pg
                 }
             }
@@ -305,7 +332,8 @@ pgca.files <- function(..., col.mapping) {
     if (sum(missing.files) == 1L) {
         stop(sprintf("File '%s' does not exist", files[missing.files]))
     } else if (sum(missing.files) > 1L) {
-        stop(sprintf("Files '%s' do not exist", paste(files[missing.files], collapse = "', ")))
+        stop(sprintf("Files '%s' do not exist", paste(files[missing.files],
+                                                      collapse = "', ")))
     }
 
     # Read in all files
@@ -339,7 +367,8 @@ pgca.files <- function(..., col.mapping) {
         default.col.mapping[override] <- col.mapping
     }
 
-    if (anyNA(default.col.mapping[c("group.identifier", "accession.nr", "protein.name")])) {
+    if (anyNA(default.col.mapping[c("group.identifier", "accession.nr",
+                                    "protein.name")])) {
         stop("The columns `group.identifier`, `accession`, and `protein.name` must be present")
     }
 
