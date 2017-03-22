@@ -8,6 +8,8 @@ vignette: >
 output:
     knitr:::html_vignette:
         df_print: kable
+        toc: true
+        number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -16,31 +18,14 @@ knitr::opts_chunk$set(
 )
 options(width = 120)
 ```
-<a id ="top"></a>
-
-> [Introduction](#intro)
-> 
-> [Installation](#install)
-> 
-> [Dictionary Build](#pgca)
-> 
-> [Translate](#translate)
-> 
-> [Appendix 1: Additional Functions](#options)
-> 
-<a id="intro"></a>
-
-## Introduction
-## 
+# Introduction
 Protein Group Code Algorithm (PGCA) is an algorithm to link groups from multiple
 experimental runs by forming global protein groups from connected local groups.
 The algorithm is computationally inexpensive and enables the connection and
 analysis of lists of protein groups across runs needed in biomarkers studies.
 
-<a id="install"></a>
+# Installation
 
-## Installation
-## 
 Like many other R packages, the simplest way to obtain `PGCA` is to install it
 directly from CRAN. Type the following command in R console:
 
@@ -61,24 +46,17 @@ library(pgca)
 We load a set of data created beforehand for illustration. Users can either load
 their own data or use those saved in the workspace. 
 ```{r}
-acc1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package =
-"pgca"))
-acc2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package =
-"pgca"))
-acc2047 <- read.delim(system.file("extdata", "accs_no_2047.txt", package =
-"pgca"))
-acc2067 <- read.delim(system.file("extdata", "accs_no_2067.txt", package =
-"pgca"))
+acc1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package = "pgca"))
+acc2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package = "pgca"))
+acc2047 <- read.delim(system.file("extdata", "accs_no_2047.txt", package = "pgca"))
+acc2067 <- read.delim(system.file("extdata", "accs_no_2067.txt", package = "pgca"))
 ```
 The command loads 4 example MS/MS data sets `acc1947, acc2007, acc2047, acc2067`
 from this saved R data archive. 
 
-<a id="pgca"></a>
+[Back to Top](#TOC)
 
-[Back to Top](#top)
-
-## Dictionary Build
-## 
+# Dictionary Build
 We build a dictionary for protein groups from 3 of the MS/MS data files. We will
 use acc1947, acc2007, and acc2067 as examples.
 ```{r}
@@ -127,12 +105,9 @@ groups for use in downstream analyses. In this example we input our pre-loaded
 data frames as a list of data frames and also return a translated list of data
 frames
 
-<a id="translate"></a>
+[Back to Top](#TOC)
 
-[Back to Top](#top)
-
-## Translation 
-## 
+# Translation 
 ```{r}
 translated <- translate(dict, input = list(acc2007, acc2067), out.dir = NULL)
 ```
@@ -144,12 +119,10 @@ subset(translated[[1]], PGC == 115)
 subset(translated[[2]], PGC == 115)
 ```
 
-<a id="options"></a>
+[Back to Top](#TOC)
 
-[Back to Top](#top)
-
-## Appendix 1: A larger example
-## 
+# Appendix
+## A larger example
 Now we use 4 MS/MS files to build our dictionary. We can use the `pgca.files()`
 function to read the data directly from the files. The files contain the gene
 symbol in the column `"Gene_Symbol"` and we want to retain it.
@@ -190,11 +163,12 @@ protein groups for the MS/MS data
 subset(translated2[[1]], Gene_Symbol == 'IGHD')
 subset(translated2[[2]], Gene_Symbol == 'IGHD')
 ```
-## Appendix 2: Additional Functions
-## 
+
+## Additional Functions
 We save the dictionary we just generated to a tab separated (default) text file
 
 ```{r, eval=FALSE}
 save.dict(dict, file = "dictionary.txt")
 ```
 
+[Back to Top](#TOC)

@@ -11,14 +11,10 @@ options(width = 120)
 library(pgca)
 
 ## ---------------------------------------------------------------------------------------------------------------------
-acc1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package =
-"pgca"))
-acc2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package =
-"pgca"))
-acc2047 <- read.delim(system.file("extdata", "accs_no_2047.txt", package =
-"pgca"))
-acc2067 <- read.delim(system.file("extdata", "accs_no_2067.txt", package =
-"pgca"))
+acc1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package = "pgca"))
+acc2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package = "pgca"))
+acc2047 <- read.delim(system.file("extdata", "accs_no_2047.txt", package = "pgca"))
+acc2067 <- read.delim(system.file("extdata", "accs_no_2067.txt", package = "pgca"))
 
 ## ---------------------------------------------------------------------------------------------------------------------
 head(acc2007)

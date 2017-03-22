@@ -12,7 +12,7 @@
 
 <meta name="author" content="AUTHOR_XXX" />
 
-<meta name="date" content="2017-03-18" />
+<meta name="date" content="2017-03-22" />
 
 <title>Introduction to the PGCA Package</title>
 
@@ -70,55 +70,43 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to the PGCA Package</h1>
 <h4 class="author"><em>AUTHOR_XXX</em></h4>
-<h4 class="date"><em>2017-03-18</em></h4>
+<h4 class="date"><em>2017-03-22</em></h4>
 
 
-
-<p><a id="top"></a></p>
-<blockquote>
-<p><a href="#intro">Introduction</a></p>
-<p><a href="#install">Installation</a></p>
-<p><a href="#pgca">Dictionary Build</a></p>
-<p><a href="#translate">Translate</a></p>
-<p><a href="#options">Appendix 1: Additional Functions</a></p>
-<p><a id="intro"></a></p>
-</blockquote>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#installation"><span class="toc-section-number">2</span> Installation</a></li>
+<li><a href="#dictionary-build"><span class="toc-section-number">3</span> Dictionary Build</a></li>
+<li><a href="#translation"><span class="toc-section-number">4</span> Translation</a></li>
+<li><a href="#appendix"><span class="toc-section-number">5</span> Appendix</a><ul>
+<li><a href="#a-larger-example"><span class="toc-section-number">5.1</span> A larger example</a></li>
+<li><a href="#additional-functions"><span class="toc-section-number">5.2</span> Additional Functions</a></li>
+</ul></li>
+</ul>
 </div>
-<div id="section" class="section level2">
-<h2></h2>
+
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
 <p>Protein Group Code Algorithm (PGCA) is an algorithm to link groups from multiple experimental runs by forming global protein groups from connected local groups. The algorithm is computationally inexpensive and enables the connection and analysis of lists of protein groups across runs needed in biomarkers studies.</p>
-<p><a id="install"></a></p>
 </div>
-<div id="installation" class="section level2">
-<h2>Installation</h2>
-</div>
-<div id="section-1" class="section level2">
-<h2></h2>
+<div id="installation" class="section level1">
+<h1><span class="header-section-number">2</span> Installation</h1>
 <p>Like many other R packages, the simplest way to obtain <code>PGCA</code> is to install it directly from CRAN. Type the following command in R console:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;pgca&quot;</span>, <span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</code></pre></div>
 <p>In the remainder of this documnet we will briefly go over the main functions, see the basic operations and have a look at the outputs. Additional options are listed at the end and additional parameters for these functions are available in the help files.</p>
 <p>First, we load the <code>pgca</code> package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pgca)</code></pre></div>
 <p>We load a set of data created beforehand for illustration. Users can either load their own data or use those saved in the workspace.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">acc1947 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_1947.txt&quot;</span>, <span class="dt">package =</span>
-<span class="st">&quot;pgca&quot;</span>))
-acc2007 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2007.txt&quot;</span>, <span class="dt">package =</span>
-<span class="st">&quot;pgca&quot;</span>))
-acc2047 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2047.txt&quot;</span>, <span class="dt">package =</span>
-<span class="st">&quot;pgca&quot;</span>))
-acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2067.txt&quot;</span>, <span class="dt">package =</span>
-<span class="st">&quot;pgca&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">acc1947 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_1947.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>))
+acc2007 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2007.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>))
+acc2047 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2047.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>))
+acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2067.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>))</code></pre></div>
 <p>The command loads 4 example MS/MS data sets <code>acc1947, acc2007, acc2047, acc2067</code> from this saved R data archive.</p>
-<p><a id="pgca"></a></p>
-<p><a href="#top">Back to Top</a></p>
+<p><a href="#TOC">Back to Top</a></p>
 </div>
-<div id="dictionary-build" class="section level2">
-<h2>Dictionary Build</h2>
-</div>
-<div id="section-2" class="section level2">
-<h2></h2>
+<div id="dictionary-build" class="section level1">
+<h1><span class="header-section-number">3</span> Dictionary Build</h1>
 <p>We build a dictionary for protein groups from 3 of the MS/MS data files. We will use acc1947, acc2007, and acc2067 as examples.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(acc2007)</code></pre></div>
 <div class="kable-table">
@@ -353,14 +341,10 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 </table>
 </div>
 <p>Now we have a mapping of protein group codes needed to translate our MS/MS files. We use the <code>translate</code> function to apply the protein group codes to our data files to convert the data files and ensure they contain comparable groups for use in downstream analyses. In this example we input our pre-loaded data frames as a list of data frames and also return a translated list of data frames</p>
-<p><a id="translate"></a></p>
-<p><a href="#top">Back to Top</a></p>
+<p><a href="#TOC">Back to Top</a></p>
 </div>
-<div id="translation" class="section level2">
-<h2>Translation</h2>
-</div>
-<div id="section-3" class="section level2">
-<h2></h2>
+<div id="translation" class="section level1">
+<h1><span class="header-section-number">4</span> Translation</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">translated &lt;-<span class="st"> </span><span class="kw">translate</span>(dict, <span class="dt">input =</span> <span class="kw">list</span>(acc2007, acc2067), <span class="dt">out.dir =</span> <span class="ot">NULL</span>)</code></pre></div>
 <p>In the translated data files, a protein group code (‘PGC’) column is appended. We see that PGC 10 is used for FGG in both data files.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated[[<span class="dv">1</span>]], PGC ==<span class="st"> </span><span class="dv">115</span>)</code></pre></div>
@@ -435,14 +419,12 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 </tbody>
 </table>
 </div>
-<p><a id="options"></a></p>
-<p><a href="#top">Back to Top</a></p>
+<p><a href="#TOC">Back to Top</a></p>
 </div>
-<div id="appendix-1-a-larger-example" class="section level2">
-<h2>Appendix 1: A larger example</h2>
-</div>
-<div id="section-4" class="section level2">
-<h2></h2>
+<div id="appendix" class="section level1">
+<h1><span class="header-section-number">5</span> Appendix</h1>
+<div id="a-larger-example" class="section level2">
+<h2><span class="header-section-number">5.1</span> A larger example</h2>
 <p>Now we use 4 MS/MS files to build our dictionary. We can use the <code>pgca.files()</code> function to read the data directly from the files. The files contain the gene symbol in the column <code>&quot;Gene_Symbol&quot;</code> and we want to retain it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dict2 &lt;-<span class="st"> </span><span class="kw">pgca.files</span>(
     <span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_1947.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>),
@@ -1087,13 +1069,12 @@ acc1947), <span class="dt">out.dir =</span> <span class="ot">NULL</span>)</code>
 </table>
 </div>
 </div>
-<div id="appendix-2-additional-functions" class="section level2">
-<h2>Appendix 2: Additional Functions</h2>
-</div>
-<div id="section-5" class="section level2">
-<h2></h2>
+<div id="additional-functions" class="section level2">
+<h2><span class="header-section-number">5.2</span> Additional Functions</h2>
 <p>We save the dictionary we just generated to a tab separated (default) text file</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">save.dict</span>(dict, <span class="dt">file =</span> <span class="st">&quot;dictionary.txt&quot;</span>)</code></pre></div>
+<p><a href="#TOC">Back to Top</a></p>
+</div>
 </div>
 
 <script type="text/javascript">
