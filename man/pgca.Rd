@@ -26,6 +26,33 @@ An object of type \code{accession.dict}.
 Build a dictionary for protein groups from MS/MS data.
 Details of the algorithm can be found in XX, YY (2017).
 }
+\details{
+If the \code{group.identifier} column is logical (i.e., \code{TRUE} or
+\code{FALSE}) or character with two levels (\code{"True"}, \code{"False"}),
+the \code{TRUE} accessions are assumed to be a "master gene" and the
+data set is assumed to be in the correct order (i.e., all \code{FALSE} values
+following the master gene are assumed to belong to the same group).
+
+The \code{col.mapping} maps the column names in the data files to a specific
+function. It nees to be a named character vector, whereas the name of each
+item is the "function" of the given column name. The algorithm knows about
+the following columns:
+\describe{
+     \item{\code{"group.identifier"}}{Column containing the group
+                                      identifier.}
+     \item{\code{"accession.nr"}}{Column containing the accession nr.}
+     \item{\code{"protein.name"}}{Column containing the protein name.}
+     \item{\code{"gene.symbol"}}{Column containing the gene symbol (if any,
+                                 can be missing)}
+}
+The default column mapping is \code{c(group.identifier = "N", accession.nr =
+"Accession", protein.name = "Protein_Name")}. The supplied column mapping can
+miss those columns that are already correct in the default map. For instance,
+if the accession nr. is stored in column \emph{AccessionNr} instead of
+\emph{Accession}, but the remaining columns are the same as in the
+default mapping, specifying \code{col.mapping = c(accession.nr =
+"AccessionNr")} is sufficient.
+}
 \section{Functions}{
 \itemize{
 \item \code{pgca.data}: Use data given as \code{data.frame}s.
