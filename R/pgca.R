@@ -4,7 +4,7 @@
 #' Details of the algorithm can be found in XX, YY (2017).
 #'
 #' If the \code{group.identifier} column is logical (i.e., \code{TRUE} or
-#' \code{FALSE}),
+#' \code{FALSE}) or character with two levels (\code{"True"}, \code{"False"}),
 #' the \code{TRUE} accessions are assumed to be a "master gene" and the
 #' data set is assumed to be in the correct order (i.e., all \code{FALSE} values
 #' following the master gene are assumed to belong to the same group).
@@ -15,7 +15,7 @@
 #' the following columns:
 #' \describe{
 #'      \item{\code{"group.identifier"}}{Column containing the group
-#identifier.}
+#'                                       identifier.}
 #'      \item{\code{"accession.nr"}}{Column containing the accession nr.}
 #'      \item{\code{"protein.name"}}{Column containing the protein name.}
 #'      \item{\code{"gene.symbol"}}{Column containing the gene symbol (if any,
@@ -146,16 +146,33 @@ pgca.data <- function(..., col.mapping) {
                 as.character(df[[col.mapping["accession.nr"]]])
         }
 
+        # If the group identifier is a character/factor with the two
+        # levels "true" and "false" (in any capitalization), we recode
+        # it as logical
+        if (is.character(df[[col.mapping["group.identifier"]]]) ||
+            is.factor(df[[col.mapping["group.identifier"]]])) {
+            tmp <- as.factor(df[[col.mapping["group.identifier"]]])
+            if (identical(sort(tolower(levels(tmp))),
+                          c("false", "true"))) {
+                warning("Interpreting gene identifier as `is master gene` ",
+                        "indicator")
+                levels(tmp) <- tolower(levels(tmp))
+                df[[col.mapping["group.identifier"]]] <- (tmp == "true")
+            }
+        }
+
         # If the group identifier is a logical, we assume a "is master-gene"
         # type of column
         if (is.logical(df[[col.mapping["group.identifier"]]])) {
             if (!isTRUE(df[[col.mapping["group.identifier"]]][1L])) {
-                stop("The first 'is master-gene' value in column '%s' in data set '%s' must be `TRUE`",
-                     col.mapping["group.identifier"], name)
+                stop(sprintf("The first 'is master-gene' value in column '%s' in data set '%s' must be `TRUE`",
+                     col.mapping["group.identifier"], name))
             }
-            df[[col.mapping["group.identifier"]]] <- cumsum(df[[col.mapping["group.identifier"]]])
+            df[[col.mapping["group.identifier"]]] <-
+                cumsum(df[[col.mapping["group.identifier"]]])
         } else if (is.character(df[[col.mapping["group.identifier"]]])) {
-            df[[col.mapping["group.identifier"]]] <- as.factor(df[[col.mapping["group.identifier"]]])
+            df[[col.mapping["group.identifier"]]] <-
+                as.factor(df[[col.mapping["group.identifier"]]])
         }
 
         # If the gene.symbol or protein.name is a factor, convert it to
@@ -276,7 +293,8 @@ pgca.data <- function(..., col.mapping) {
                     # change current dictionary as well: some Acc# may not be
                     # present in this set but in the dictionary, thus, the old
                     # PG# will not be changed there.
-                    state.env$dict[state.env$dict[ , "pg"] == pgm, "pg"] <- new.pg
+                    state.env$dict[state.env$dict[ , "pg"] == pgm, "pg"] <-
+                        new.pg
                 }
             }
         }
@@ -325,7 +343,8 @@ pgca.files <- function(..., col.mapping) {
     files <- c(...)
 
     if (length(files) == 0L || anyNA(files) || !is.character(files)) {
-        stop("A list of file names (characters) or vectors of file names must be supplied.")
+        stop("A list of file names (characters) or vectors of file names ",
+             "must be supplied.")
     }
 
     missing.files <- !file.exists(files)
@@ -369,7 +388,8 @@ pgca.files <- function(..., col.mapping) {
 
     if (anyNA(default.col.mapping[c("group.identifier", "accession.nr",
                                     "protein.name")])) {
-        stop("The columns `group.identifier`, `accession`, and `protein.name` must be present")
+        stop("The columns `group.identifier`, `accession`, and ",
+             "`protein.name` must be present")
     }
 
     return (default.col.mapping)
