@@ -4,10 +4,11 @@
 #' Details of the algorithm can be found in XX, YY (2017).
 #'
 #' If the \code{group.identifier} column is logical (i.e., \code{TRUE} or
-#' \code{FALSE}) or character with two levels (\code{"True"}, \code{"False"}),
+#' \code{FALSE}) or \code{master.gene.identifier} is given,
 #' the \code{TRUE} accessions are assumed to be a "master gene" and the
-#' data set is assumed to be in the correct order (i.e., all \code{FALSE} values
-#' following the master gene are assumed to belong to the same group).
+#' data set is assumed to be in the correct order. This means all
+#' \code{FALSE} values following the master gene are assumed to belong to
+#' the same group.
 #'
 #' The \code{col.mapping} maps the column names in the data files to a specific
 #' function. It nees to be a named character vector, whereas the name of each
@@ -23,15 +24,18 @@
 #' }
 #' The default column mapping is \code{c(group.identifier = "N", accession.nr =
 #' "Accession", protein.name = "Protein_Name")}. The supplied column mapping can
-#' miss those columns that are already correct in the default map. For instance,
-#' if the accession nr. is stored in column \emph{AccessionNr} instead of
-#' \emph{Accession}, but the remaining columns are the same as in the
+#' ignore those columns that are already correct in the default map.
+#' For instance, if the accession nr. is stored in column \emph{AccessionNr}
+#' instead of \emph{Accession}, but the remaining columns are the same as in the
 #' default mapping, specifying \code{col.mapping = c(accession.nr =
 #' "AccessionNr")} is sufficient.
 #'
 #' @param ... arbitrary number of \code{data.frame}s or filenames.
 #' @param col.mapping column mapping (see Details).
+#' @param master.gene.identifier if given, genes with this value in the
+#'      column \code{group.identifier} are considered master genes.
 #' @param dir path to the directory.
+#'
 #'
 #' @return An object of type \code{accession.dict}.
 #'
@@ -65,7 +69,7 @@
 #' dict.data <- pgca.data(df.1947, df.2007,
 #'                        col.mapping = c(gene.symbol = "Gene_Symbol"))
 #'
-pgca <- function(dir, col.mapping) {
+pgca <- function(dir, col.mapping, master.gene.identifier) {
     # Check parameter `dir`
     if (length(dir) != 1L || anyNA(dir) || !is.character(dir)) {
         stop("`dir` must be a single path")
@@ -96,7 +100,7 @@ pgca <- function(dir, col.mapping) {
 
 #' @export
 #' @describeIn pgca Use data given as \code{data.frame}s.
-pgca.data <- function(..., col.mapping) {
+pgca.data <- function(..., col.mapping, master.gene.identifier) {
     # Validate the column mapping
     col.mapping <- .get.col.mapping(col.mapping)
     col.mapping.na <- col.mapping[!is.na(col.mapping)]
@@ -116,6 +120,10 @@ pgca.data <- function(..., col.mapping) {
         names(dfs)
     } else {
         as.character(seq_along(dfs))
+    }
+
+    if (missing(master.gene.identifier)) {
+        master.gene.identifier <- NULL
     }
 
     # Check that
@@ -146,19 +154,11 @@ pgca.data <- function(..., col.mapping) {
                 as.character(df[[col.mapping["accession.nr"]]])
         }
 
-        # If the group identifier is a character/factor with the two
-        # levels "true" and "false" (in any capitalization), we recode
-        # it as logical
-        if (is.character(df[[col.mapping["group.identifier"]]]) ||
-            is.factor(df[[col.mapping["group.identifier"]]])) {
-            tmp <- as.factor(df[[col.mapping["group.identifier"]]])
-            if (identical(sort(tolower(levels(tmp))),
-                          c("false", "true"))) {
-                warning("Interpreting gene identifier as `is master gene` ",
-                        "indicator")
-                levels(tmp) <- tolower(levels(tmp))
-                df[[col.mapping["group.identifier"]]] <- (tmp == "true")
-            }
+        # If the `master.gene.identifier` is given, the group.identifier
+        # is converted to logical by comparing to the given value
+        if (!is.null(master.gene.identifier)) {
+            df[[col.mapping["group.identifier"]]] <-
+                df[[col.mapping["group.identifier"]]] == master.gene.identifier
         }
 
         # If the group identifier is a logical, we assume a "is master-gene"
@@ -338,7 +338,7 @@ pgca.data <- function(..., col.mapping) {
 #' @describeIn pgca Read in data from the given files
 #' @importFrom utils read.delim
 #' @export
-pgca.files <- function(..., col.mapping) {
+pgca.files <- function(..., col.mapping, master.gene.identifier) {
     # Check all files
     files <- c(...)
 

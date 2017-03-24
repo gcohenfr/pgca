@@ -6,16 +6,19 @@
 \alias{pgca.files}
 \title{Link Protein Groups Created from MS/MS Data}
 \usage{
-pgca(dir, col.mapping)
+pgca(dir, col.mapping, master.gene.identifier)
 
-pgca.data(..., col.mapping)
+pgca.data(..., col.mapping, master.gene.identifier)
 
-pgca.files(..., col.mapping)
+pgca.files(..., col.mapping, master.gene.identifier)
 }
 \arguments{
 \item{dir}{path to the directory.}
 
 \item{col.mapping}{column mapping (see Details).}
+
+\item{master.gene.identifier}{if given, genes with this value in the
+column \code{group.identifier} are considered master genes.}
 
 \item{...}{arbitrary number of \code{data.frame}s or filenames.}
 }
@@ -28,10 +31,11 @@ Details of the algorithm can be found in XX, YY (2017).
 }
 \details{
 If the \code{group.identifier} column is logical (i.e., \code{TRUE} or
-\code{FALSE}) or character with two levels (\code{"True"}, \code{"False"}),
+\code{FALSE}) or \code{master.gene.identifier} is given,
 the \code{TRUE} accessions are assumed to be a "master gene" and the
-data set is assumed to be in the correct order (i.e., all \code{FALSE} values
-following the master gene are assumed to belong to the same group).
+data set is assumed to be in the correct order. This means all
+\code{FALSE} values following the master gene are assumed to belong to
+the same group.
 
 The \code{col.mapping} maps the column names in the data files to a specific
 function. It nees to be a named character vector, whereas the name of each
@@ -47,9 +51,9 @@ the following columns:
 }
 The default column mapping is \code{c(group.identifier = "N", accession.nr =
 "Accession", protein.name = "Protein_Name")}. The supplied column mapping can
-miss those columns that are already correct in the default map. For instance,
-if the accession nr. is stored in column \emph{AccessionNr} instead of
-\emph{Accession}, but the remaining columns are the same as in the
+ignore those columns that are already correct in the default map.
+For instance, if the accession nr. is stored in column \emph{AccessionNr}
+instead of \emph{Accession}, but the remaining columns are the same as in the
 default mapping, specifying \code{col.mapping = c(accession.nr =
 "AccessionNr")} is sufficient.
 }
