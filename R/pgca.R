@@ -217,12 +217,16 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
     all.accessions <- all.accessions[ , sort.list(all.accessions["accs", ],
                                                   method = "radix")]
 
-    # `img` is set to TRUE whenever at least one occurence was "TRUE"
-    any.img <- tapply(all.accessions["img", ] == "TRUE",
-                      all.accessions["accs", ], any)
+    if (!is.null(master.gene.identifier)) {
+        # `img` is set to TRUE whenever at least one occurence was "TRUE"
+        any.img <- tapply(all.accessions["img", ] == "TRUE",
+                          all.accessions["accs", ], any)
+    }
 
     all.accessions <- all.accessions[ , !duplicated(all.accessions["accs", ])]
-    all.accessions["img", ] <- any.img[all.accessions["accs", ]]
+    if (!is.null(master.gene.identifier)) {
+        all.accessions["img", ] <- any.img[all.accessions["accs", ]]
+    }
 
     stripped <- lapply(dfs, function(df) {
         accs <- factor(df[[col.mapping["accession.nr"]]],
