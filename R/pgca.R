@@ -92,7 +92,11 @@ pgca <- function(dir, col.mapping, master.gene.identifier) {
     dirs.in.dir <- list.dirs(dir, recursive = FALSE)
     files <- setdiff(files, dirs.in.dir)
 
-    ret.obj <- pgca.files(files, col.mapping = col.mapping)
+    ret.obj <- pgca.files(
+        files,
+        col.mapping = col.mapping,
+        master.gene.identifier = master.gene.identifier
+    )
     ret.obj$directory <- dir
     ret.obj$call <- match.call(expand.dots = FALSE)
     return(ret.obj)
@@ -103,7 +107,8 @@ pgca <- function(dir, col.mapping, master.gene.identifier) {
 pgca.data <- function(..., col.mapping, master.gene.identifier) {
     # Validate the column mapping
     col.mapping <- .get.col.mapping(col.mapping)
-    col.mapping.na <- col.mapping[!is.na(col.mapping)]
+    col.mapping.na <- col.mapping[!is.na(col.mapping) &
+                                      names(col.mapping) != "img"]
 
     ##
     ## Validate all data frames
@@ -124,6 +129,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
 
     if (missing(master.gene.identifier)) {
         master.gene.identifier <- NULL
+        col.mapping["img"] <- NA
     }
 
     # Check that
@@ -168,6 +174,9 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
                 stop(sprintf("The first 'is master-gene' value in column '%s' in data set '%s' must be `TRUE`",
                      col.mapping["group.identifier"], name))
             }
+
+            df[[col.mapping["img"]]] <- df[[col.mapping["group.identifier"]]]
+
             df[[col.mapping["group.identifier"]]] <-
                 cumsum(df[[col.mapping["group.identifier"]]])
         } else if (is.character(df[[col.mapping["group.identifier"]]])) {
@@ -200,7 +209,8 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
         rbind(
             accs = accs[uq],
             prot = df[[col.mapping["protein.name"]]][uq],
-            gene = df[[col.mapping["gene.symbol"]]][uq]
+            gene = df[[col.mapping["gene.symbol"]]][uq],
+            img = df[[col.mapping["img"]]][uq]
         )
     })
     all.accessions <- do.call(cbind, all.accessions)
@@ -327,6 +337,12 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
         stringsAsFactors = FALSE
     )
 
+    if (!is.null(master.gene.identifier)) {
+        dict.df$gid <- (dict.df$img == TRUE)
+        dict.df$img <- NULL
+        colnames(dict.df)[2L] <- col.mapping[["group.identifier"]]
+    }
+
     return(structure(list(
         dictionary = dict.df,
         col.mapping = col.mapping,
@@ -364,7 +380,11 @@ pgca.files <- function(..., col.mapping, master.gene.identifier) {
         files
     }
 
-    ret.obj <- pgca.data(dfs, col.mapping = col.mapping)
+    ret.obj <- pgca.data(
+        dfs,
+        col.mapping = col.mapping,
+        master.gene.identifier = master.gene.identifier
+    )
     ret.obj$files <- files
     ret.obj$call <- match.call(expand.dots = TRUE)
     return(ret.obj)
@@ -391,6 +411,13 @@ pgca.files <- function(..., col.mapping, master.gene.identifier) {
         stop("The columns `group.identifier`, `accession`, and ",
              "`protein.name` must be present")
     }
+
+    # Find unique column name for the "is master gene" identifier"
+    img.col.name <- "img"
+    while (img.col.name %in% default.col.mapping) {
+        img.col.name <- sprintf("img_%05d", sample.int(99999L, 1L))
+    }
+    default.col.mapping <- c(default.col.mapping, "img" = img.col.name)
 
     return (default.col.mapping)
 }
