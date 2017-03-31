@@ -183,6 +183,9 @@ translate <- function(dict, input, out.dir, out.suffix = "", out.prefix = "",
         if (!all(sapply(input, class) == "data.frame")) {
             stop('one or more list items of `input` are not data.frames.')
         }
+        if (is.null(names(input))) {
+            names(input) <- seq_along(input)
+        }
         dfs <- input
         files <- NULL
     } else {
@@ -218,6 +221,9 @@ translate <- function(dict, input, out.dir, out.suffix = "", out.prefix = "",
         fext <- sub(".+\\.([a-zA-Z]+)$", "\\1", basename(files))
         file.path(out.dir, sprintf("%s%s%s.%s",
                                    out.prefix, fcenter, out.suffix, fext))
+    } else {
+        file.path(out.dir, sprintf("%s%s%s.txt",
+                                   out.prefix, names(dfs), out.suffix))
     }
 
     if (any(file.exists(out.files))) {

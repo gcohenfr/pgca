@@ -4,10 +4,11 @@
 #' Details of the algorithm can be found in XX, YY (2017).
 #'
 #' If the \code{group.identifier} column is logical (i.e., \code{TRUE} or
-#' \code{FALSE}),
+#' \code{FALSE}) or \code{master.gene.identifier} is given,
 #' the \code{TRUE} accessions are assumed to be a "master gene" and the
-#' data set is assumed to be in the correct order (i.e., all \code{FALSE} values
-#' following the master gene are assumed to belong to the same group).
+#' data set is assumed to be in the correct order. This means all
+#' \code{FALSE} values following the master gene are assumed to belong to
+#' the same group.
 #'
 #' The \code{col.mapping} maps the column names in the data files to a specific
 #' function. It nees to be a named character vector, whereas the name of each
@@ -15,7 +16,7 @@
 #' the following columns:
 #' \describe{
 #'      \item{\code{"group.identifier"}}{Column containing the group
-#identifier.}
+#'                                       identifier.}
 #'      \item{\code{"accession.nr"}}{Column containing the accession nr.}
 #'      \item{\code{"protein.name"}}{Column containing the protein name.}
 #'      \item{\code{"gene.symbol"}}{Column containing the gene symbol (if any,
@@ -23,21 +24,26 @@
 #' }
 #' The default column mapping is \code{c(group.identifier = "N", accession.nr =
 #' "Accession", protein.name = "Protein_Name")}. The supplied column mapping can
-#' miss those columns that are already correct in the default map. For instance,
-#' if the accession nr. is stored in column \emph{AccessionNr} instead of
-#' \emph{Accession}, but the remaining columns are the same as in the
+#' ignore those columns that are already correct in the default map.
+#' For instance, if the accession nr. is stored in column \emph{AccessionNr}
+#' instead of \emph{Accession}, but the remaining columns are the same as in the
 #' default mapping, specifying \code{col.mapping = c(accession.nr =
 #' "AccessionNr")} is sufficient.
 #'
 #' @param ... arbitrary number of \code{data.frame}s or filenames.
 #' @param col.mapping column mapping (see Details).
+#' @param master.gene.identifier if given, genes with this value in the
+#'      column \code{group.identifier} are considered master genes.
 #' @param dir path to the directory.
+#'
 #'
 #' @return An object of type \code{accession.dict}.
 #'
 #' @export
 #'
-#' @references XX, YY (2017). xxx.
+#' @references Takhar M, Sasaki M, Hollander Z, McManus B, McMaster W, Ng R and
+#'    Cohen Freue G (Under revision). "PGCA: An Algorithm to Link Protein Groups
+#'    Created from MS/MS Data." PLOS ONE.
 #' @seealso \code{\link{translate}} to apply the dictionary to the data files
 #'      and \code{\link{save.dict}} to save the dictionary itself.
 #'
@@ -65,7 +71,7 @@
 #' dict.data <- pgca.data(df.1947, df.2007,
 #'                        col.mapping = c(gene.symbol = "Gene_Symbol"))
 #'
-pgca <- function(dir, col.mapping) {
+pgca <- function(dir, col.mapping, master.gene.identifier) {
     # Check parameter `dir`
     if (length(dir) != 1L || anyNA(dir) || !is.character(dir)) {
         stop("`dir` must be a single path")
@@ -88,7 +94,11 @@ pgca <- function(dir, col.mapping) {
     dirs.in.dir <- list.dirs(dir, recursive = FALSE)
     files <- setdiff(files, dirs.in.dir)
 
-    ret.obj <- pgca.files(files, col.mapping = col.mapping)
+    ret.obj <- pgca.files(
+        files,
+        col.mapping = col.mapping,
+        master.gene.identifier = master.gene.identifier
+    )
     ret.obj$directory <- dir
     ret.obj$call <- match.call(expand.dots = FALSE)
     return(ret.obj)
@@ -96,10 +106,11 @@ pgca <- function(dir, col.mapping) {
 
 #' @export
 #' @describeIn pgca Use data given as \code{data.frame}s.
-pgca.data <- function(..., col.mapping) {
+pgca.data <- function(..., col.mapping, master.gene.identifier) {
     # Validate the column mapping
     col.mapping <- .get.col.mapping(col.mapping)
-    col.mapping.na <- col.mapping[!is.na(col.mapping)]
+    col.mapping.na <- col.mapping[!is.na(col.mapping) &
+                                      names(col.mapping) != "img"]
 
     ##
     ## Validate all data frames
@@ -116,6 +127,11 @@ pgca.data <- function(..., col.mapping) {
         names(dfs)
     } else {
         as.character(seq_along(dfs))
+    }
+
+    has.mgi <- TRUE
+    if (missing(master.gene.identifier)) {
+        has.mgi <- FALSE
     }
 
     # Check that
@@ -146,16 +162,28 @@ pgca.data <- function(..., col.mapping) {
                 as.character(df[[col.mapping["accession.nr"]]])
         }
 
+        # If the `master.gene.identifier` is given, the group.identifier
+        # is converted to logical by comparing to the given value
+        if (has.mgi) {
+            df[[col.mapping["group.identifier"]]] <-
+                df[[col.mapping["group.identifier"]]] == master.gene.identifier
+        }
+
         # If the group identifier is a logical, we assume a "is master-gene"
         # type of column
         if (is.logical(df[[col.mapping["group.identifier"]]])) {
             if (!isTRUE(df[[col.mapping["group.identifier"]]][1L])) {
-                stop("The first 'is master-gene' value in column '%s' in data set '%s' must be `TRUE`",
-                     col.mapping["group.identifier"], name)
+                stop(sprintf("The first 'is master-gene' value in column '%s' in data set '%s' must be `TRUE`",
+                     col.mapping["group.identifier"], name))
             }
-            df[[col.mapping["group.identifier"]]] <- cumsum(df[[col.mapping["group.identifier"]]])
+
+            df[[col.mapping["img"]]] <- df[[col.mapping["group.identifier"]]]
+
+            df[[col.mapping["group.identifier"]]] <-
+                cumsum(df[[col.mapping["group.identifier"]]])
         } else if (is.character(df[[col.mapping["group.identifier"]]])) {
-            df[[col.mapping["group.identifier"]]] <- as.factor(df[[col.mapping["group.identifier"]]])
+            df[[col.mapping["group.identifier"]]] <-
+                as.factor(df[[col.mapping["group.identifier"]]])
         }
 
         # If the gene.symbol or protein.name is a factor, convert it to
@@ -183,13 +211,26 @@ pgca.data <- function(..., col.mapping) {
         rbind(
             accs = accs[uq],
             prot = df[[col.mapping["protein.name"]]][uq],
-            gene = df[[col.mapping["gene.symbol"]]][uq]
+            gene = df[[col.mapping["gene.symbol"]]][uq],
+            img = df[[col.mapping["img"]]][uq]
         )
     })
     all.accessions <- do.call(cbind, all.accessions)
     all.accessions <- all.accessions[ , sort.list(all.accessions["accs", ],
                                                   method = "radix")]
+
+    has.mgi <- (col.mapping["img"] %in% rownames(all.accessions))
+
+    if (has.mgi) {
+        # `img` is set to TRUE whenever at least one occurence was "TRUE"
+        any.img <- tapply(all.accessions["img", ] == "TRUE",
+                          all.accessions["accs", ], any)
+    }
+
     all.accessions <- all.accessions[ , !duplicated(all.accessions["accs", ])]
+    if (has.mgi) {
+        all.accessions["img", ] <- any.img[all.accessions["accs", ]]
+    }
 
     stripped <- lapply(dfs, function(df) {
         accs <- factor(df[[col.mapping["accession.nr"]]],
@@ -276,7 +317,8 @@ pgca.data <- function(..., col.mapping) {
                     # change current dictionary as well: some Acc# may not be
                     # present in this set but in the dictionary, thus, the old
                     # PG# will not be changed there.
-                    state.env$dict[state.env$dict[ , "pg"] == pgm, "pg"] <- new.pg
+                    state.env$dict[state.env$dict[ , "pg"] == pgm, "pg"] <-
+                        new.pg
                 }
             }
         }
@@ -309,6 +351,12 @@ pgca.data <- function(..., col.mapping) {
         stringsAsFactors = FALSE
     )
 
+    if (has.mgi) {
+        dict.df$gid <- (dict.df$img == TRUE)
+        dict.df$img <- NULL
+        colnames(dict.df)[2L] <- col.mapping[["group.identifier"]]
+    }
+
     return(structure(list(
         dictionary = dict.df,
         col.mapping = col.mapping,
@@ -320,12 +368,13 @@ pgca.data <- function(..., col.mapping) {
 #' @describeIn pgca Read in data from the given files
 #' @importFrom utils read.delim
 #' @export
-pgca.files <- function(..., col.mapping) {
+pgca.files <- function(..., col.mapping, master.gene.identifier) {
     # Check all files
     files <- c(...)
 
     if (length(files) == 0L || anyNA(files) || !is.character(files)) {
-        stop("A list of file names (characters) or vectors of file names must be supplied.")
+        stop("A list of file names (characters) or vectors of file names ",
+             "must be supplied.")
     }
 
     missing.files <- !file.exists(files)
@@ -345,7 +394,11 @@ pgca.files <- function(..., col.mapping) {
         files
     }
 
-    ret.obj <- pgca.data(dfs, col.mapping = col.mapping)
+    ret.obj <- pgca.data(
+        dfs,
+        col.mapping = col.mapping,
+        master.gene.identifier = master.gene.identifier
+    )
     ret.obj$files <- files
     ret.obj$call <- match.call(expand.dots = TRUE)
     return(ret.obj)
@@ -369,8 +422,16 @@ pgca.files <- function(..., col.mapping) {
 
     if (anyNA(default.col.mapping[c("group.identifier", "accession.nr",
                                     "protein.name")])) {
-        stop("The columns `group.identifier`, `accession`, and `protein.name` must be present")
+        stop("The columns `group.identifier`, `accession`, and ",
+             "`protein.name` must be present")
     }
+
+    # Find unique column name for the "is master gene" identifier"
+    img.col.name <- "img"
+    while (img.col.name %in% default.col.mapping) {
+        img.col.name <- sprintf("img_%05d", sample.int(99999L, 1L))
+    }
+    default.col.mapping <- c(default.col.mapping, "img" = img.col.name)
 
     return (default.col.mapping)
 }
