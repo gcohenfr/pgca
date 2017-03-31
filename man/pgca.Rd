@@ -90,7 +90,9 @@ dict.data <- pgca.data(df.1947, df.2007,
 
 }
 \references{
-XX, YY (2017). xxx.
+Takhar M, Sasaki M, Hollander Z, McManus B, McMaster W, Ng R and
+   Cohen Freue G (Under revision). "PGCA: An Algorithm to Link Protein Groups
+   Created from MS/MS Data." PLOS ONE.
 }
 \seealso{
 \code{\link{translate}} to apply the dictionary to the data files

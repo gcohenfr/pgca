@@ -41,7 +41,9 @@
 #'
 #' @export
 #'
-#' @references XX, YY (2017). xxx.
+#' @references Takhar M, Sasaki M, Hollander Z, McManus B, McMaster W, Ng R and
+#'    Cohen Freue G (Under revision). "PGCA: An Algorithm to Link Protein Groups
+#'    Created from MS/MS Data." PLOS ONE.
 #' @seealso \code{\link{translate}} to apply the dictionary to the data files
 #'      and \code{\link{save.dict}} to save the dictionary itself.
 #'
@@ -127,9 +129,9 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
         as.character(seq_along(dfs))
     }
 
+    has.mgi <- TRUE
     if (missing(master.gene.identifier)) {
-        master.gene.identifier <- NULL
-        col.mapping["img"] <- NA
+        has.mgi <- FALSE
     }
 
     # Check that
@@ -162,7 +164,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
 
         # If the `master.gene.identifier` is given, the group.identifier
         # is converted to logical by comparing to the given value
-        if (!is.null(master.gene.identifier)) {
+        if (has.mgi) {
             df[[col.mapping["group.identifier"]]] <-
                 df[[col.mapping["group.identifier"]]] == master.gene.identifier
         }
@@ -217,14 +219,16 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
     all.accessions <- all.accessions[ , sort.list(all.accessions["accs", ],
                                                   method = "radix")]
 
-    if (!is.null(master.gene.identifier)) {
+    has.mgi <- (col.mapping["img"] %in% rownames(all.accessions))
+
+    if (has.mgi) {
         # `img` is set to TRUE whenever at least one occurence was "TRUE"
         any.img <- tapply(all.accessions["img", ] == "TRUE",
                           all.accessions["accs", ], any)
     }
 
     all.accessions <- all.accessions[ , !duplicated(all.accessions["accs", ])]
-    if (!is.null(master.gene.identifier)) {
+    if (has.mgi) {
         all.accessions["img", ] <- any.img[all.accessions["accs", ]]
     }
 
@@ -347,7 +351,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
         stringsAsFactors = FALSE
     )
 
-    if (!is.null(master.gene.identifier)) {
+    if (has.mgi) {
         dict.df$gid <- (dict.df$img == TRUE)
         dict.df$img <- NULL
         colnames(dict.df)[2L] <- col.mapping[["group.identifier"]]
