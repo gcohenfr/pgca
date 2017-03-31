@@ -4,15 +4,15 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="AUTHOR_XXX" />
+<meta name="author" content="Mandeep Sasaki, Gabriela Cohen Freue, David Kepplinger" />
 
-<meta name="date" content="2017-03-18" />
+<meta name="date" content="2017-03-31" />
 
 <title>Introduction to the PGCA Package</title>
 
@@ -69,57 +69,47 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">Introduction to the PGCA Package</h1>
-<h4 class="author"><em>AUTHOR_XXX</em></h4>
-<h4 class="date"><em>2017-03-18</em></h4>
+<h4 class="author"><em>Mandeep Sasaki, Gabriela Cohen Freue, David Kepplinger</em></h4>
+<h4 class="date"><em>March 31, 2017</em></h4>
 
 
-
-<p><a id="top"></a></p>
-<blockquote>
-<p><a href="#intro">Introduction</a></p>
-<p><a href="#install">Installation</a></p>
-<p><a href="#pgca">Dictionary Build</a></p>
-<p><a href="#translate">Translate</a></p>
-<p><a href="#options">Appendix 1: Additional Functions</a></p>
-<p><a id="intro"></a></p>
-</blockquote>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#installation"><span class="toc-section-number">2</span> Installation</a></li>
+<li><a href="#dictionary-build"><span class="toc-section-number">3</span> Dictionary Build</a></li>
+<li><a href="#translation"><span class="toc-section-number">4</span> Translation</a></li>
+<li><a href="#appendix"><span class="toc-section-number">5</span> Appendix</a><ul>
+<li><a href="#a-larger-example"><span class="toc-section-number">5.1</span> A larger example</a></li>
+<li><a href="#additional-functions"><span class="toc-section-number">5.2</span> Additional Functions</a></li>
+</ul></li>
+</ul>
 </div>
-<div id="section" class="section level2">
-<h2></h2>
+
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
 <p>Protein Group Code Algorithm (PGCA) is an algorithm to link groups from multiple experimental runs by forming global protein groups from connected local groups. The algorithm is computationally inexpensive and enables the connection and analysis of lists of protein groups across runs needed in biomarkers studies.</p>
-<p><a id="install"></a></p>
 </div>
-<div id="installation" class="section level2">
-<h2>Installation</h2>
-</div>
-<div id="section-1" class="section level2">
-<h2></h2>
-<p>Like many other R packages, the simplest way to obtain <code>PGCA</code> is to install it directly from CRAN. Type the following command in R console:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;pgca&quot;</span>, <span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</code></pre></div>
+<div id="installation" class="section level1">
+<h1><span class="header-section-number">2</span> Installation</h1>
+<p>The package can be easily installed from BioConductor using the commands</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## try http:// if https:// URLs are not supported
+<span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
+<span class="kw">biocLite</span>(<span class="st">&quot;pgca&quot;</span>)</code></pre></div>
 <p>In the remainder of this documnet we will briefly go over the main functions, see the basic operations and have a look at the outputs. Additional options are listed at the end and additional parameters for these functions are available in the help files.</p>
 <p>First, we load the <code>pgca</code> package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pgca)</code></pre></div>
 <p>We load a set of data created beforehand for illustration. Users can either load their own data or use those saved in the workspace.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">acc1947 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_1947.txt&quot;</span>, <span class="dt">package =</span>
-<span class="st">&quot;pgca&quot;</span>))
-acc2007 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2007.txt&quot;</span>, <span class="dt">package =</span>
-<span class="st">&quot;pgca&quot;</span>))
-acc2047 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2047.txt&quot;</span>, <span class="dt">package =</span>
-<span class="st">&quot;pgca&quot;</span>))
-acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2067.txt&quot;</span>, <span class="dt">package =</span>
-<span class="st">&quot;pgca&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">acc1947 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_1947.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>))
+acc2007 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2007.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>))
+acc2047 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2047.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>))
+acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_2067.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>))</code></pre></div>
 <p>The command loads 4 example MS/MS data sets <code>acc1947, acc2007, acc2047, acc2067</code> from this saved R data archive.</p>
-<p><a id="pgca"></a></p>
-<p><a href="#top">Back to Top</a></p>
+<p><a href="#TOC">Back to Top</a></p>
 </div>
-<div id="dictionary-build" class="section level2">
-<h2>Dictionary Build</h2>
-</div>
-<div id="section-2" class="section level2">
-<h2></h2>
-<p>We build a dictionary for protein groups from 3 of the MS/MS data files. We will use acc1947, acc2007, and acc2067 as examples.</p>
+<div id="dictionary-build" class="section level1">
+<h1><span class="header-section-number">3</span> Dictionary Build</h1>
+<p>We build a dictionary for protein groups from 3 of the MS/MS data files. We will use acc2007, acc2047, and acc2067 as examples.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(acc2007)</code></pre></div>
 <div class="kable-table">
 <table>
@@ -178,7 +168,7 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 </tbody>
 </table>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(acc2067)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(acc2047)</code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -193,113 +183,194 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="left">IPI00478003.1</td>
-<td align="left">A2M</td>
-<td align="left">Alpha-2-macroglobulin precursor</td>
-<td align="right">143.91</td>
-</tr>
-<tr class="even">
-<td align="right">2</td>
 <td align="left">IPI00643525.1</td>
 <td align="left">C4A</td>
 <td align="left">Complement component 4A</td>
-<td align="right">141.24</td>
+<td align="right">148.30</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">IPI00418163.3</td>
+<td align="left">C4B</td>
+<td align="left">C4B1</td>
+<td align="right">0.22</td>
 </tr>
 <tr class="odd">
-<td align="right">3</td>
-<td align="left">IPI00021885.1</td>
-<td align="left">FGA</td>
-<td align="left">Isoform 1 of Fibrinogen alpha chain precursor</td>
-<td align="right">120.40</td>
+<td align="right">2</td>
+<td align="left">IPI00478003.1</td>
+<td align="left">A2M</td>
+<td align="left">Alpha-2-macroglobulin precursor</td>
+<td align="right">116.46</td>
 </tr>
 <tr class="even">
 <td align="right">3</td>
-<td align="left">IPI00029717.1</td>
-<td align="left">FGA</td>
-<td align="left">Isoform 2 of Fibrinogen alpha chain precursor</td>
-<td align="right">0.00</td>
-</tr>
-<tr class="odd">
-<td align="right">4</td>
-<td align="left">IPI00017601.1</td>
-<td align="left">CP</td>
-<td align="left">Ceruloplasmin precursor</td>
-<td align="right">105.73</td>
-</tr>
-<tr class="even">
-<td align="right">5</td>
 <td align="left">IPI00414283.5</td>
 <td align="left">FN1</td>
 <td align="left">fibronectin 1 isoform 4 preproprotein</td>
-<td align="right">104.45</td>
+<td align="right">115.75</td>
 </tr>
-</tbody>
-</table>
-</div>
-<p>In these 2 files of MS/MS data, protein pilot has chosen different protein identifiers for the protein with the Gene Symbol IGHD. In acc2007 the identifier Accession ID is ‘IPI00418422.3’ and the local group identifier is 115. This group comprises only a single protein.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(acc2007, Gene_Symbol ==<span class="st"> 'IGHD'</span>)</code></pre></div>
-<div class="kable-table">
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th align="right">N</th>
-<th align="left">Accession</th>
-<th align="left">Gene_Symbol</th>
-<th align="left">Protein_Name</th>
-<th align="right">Unused</th>
-</tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td>194</td>
-<td align="right">115</td>
-<td align="left">IPI00418422.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
-<td align="right">4.86</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>In acc2067 protein pilot has chosen a different protein as the identifer. The protein identifier has accession ID ‘IPI00163446.3’ and local group ID 106, and the group comprises three proteins.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(acc2067, Gene_Symbol ==<span class="st"> 'IGHD'</span>)</code></pre></div>
-<div class="kable-table">
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th align="right">N</th>
-<th align="left">Accession</th>
-<th align="left">Gene_Symbol</th>
-<th align="left">Protein_Name</th>
-<th align="right">Unused</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>178</td>
-<td align="right">106</td>
-<td align="left">IPI00163446.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
-<td align="right">5.52</td>
+<td align="right">3</td>
+<td align="left">IPI00845263.1</td>
+<td align="left">FN1</td>
+<td align="left">fibronectin 1 isoform 2 preproprotein</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="even">
-<td>179</td>
-<td align="right">106</td>
-<td align="left">IPI00418422.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
+<td align="right">3</td>
+<td align="left">IPI00339223.1</td>
+<td align="left">FN1</td>
+<td align="left">Isoform 3 of Fibronectin precursor</td>
+<td align="right">0.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In these 2 files of MS/MS data, protein pilot has chosen different protein identifiers for the protein with the Gene Symbol FGG. In acc2007 the identifier Accession ID is ‘IPI00877703.1’ and the local group identifier is 14. This group comprises only a single protein.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(acc2007, Gene_Symbol ==<span class="st"> 'FGG'</span>)</code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">N</th>
+<th align="left">Accession</th>
+<th align="left">Gene_Symbol</th>
+<th align="left">Protein_Name</th>
+<th align="right">Unused</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>22</td>
+<td align="right">14</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">FGG</td>
+<td align="left">52 kDa protein</td>
+<td align="right">61.5</td>
+</tr>
+<tr class="even">
+<td>23</td>
+<td align="right">14</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td>24</td>
+<td align="right">14</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">FGG</td>
+<td align="left">50 kDa protein</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td align="right">14</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In acc2047 protein pilot has chosen the same protein as the identifer, but a different local group. The group comprises 4 proteins. The protein identified by Accession ID ‘IPI00877703.1’ is also dectected in acc2067, however it is not selected as the top protein.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(acc2047, Gene_Symbol ==<span class="st"> 'FGG'</span>)</code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">N</th>
+<th align="left">Accession</th>
+<th align="left">Gene_Symbol</th>
+<th align="left">Protein_Name</th>
+<th align="right">Unused</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>31</td>
+<td align="right">20</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">FGG</td>
+<td align="left">52 kDa protein</td>
+<td align="right">47.07</td>
+</tr>
+<tr class="even">
+<td>32</td>
+<td align="right">20</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
 <td align="right">0.00</td>
 </tr>
 <tr class="odd">
-<td>180</td>
-<td align="right">106</td>
-<td align="left">IPI00829636.1</td>
-<td align="left">IGHD</td>
-<td align="left">FLJ00382 protein (Fragment)</td>
+<td>33</td>
+<td align="right">20</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">FGG</td>
+<td align="left">50 kDa protein</td>
 <td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td>34</td>
+<td align="right">20</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="right">0.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(acc2067, Gene_Symbol ==<span class="st"> 'FGG'</span>)</code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">N</th>
+<th align="left">Accession</th>
+<th align="left">Gene_Symbol</th>
+<th align="left">Protein_Name</th>
+<th align="right">Unused</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>22</td>
+<td align="right">15</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">FGG</td>
+<td align="left">50 kDa protein</td>
+<td align="right">57.4</td>
+</tr>
+<tr class="even">
+<td>23</td>
+<td align="right">15</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">FGG</td>
+<td align="left">52 kDa protein</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td>24</td>
+<td align="right">15</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td align="right">15</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
 </tr>
 </tbody>
 </table>
@@ -307,11 +378,12 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 <p>The pre-loaded data can be used as input if <code>pgca.data()</code> is used. Since the data contains a column for the gene symbols, we may want to retain it by specifying the <code>col.mapping</code> argument.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dict &lt;-<span class="st"> </span><span class="kw">pgca.data</span>(
     acc2007,
+    acc2047,
     acc2067,
     <span class="dt">col.mapping =</span> <span class="kw">c</span>(<span class="dt">gene.symbol =</span> <span class="st">&quot;Gene_Symbol&quot;</span>)
 )</code></pre></div>
-<p>In the resulting dictionary, IGHD has now been assigned to protein group 115 which contains all IPI accession ids from all files included in the dictionary build, and both local groups 106 and 115.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(dict$dictionary, gene ==<span class="st"> 'IGHD'</span>)</code></pre></div>
+<p>In the resulting dictionary, FGG has now been assigned to protein group 14 which contains all IPI accession ids from all the files included in the dictionary build, and all three local groups.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(dict$dictionary, gene ==<span class="st"> 'FGG'</span>)</code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -326,44 +398,48 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 </thead>
 <tbody>
 <tr class="odd">
-<td>262</td>
-<td align="right">115</td>
-<td align="right">115</td>
-<td align="left">IPI00418422.3</td>
-<td align="left">IGHD protein</td>
-<td align="left">IGHD</td>
+<td>23</td>
+<td align="right">14</td>
+<td align="right">20</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">52 kDa protein</td>
+<td align="left">FGG</td>
 </tr>
 <tr class="even">
-<td>263</td>
-<td align="right">115</td>
-<td align="right">106</td>
-<td align="left">IPI00163446.3</td>
-<td align="left">IGHD protein</td>
-<td align="left">IGHD</td>
+<td>24</td>
+<td align="right">14</td>
+<td align="right">15</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">50 kDa protein</td>
+<td align="left">FGG</td>
 </tr>
 <tr class="odd">
-<td>264</td>
-<td align="right">115</td>
-<td align="right">106</td>
-<td align="left">IPI00829636.1</td>
-<td align="left">FLJ00382 protein (Fragment)</td>
-<td align="left">IGHD</td>
+<td>25</td>
+<td align="right">14</td>
+<td align="right">14</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
+<td align="left">FGG</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td align="right">14</td>
+<td align="right">14</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="left">FGG</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>Now we have a mapping of protein group codes needed to translate our MS/MS files. We use the <code>translate</code> function to apply the protein group codes to our data files to convert the data files and ensure they contain comparable groups for use in downstream analyses. In this example we input our pre-loaded data frames as a list of data frames and also return a translated list of data frames</p>
-<p><a id="translate"></a></p>
-<p><a href="#top">Back to Top</a></p>
+<p><a href="#TOC">Back to Top</a></p>
 </div>
-<div id="translation" class="section level2">
-<h2>Translation</h2>
-</div>
-<div id="section-3" class="section level2">
-<h2></h2>
+<div id="translation" class="section level1">
+<h1><span class="header-section-number">4</span> Translation</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">translated &lt;-<span class="st"> </span><span class="kw">translate</span>(dict, <span class="dt">input =</span> <span class="kw">list</span>(acc2007, acc2067), <span class="dt">out.dir =</span> <span class="ot">NULL</span>)</code></pre></div>
 <p>In the translated data files, a protein group code (‘PGC’) column is appended. We see that PGC 10 is used for FGG in both data files.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated[[<span class="dv">1</span>]], PGC ==<span class="st"> </span><span class="dv">115</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated[[<span class="dv">1</span>]], PGC ==<span class="st"> </span><span class="dv">14</span>)</code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -379,70 +455,104 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 </thead>
 <tbody>
 <tr class="odd">
-<td>194</td>
-<td align="right">115</td>
-<td align="left">IPI00418422.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
-<td align="right">4.86</td>
-<td align="right">115</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated[[<span class="dv">2</span>]], PGC ==<span class="st"> </span><span class="dv">115</span>)</code></pre></div>
-<div class="kable-table">
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th align="right">N</th>
-<th align="left">Accession</th>
-<th align="left">Gene_Symbol</th>
-<th align="left">Protein_Name</th>
-<th align="right">Unused</th>
-<th align="right">PGC</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>178</td>
-<td align="right">106</td>
-<td align="left">IPI00163446.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
-<td align="right">5.52</td>
-<td align="right">115</td>
+<td>22</td>
+<td align="right">14</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">FGG</td>
+<td align="left">52 kDa protein</td>
+<td align="right">61.5</td>
+<td align="right">14</td>
 </tr>
 <tr class="even">
-<td>179</td>
-<td align="right">106</td>
-<td align="left">IPI00418422.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
-<td align="right">0.00</td>
-<td align="right">115</td>
+<td>23</td>
+<td align="right">14</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+<td align="right">14</td>
 </tr>
 <tr class="odd">
-<td>180</td>
-<td align="right">106</td>
-<td align="left">IPI00829636.1</td>
-<td align="left">IGHD</td>
-<td align="left">FLJ00382 protein (Fragment)</td>
-<td align="right">0.00</td>
-<td align="right">115</td>
+<td>24</td>
+<td align="right">14</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">FGG</td>
+<td align="left">50 kDa protein</td>
+<td align="right">0.0</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td align="right">14</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+<td align="right">14</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><a id="options"></a></p>
-<p><a href="#top">Back to Top</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated[[<span class="dv">2</span>]], PGC ==<span class="st"> </span><span class="dv">14</span>)</code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">N</th>
+<th align="left">Accession</th>
+<th align="left">Gene_Symbol</th>
+<th align="left">Protein_Name</th>
+<th align="right">Unused</th>
+<th align="right">PGC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>22</td>
+<td align="right">15</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">FGG</td>
+<td align="left">50 kDa protein</td>
+<td align="right">57.4</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td>23</td>
+<td align="right">15</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">FGG</td>
+<td align="left">52 kDa protein</td>
+<td align="right">0.0</td>
+<td align="right">14</td>
+</tr>
+<tr class="odd">
+<td>24</td>
+<td align="right">15</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td align="right">15</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+<td align="right">14</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="appendix-1-a-larger-example" class="section level2">
-<h2>Appendix 1: A larger example</h2>
+<p><a href="#TOC">Back to Top</a></p>
 </div>
-<div id="section-4" class="section level2">
-<h2></h2>
+<div id="appendix" class="section level1">
+<h1><span class="header-section-number">5</span> Appendix</h1>
+<div id="a-larger-example" class="section level2">
+<h2><span class="header-section-number">5.1</span> A larger example</h2>
 <p>Now we use 4 MS/MS files to build our dictionary. We can use the <code>pgca.files()</code> function to read the data directly from the files. The files contain the gene symbol in the column <code>&quot;Gene_Symbol&quot;</code> and we want to retain it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dict2 &lt;-<span class="st"> </span><span class="kw">pgca.files</span>(
     <span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;accs_no_1947.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>),
@@ -456,8 +566,8 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
     <span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;pgca&quot;</span>),
     <span class="dt">col.mapping =</span> <span class="kw">c</span>(<span class="dt">gene.symbol =</span> <span class="st">&quot;Gene_Symbol&quot;</span>)
 )</code></pre></div>
-<p>The resulting protein group code for IGHD is now 111 and consists of a much larger protein group.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(dict2$dictionary, pg ==<span class="st"> </span><span class="dv">111</span>)</code></pre></div>
+<p>The resulting protein group code for FGG is now 10 and consists of a much larger protein group.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(dict2$dictionary, pg ==<span class="st"> </span><span class="dv">10</span>)</code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -472,540 +582,36 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 </thead>
 <tbody>
 <tr class="odd">
-<td>244</td>
-<td align="right">111</td>
-<td align="right">246</td>
-<td align="left">IPI00785084.1</td>
-<td align="left">Immunoglobulin heavy variable 4-31</td>
-<td align="left">IGHV4-31</td>
+<td>19</td>
+<td align="right">10</td>
+<td align="right">20</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">52 kDa protein</td>
+<td align="left">FGG</td>
 </tr>
 <tr class="even">
-<td>245</td>
-<td align="right">111</td>
-<td align="right">221</td>
-<td align="left">IPI00884080.1</td>
-<td align="left">Similar to Immunglobulin heavy chain variable region</td>
-<td align="left">-</td>
+<td>20</td>
+<td align="right">10</td>
+<td align="right">15</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">50 kDa protein</td>
+<td align="left">FGG</td>
 </tr>
 <tr class="odd">
-<td>246</td>
-<td align="right">111</td>
-<td align="right">211</td>
-<td align="left">IPI00470652.1</td>
-<td align="left">Single-chain Fv (Fragment)</td>
-<td align="left">-</td>
+<td>21</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
+<td align="left">FGG</td>
 </tr>
 <tr class="even">
-<td>247</td>
-<td align="right">111</td>
-<td align="right">172</td>
-<td align="left">IPI00166866.3</td>
-<td align="left">IGHA1 protein</td>
-<td align="left">IGHV3OR16-13;IGHA1</td>
-</tr>
-<tr class="odd">
-<td>248</td>
-<td align="right">111</td>
-<td align="right">168</td>
-<td align="left">IPI00472345.1</td>
-<td align="left">IGHG3 protein</td>
-<td align="left">IGHG3</td>
-</tr>
-<tr class="even">
-<td>249</td>
-<td align="right">111</td>
-<td align="right">167</td>
-<td align="left">IPI00828061.1</td>
-<td align="left">Anti-mucin1 heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>250</td>
-<td align="right">111</td>
-<td align="right">155</td>
-<td align="left">IPI00061977.1</td>
-<td align="left">IGHA1 protein</td>
-<td align="left">IGHV3OR16-13;IGHA1</td>
-</tr>
-<tr class="even">
-<td>251</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00423462.5</td>
-<td align="left">Putative uncharacterized protein DKFZp686K18196 (Fragment)</td>
-<td align="left">IGHV3OR16-13;IGHA1</td>
-</tr>
-<tr class="odd">
-<td>252</td>
-<td align="right">111</td>
-<td align="right">140</td>
-<td align="left">IPI00418153.1</td>
-<td align="left">Putative uncharacterized protein DKFZp686I15212</td>
-<td align="left">IGHM</td>
-</tr>
-<tr class="even">
-<td>253</td>
-<td align="right">111</td>
-<td align="right">131</td>
-<td align="left">IPI00645363.2</td>
-<td align="left">Putative uncharacterized protein DKFZp686P15220</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="odd">
-<td>254</td>
-<td align="right">111</td>
-<td align="right">127</td>
-<td align="left">IPI00854743.1</td>
-<td align="left">Uncharacterized protein ENSP00000375034</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>255</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00448938.1</td>
-<td align="left">IGHG1 protein</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="odd">
-<td>256</td>
-<td align="right">111</td>
-<td align="right">121</td>
-<td align="left">IPI00784817.1</td>
-<td align="left">Anti-RhD monoclonal T125 gamma1 heavy chain precursor</td>
-<td align="left">IGHV4-31</td>
-</tr>
-<tr class="even">
-<td>257</td>
-<td align="right">111</td>
-<td align="right">115</td>
-<td align="left">IPI00418422.3</td>
-<td align="left">IGHD protein</td>
-<td align="left">IGHD</td>
-</tr>
-<tr class="odd">
-<td>258</td>
-<td align="right">111</td>
-<td align="right">109</td>
-<td align="left">IPI00784894.1</td>
-<td align="left">Putative uncharacterized protein</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>259</td>
-<td align="right">111</td>
-<td align="right">106</td>
-<td align="left">IPI00163446.3</td>
-<td align="left">IGHD protein</td>
-<td align="left">IGHD</td>
-</tr>
-<tr class="odd">
-<td>260</td>
-<td align="right">111</td>
-<td align="right">172</td>
-<td align="left">IPI00007899.4</td>
-<td align="left">Single chain Fv (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>261</td>
-<td align="right">111</td>
-<td align="right">113</td>
-<td align="left">IPI00168728.1</td>
-<td align="left">FLJ00385 protein (Fragment)</td>
-<td align="left">IGHM</td>
-</tr>
-<tr class="odd">
-<td>262</td>
-<td align="right">111</td>
-<td align="right">121</td>
-<td align="left">IPI00382489.1</td>
-<td align="left">Ig heavy chain V-III region KOL</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>263</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00382606.1</td>
-<td align="left">Factor VII active site mutant immunoconjugate</td>
-<td align="left">F7</td>
-</tr>
-<tr class="odd">
-<td>264</td>
-<td align="right">111</td>
-<td align="right">167</td>
-<td align="left">IPI00384400.1</td>
-<td align="left">Myosin-reactive immunoglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>265</td>
-<td align="right">111</td>
-<td align="right">138</td>
-<td align="left">IPI00384409.1</td>
-<td align="left">Myosin-reactive immunoglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>266</td>
-<td align="right">111</td>
-<td align="right">138</td>
-<td align="left">IPI00384410.1</td>
-<td align="left">Myosin-reactive immunoglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>267</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00384938.1</td>
-<td align="left">Putative uncharacterized protein DKFZp686N02209</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="odd">
-<td>268</td>
-<td align="right">111</td>
-<td align="right">155</td>
-<td align="left">IPI00386524.3</td>
-<td align="left">CDNA FLJ25298 fis, clone STM07683, highly similar to Protein Tro alpha1 H,myeloma</td>
-<td align="left">IGHV3OR16-13;IGHA1</td>
-</tr>
-<tr class="even">
-<td>269</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00413194.1</td>
-<td align="left">Myosin-reactive immunoglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>270</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00423463.1</td>
-<td align="left">Putative uncharacterized protein DKFZp686O01196</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="even">
-<td>271</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00423464.1</td>
-<td align="left">Putative uncharacterized protein DKFZp686K03196</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="odd">
-<td>272</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00423466.1</td>
-<td align="left">Putative uncharacterized protein DKFZp686H20196</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="even">
-<td>273</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00448925.3</td>
-<td align="left">IGHG1 protein</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="odd">
-<td>274</td>
-<td align="right">111</td>
-<td align="right">121</td>
-<td align="left">IPI00477090.6</td>
-<td align="left">IGHM protein</td>
-<td align="left">IGHM</td>
-</tr>
-<tr class="even">
-<td>275</td>
-<td align="right">111</td>
-<td align="right">155</td>
-<td align="left">IPI00647704.1</td>
-<td align="left">CDNA FLJ41552 fis, clone COLON2004478, highly similar to Protein Tro alpha1 H,myeloma</td>
-<td align="left">IGHV3OR16-13;IGHA1</td>
-</tr>
-<tr class="odd">
-<td>276</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00736507.2</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">IGHV3-30</td>
-</tr>
-<tr class="even">
-<td>277</td>
-<td align="right">111</td>
-<td align="right">127</td>
-<td align="left">IPI00745363.4</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">LOC652113</td>
-</tr>
-<tr class="odd">
-<td>278</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00748665.3</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">IGHV3-30</td>
-</tr>
-<tr class="even">
-<td>279</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00783023.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>280</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00783116.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>281</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00783244.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">IGHV3-30</td>
-</tr>
-<tr class="odd">
-<td>282</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00783393.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>283</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00783451.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>284</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00783471.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>285</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00783818.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>286</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00783909.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>287</td>
-<td align="right">111</td>
-<td align="right">151</td>
-<td align="left">IPI00784513.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>288</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00784810.1</td>
-<td align="left">IGHV4-31 protein</td>
-<td align="left">IGHV4-31</td>
-</tr>
-<tr class="even">
-<td>289</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00784822.1</td>
-<td align="left">IGHV4-31 protein</td>
-<td align="left">IGHV4-31</td>
-</tr>
-<tr class="odd">
-<td>290</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00807531.2</td>
-<td align="left">IGHG1 protein</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="even">
-<td>291</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00815926.1</td>
-<td align="left">IGHG1 protein</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="odd">
-<td>292</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00816314.1</td>
-<td align="left">Putative uncharacterized protein DKFZp686I15196</td>
-<td align="left">IGHM</td>
-</tr>
-<tr class="even">
-<td>293</td>
-<td align="right">111</td>
-<td align="right">113</td>
-<td align="left">IPI00827627.1</td>
-<td align="left">Vh1-D-J3-region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>294</td>
-<td align="right">111</td>
-<td align="right">113</td>
-<td align="left">IPI00827754.2</td>
-<td align="left">C gamma 3</td>
-<td align="left">IGHG3</td>
-</tr>
-<tr class="even">
-<td>295</td>
-<td align="right">111</td>
-<td align="right">167</td>
-<td align="left">IPI00827846.1</td>
-<td align="left">Anti-mucin1 heavy chain variable region (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>296</td>
-<td align="right">111</td>
-<td align="right">121</td>
-<td align="left">IPI00827960.1</td>
-<td align="left">Immunglobulin heavy chain precursor (Fragment)</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>297</td>
-<td align="right">111</td>
-<td align="right">131</td>
-<td align="left">IPI00829601.1</td>
-<td align="left">Similar to Immunglobulin heavy chain variable region</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>298</td>
-<td align="right">111</td>
-<td align="right">106</td>
-<td align="left">IPI00829636.1</td>
-<td align="left">FLJ00382 protein (Fragment)</td>
-<td align="left">IGHD</td>
-</tr>
-<tr class="even">
-<td>299</td>
-<td align="right">111</td>
-<td align="right">111</td>
-<td align="left">IPI00829701.1</td>
-<td align="left">Uncharacterized protein ENSP00000375014</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>300</td>
-<td align="right">111</td>
-<td align="right">113</td>
-<td align="left">IPI00829716.1</td>
-<td align="left">Uncharacterized protein IGHG3 (Fragment)</td>
-<td align="left">IGHG3</td>
-</tr>
-<tr class="even">
-<td>301</td>
-<td align="right">111</td>
-<td align="right">121</td>
-<td align="left">IPI00829747.1</td>
-<td align="left">Similar to Immunglobulin heavy chain variable region</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>302</td>
-<td align="right">111</td>
-<td align="right">121</td>
-<td align="left">IPI00829806.1</td>
-<td align="left">Immunglobulin heavy chain variable region (Fragment)</td>
-<td align="left">SCFV</td>
-</tr>
-<tr class="even">
-<td>303</td>
-<td align="right">111</td>
-<td align="right">113</td>
-<td align="left">IPI00829850.1</td>
-<td align="left">Protein</td>
-<td align="left">IGHG3</td>
-</tr>
-<tr class="odd">
-<td>304</td>
-<td align="right">111</td>
-<td align="right">113</td>
-<td align="left">IPI00829940.1</td>
-<td align="left">Uncharacterized protein IGHG3 (Fragment)</td>
-<td align="left">IGHG3</td>
-</tr>
-<tr class="even">
-<td>305</td>
-<td align="right">111</td>
-<td align="right">126</td>
-<td align="left">IPI00829944.1</td>
-<td align="left">IGHG1 protein</td>
-<td align="left">IGHG1</td>
-</tr>
-<tr class="odd">
-<td>306</td>
-<td align="right">111</td>
-<td align="right">121</td>
-<td align="left">IPI00829976.1</td>
-<td align="left">13 kDa protein</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>307</td>
-<td align="right">111</td>
-<td align="right">113</td>
-<td align="left">IPI00830033.1</td>
-<td align="left">Full-length cDNA clone CS0DI019YF20 of Placenta of Homo sapiens (Fragment)</td>
-<td align="left">IGHM</td>
-</tr>
-<tr class="odd">
-<td>308</td>
-<td align="right">111</td>
-<td align="right">111</td>
-<td align="left">IPI00830130.1</td>
-<td align="left">Rheumatoid factor RF-ET7</td>
-<td align="left">-</td>
-</tr>
-<tr class="even">
-<td>309</td>
-<td align="right">111</td>
-<td align="right">172</td>
-<td align="left">IPI00854667.1</td>
-<td align="left">Uncharacterized protein ENSP00000375015</td>
-<td align="left">-</td>
-</tr>
-<tr class="odd">
-<td>310</td>
-<td align="right">111</td>
-<td align="right">121</td>
-<td align="left">IPI00884022.1</td>
-<td align="left">Similar to Immunglobulin heavy chain variable region</td>
-<td align="left">-</td>
+<td>22</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="left">FGG</td>
 </tr>
 </tbody>
 </table>
@@ -1014,7 +620,7 @@ acc2067 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span c
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">translated2 &lt;-<span class="st"> </span><span class="kw">translate</span>(dict2, <span class="dt">input =</span> <span class="kw">list</span>(acc2007, acc2067, acc2047,
 acc1947), <span class="dt">out.dir =</span> <span class="ot">NULL</span>)</code></pre></div>
 <p>Re-translation of the files using the updated dictionary, provides updated protein groups for the MS/MS data</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated2[[<span class="dv">1</span>]], Gene_Symbol ==<span class="st"> 'IGHD'</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated2[[<span class="dv">1</span>]], Gene_Symbol ==<span class="st"> 'FGG'</span>)</code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -1030,70 +636,105 @@ acc1947), <span class="dt">out.dir =</span> <span class="ot">NULL</span>)</code>
 </thead>
 <tbody>
 <tr class="odd">
-<td>194</td>
-<td align="right">115</td>
-<td align="left">IPI00418422.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
-<td align="right">4.86</td>
-<td align="right">111</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated2[[<span class="dv">2</span>]], Gene_Symbol ==<span class="st"> 'IGHD'</span>)</code></pre></div>
-<div class="kable-table">
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th align="right">N</th>
-<th align="left">Accession</th>
-<th align="left">Gene_Symbol</th>
-<th align="left">Protein_Name</th>
-<th align="right">Unused</th>
-<th align="right">PGC</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>178</td>
-<td align="right">106</td>
-<td align="left">IPI00163446.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
-<td align="right">5.52</td>
-<td align="right">111</td>
+<td>22</td>
+<td align="right">14</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">FGG</td>
+<td align="left">52 kDa protein</td>
+<td align="right">61.5</td>
+<td align="right">10</td>
 </tr>
 <tr class="even">
-<td>179</td>
-<td align="right">106</td>
-<td align="left">IPI00418422.3</td>
-<td align="left">IGHD</td>
-<td align="left">IGHD protein</td>
-<td align="right">0.00</td>
-<td align="right">111</td>
+<td>23</td>
+<td align="right">14</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+<td align="right">10</td>
 </tr>
 <tr class="odd">
-<td>180</td>
-<td align="right">106</td>
-<td align="left">IPI00829636.1</td>
-<td align="left">IGHD</td>
-<td align="left">FLJ00382 protein (Fragment)</td>
-<td align="right">0.00</td>
-<td align="right">111</td>
+<td>24</td>
+<td align="right">14</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">FGG</td>
+<td align="left">50 kDa protein</td>
+<td align="right">0.0</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td align="right">14</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(translated2[[<span class="dv">2</span>]], Gene_Symbol ==<span class="st"> 'FGG'</span>)</code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">N</th>
+<th align="left">Accession</th>
+<th align="left">Gene_Symbol</th>
+<th align="left">Protein_Name</th>
+<th align="right">Unused</th>
+<th align="right">PGC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>22</td>
+<td align="right">15</td>
+<td align="left">IPI00877792.1</td>
+<td align="left">FGG</td>
+<td align="left">50 kDa protein</td>
+<td align="right">57.4</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td>23</td>
+<td align="right">15</td>
+<td align="left">IPI00877703.1</td>
+<td align="left">FGG</td>
+<td align="left">52 kDa protein</td>
+<td align="right">0.0</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td>24</td>
+<td align="right">15</td>
+<td align="left">IPI00219713.1</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-A of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td align="right">15</td>
+<td align="left">IPI00021891.5</td>
+<td align="left">FGG</td>
+<td align="left">Isoform Gamma-B of Fibrinogen gamma chain precursor</td>
+<td align="right">0.0</td>
+<td align="right">10</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div id="appendix-2-additional-functions" class="section level2">
-<h2>Appendix 2: Additional Functions</h2>
-</div>
-<div id="section-5" class="section level2">
-<h2></h2>
+<div id="additional-functions" class="section level2">
+<h2><span class="header-section-number">5.2</span> Additional Functions</h2>
 <p>We save the dictionary we just generated to a tab separated (default) text file</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">save.dict</span>(dict, <span class="dt">file =</span> <span class="st">&quot;dictionary.txt&quot;</span>)</code></pre></div>
+<p><a href="#TOC">Back to Top</a></p>
+</div>
 </div>
 
 <script type="text/javascript">

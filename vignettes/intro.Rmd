@@ -1,13 +1,15 @@
 ---
 title: "Introduction to the PGCA Package"
-author: AUTHOR_XXX
-date: "`r Sys.Date()`"
+author: "Mandeep Sasaki, Gabriela Cohen Freue, David Kepplinger"
+date: "March 31, 2017"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Introduction}
 output:
     knitr:::html_vignette:
         df_print: kable
+        toc: true
+        number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -16,36 +18,18 @@ knitr::opts_chunk$set(
 )
 options(width = 120)
 ```
-<a id ="top"></a>
-
-> [Introduction](#intro)
-> 
-> [Installation](#install)
-> 
-> [Dictionary Build](#pgca)
-> 
-> [Translate](#translate)
-> 
-> [Appendix 1: Additional Functions](#options)
-> 
-<a id="intro"></a>
-
-## Introduction
-## 
+# Introduction
 Protein Group Code Algorithm (PGCA) is an algorithm to link groups from multiple
 experimental runs by forming global protein groups from connected local groups.
 The algorithm is computationally inexpensive and enables the connection and
 analysis of lists of protein groups across runs needed in biomarkers studies.
 
-<a id="install"></a>
-
-## Installation
-## 
-Like many other R packages, the simplest way to obtain `PGCA` is to install it
-directly from CRAN. Type the following command in R console:
-
+# Installation
+The package can be easily installed from BioConductor using the commands
 ```{r, eval=FALSE}
-install.packages("pgca", repos = "http://cran.us.r-project.org")
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite("pgca")
 ```
 
 In the remainder of this documnet we will briefly go over the main functions,
@@ -61,43 +45,38 @@ library(pgca)
 We load a set of data created beforehand for illustration. Users can either load
 their own data or use those saved in the workspace. 
 ```{r}
-acc1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package =
-"pgca"))
-acc2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package =
-"pgca"))
-acc2047 <- read.delim(system.file("extdata", "accs_no_2047.txt", package =
-"pgca"))
-acc2067 <- read.delim(system.file("extdata", "accs_no_2067.txt", package =
-"pgca"))
+acc1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package = "pgca"))
+acc2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package = "pgca"))
+acc2047 <- read.delim(system.file("extdata", "accs_no_2047.txt", package = "pgca"))
+acc2067 <- read.delim(system.file("extdata", "accs_no_2067.txt", package = "pgca"))
 ```
 The command loads 4 example MS/MS data sets `acc1947, acc2007, acc2047, acc2067`
 from this saved R data archive. 
 
-<a id="pgca"></a>
+[Back to Top](#TOC)
 
-[Back to Top](#top)
-
-## Dictionary Build
-## 
+# Dictionary Build
 We build a dictionary for protein groups from 3 of the MS/MS data files. We will
-use acc1947, acc2007, and acc2067 as examples.
+use acc2007, acc2047, and acc2067 as examples.
 ```{r}
 head(acc2007)
-head(acc2067)
+head(acc2047)
 ```
 In these 2 files of MS/MS data, protein pilot has chosen different protein
-identifiers for the protein with the Gene Symbol IGHD. In acc2007 the identifier
-Accession ID is 'IPI00418422.3' and the local group identifier is 115. This
+identifiers for the protein with the Gene Symbol FGG. In acc2007 the identifier
+Accession ID is 'IPI00877703.1' and the local group identifier is 14. This
 group comprises only a single protein.
 ```{r}
-subset(acc2007, Gene_Symbol == 'IGHD')
+subset(acc2007, Gene_Symbol == 'FGG')
 ```
 
-In acc2067 protein pilot has chosen  a different protein as the identifer. The
-protein identifier has accession ID 'IPI00163446.3' and local group ID 106, and
-the group comprises three proteins. 
+In acc2047 protein pilot has chosen the same protein as the identifer, but
+a different local group. The group comprises 4 proteins. The protein identified
+by Accession ID 'IPI00877703.1' is also dectected in acc2067, however it is not
+selected as the top protein. 
 ```{r}
-subset(acc2067, Gene_Symbol == 'IGHD')
+subset(acc2047, Gene_Symbol == 'FGG')
+subset(acc2067, Gene_Symbol == 'FGG')
 ```
 
 The pre-loaded data can be used as input if `pgca.data()` is used. Since the
@@ -106,18 +85,19 @@ specifying the `col.mapping` argument.
 ```{r}
 dict <- pgca.data(
     acc2007,
+    acc2047,
     acc2067,
     col.mapping = c(gene.symbol = "Gene_Symbol")
 )
 
 ```
 
-In the resulting dictionary, IGHD has now been assigned to protein group 115
-which contains all IPI accession ids from all files included in the dictionary
-build, and both local groups 106 and 115. 
+In the resulting dictionary, FGG has now been assigned to protein group 14
+which contains all IPI accession ids from all the files included in the
+dictionary build, and all three local groups.
 
 ```{r}
-subset(dict$dictionary, gene == 'IGHD')
+subset(dict$dictionary, gene == 'FGG')
 ```
 
 Now we have a mapping of protein group codes needed to translate our MS/MS
@@ -127,12 +107,9 @@ groups for use in downstream analyses. In this example we input our pre-loaded
 data frames as a list of data frames and also return a translated list of data
 frames
 
-<a id="translate"></a>
+[Back to Top](#TOC)
 
-[Back to Top](#top)
-
-## Translation 
-## 
+# Translation 
 ```{r}
 translated <- translate(dict, input = list(acc2007, acc2067), out.dir = NULL)
 ```
@@ -140,16 +117,14 @@ translated <- translate(dict, input = list(acc2007, acc2067), out.dir = NULL)
 In the translated data files, a protein group code ('PGC') column is appended.
 We see that PGC 10 is used for FGG in both data files. 
 ```{r}
-subset(translated[[1]], PGC == 115)
-subset(translated[[2]], PGC == 115)
+subset(translated[[1]], PGC == 14)
+subset(translated[[2]], PGC == 14)
 ```
 
-<a id="options"></a>
+[Back to Top](#TOC)
 
-[Back to Top](#top)
-
-## Appendix 1: A larger example
-## 
+# Appendix
+## A larger example
 Now we use 4 MS/MS files to build our dictionary. We can use the `pgca.files()`
 function to read the data directly from the files. The files contain the gene
 symbol in the column `"Gene_Symbol"` and we want to retain it.
@@ -173,10 +148,10 @@ dict2 <- pgca(
 )
 ```
 
-The resulting protein group code for IGHD is now 111 and consists of a much
+The resulting protein group code for FGG is now 10 and consists of a much
 larger protein group. 
 ```{r}
-subset(dict2$dictionary, pg == 111)
+subset(dict2$dictionary, pg == 10)
 ```
 With the addition of new files and the resulting new dictionary, all MS/MS files
 require another translation. 
@@ -187,14 +162,15 @@ acc1947), out.dir = NULL)
 Re-translation of the files using the updated dictionary, provides updated
 protein groups for the MS/MS data
 ```{r}
-subset(translated2[[1]], Gene_Symbol == 'IGHD')
-subset(translated2[[2]], Gene_Symbol == 'IGHD')
+subset(translated2[[1]], Gene_Symbol == 'FGG')
+subset(translated2[[2]], Gene_Symbol == 'FGG')
 ```
-## Appendix 2: Additional Functions
-## 
+
+## Additional Functions
 We save the dictionary we just generated to a tab separated (default) text file
 
 ```{r, eval=FALSE}
 save.dict(dict, file = "dictionary.txt")
 ```
 
+[Back to Top](#TOC)
