@@ -1,7 +1,7 @@
 Package: pgca
 Type: Package
 Title: PGCA: An Algorithm to Link Protein Groups Created from MS/MS Data
-Version: 1.2.0
+Version: 0.99.1
 biocViews: WorkflowStep,AssayDomain
 Author: Gabriela Cohen-Freue <gcohen@stat.ubc.ca>
 Maintainer: Gabriela Cohen-Freue <gcohen@stat.ubc.ca>
