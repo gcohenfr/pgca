@@ -1,5 +1,5 @@
 #' @export
-print.pgca_dict <- function(x, ...) {
+print.pgcaDict <- function(x, ...) {
     cat(sprintf("Dictionary mapping %d proteins to %d protein groups",
                 nrow(x$dictionary), max(x$dictionary$pg)))
 
@@ -16,10 +16,13 @@ print.pgca_dict <- function(x, ...) {
         concat <- "and"
     }
 
-    if (!is.null(x$directory)) {
+    if (!is.null(x$directories)) {
         cat(
-            sprintf('\n in the directorie%s',
-                    ifelse(length(x$directory) > 1L, "s", "")),
+            switch(
+                (length(x$directories) > 1L) + 1L,
+                'in the directory',
+                'in the directories'
+            ),
             x$directories,
             sep="\n\t"
         )
@@ -73,7 +76,7 @@ print.pgca_dict <- function(x, ...) {
 #' dictOutFile <- tempfile()
 #' saveDict(dict, file=dictOutFile, sep="\t")
 saveDict <- function(dict, file=stop("`file` must be specified"), ...) {
-    if (class(dict) != "pgca_dict") {
+    if (class(dict) != "pgcaDict") {
         stop("`dict` must be a PGCA dictionary")
     }
 
@@ -120,6 +123,7 @@ saveDict <- function(dict, file=stop("`file` must be specified"), ...) {
 #' @return Either a list of \code{data.frame}s or nothing (see details).
 #' @seealso \code{\link{pgcaDict}} to create the dictionary
 #' @importFrom utils write.table
+#' @importFrom stats setNames
 #' @export
 #'
 #' @examples

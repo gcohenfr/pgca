@@ -37,8 +37,8 @@
 #' @param master.gene.identifier if given, genes with this value in the
 #'      column \code{group.identifier} are considered master genes.
 #'
-#' @return An object of type \code{pgca_dict}.
-#'
+#' @return An object of type \code{pgcaDict}.
+#' @importFrom stats setNames
 #' @export
 #'
 #' @references Takhar M, Sasaki M, Hollander Z, McManus B, McMaster W, Ng R and
@@ -317,7 +317,7 @@ pgcaDict <- function(..., col.mapping, master.gene.identifier) {
         dictionary=dict.df,
         col.mapping=col.mapping,
         call=match.call(expand.dots=TRUE)
-    ), class="pgca_dict"))
+    ), class="pgcaDict"))
 }
 
 ## Helper function to validate a single input data frame
@@ -460,6 +460,7 @@ pgcaDict <- function(..., col.mapping, master.gene.identifier) {
 
 ## Helper function to flatten a (possibly nested)
 ## list of data.frames into a flat list of data.frames
+#' @importFrom stats setNames
 .flattenDFList <- function(obj) {
     out <- NULL
     obj.names <- names(obj)

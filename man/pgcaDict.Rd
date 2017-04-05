@@ -16,7 +16,7 @@ pgcaDict(..., col.mapping, master.gene.identifier)
 column \code{group.identifier} are considered master genes.}
 }
 \value{
-An object of type \code{pgca_dict}.
+An object of type \code{pgcaDict}.
 }
 \description{
 Build a dictionary for protein groups from MS/MS data.

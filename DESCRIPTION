@@ -11,7 +11,7 @@ Description: Protein Group Code Algorithm (PGCA) is an algorithm to link
     and enables the connection and analysis of lists of protein groups across
     runs needed in biomarkers studies.
 License: GPL (>= 2)
-Imports: utils
+Imports: utils, stats
 LazyData: FALSE
 VignetteBuilder: knitr
 Suggests: knitr
