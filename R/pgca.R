@@ -1,7 +1,8 @@
 #' Link Protein Groups Created from MS/MS Data
 #'
 #' Build a dictionary for protein groups from MS/MS data.
-#' Details of the algorithm can be found in XX, YY (2017).
+#' Details of the algorithm can be found in Takhar et al. (Under revision).
+#' "PGCA: An Algorithm to Link Protein Groups Created from MS/MS Data.".
 #'
 #' If the \code{group.identifier} column is logical (i.e., \code{TRUE} or
 #' \code{FALSE}) or \code{master.gene.identifier} is given,
@@ -22,13 +23,13 @@
 #'      \item{\code{"gene.symbol"}}{Column containing the gene symbol (if any,
 #'                                  can be missing)}
 #' }
-#' The default column mapping is \code{c(group.identifier = "N", accession.nr =
-#' "Accession", protein.name = "Protein_Name")}. The supplied column mapping can
+#' The default column mapping is \code{c(group.identifier="N", accession.nr =
+#' "Accession", protein.name="Protein_Name")}. The supplied column mapping can
 #' ignore those columns that are already correct in the default map.
 #' For instance, if the accession nr. is stored in column \emph{AccessionNr}
 #' instead of \emph{Accession}, but the remaining columns are the same as in the
-#' default mapping, specifying \code{col.mapping = c(accession.nr =
-#' "AccessionNr")} is sufficient.
+#' default mapping, specifying \code{col.mapping=c(accession.nr="AccessionNr")}
+#' is sufficient.
 #'
 #' @param ... arbitrary number of \code{data.frame}s or filenames.
 #' @param col.mapping column mapping (see Details).
@@ -37,39 +38,39 @@
 #' @param dir path to the directory.
 #'
 #'
-#' @return An object of type \code{accession.dict}.
+#' @return An object of type \code{pgca_dict}.
 #'
 #' @export
 #'
 #' @references Takhar M, Sasaki M, Hollander Z, McManus B, McMaster W, Ng R and
 #'    Cohen Freue G (Under revision). "PGCA: An Algorithm to Link Protein Groups
 #'    Created from MS/MS Data." PLOS ONE.
-#' @seealso \code{\link{translate}} to apply the dictionary to the data files
-#'      and \code{\link{save.dict}} to save the dictionary itself.
+#' @seealso \code{\link{applyDict}} to apply the dictionary to the data files
+#'      and \code{\link{saveDict}} to save the dictionary itself.
 #'
 #' @examples
 #' # Build the dictionary from all files in a directory
 #' # and specifying the column "Gene_Symbol" holds the `gene.symbol`.
 #' dict.dir <- pgca(
-#'          system.file("extdata", package = "pgca"),
-#'          col.mapping = c(gene.symbol = "Gene_Symbol")
+#'          system.file("extdata", package="pgca"),
+#'          col.mapping=c(gene.symbol="Gene_Symbol")
 #' )
 #'
 #' # Build the dictionary from a list of files
 #' dict.files <- pgca.files(
-#'      system.file("extdata", "accs_no_1947.txt", package = "pgca"),
-#'      system.file("extdata", "accs_no_2007.txt", package = "pgca"),
-#'      system.file("extdata", "accs_no_2047.txt", package = "pgca"),
-#'      col.mapping = c(gene.symbol = "Gene_Symbol")
+#'      system.file("extdata", "accs_no_1947.txt", package="pgca"),
+#'      system.file("extdata", "accs_no_2007.txt", package="pgca"),
+#'      system.file("extdata", "accs_no_2047.txt", package="pgca"),
+#'      col.mapping=c(gene.symbol="Gene_Symbol")
 #' )
 #'
 #' # Build the dictionary from already read-in data.frames
 #' df.1947 <- read.delim(system.file("extdata", "accs_no_1947.txt",
-#'                                   package = "pgca"))
+#'                                   package="pgca"))
 #' df.2007 <- read.delim(system.file("extdata", "accs_no_2007.txt",
-#'                                   package = "pgca"))
+#'                                   package="pgca"))
 #' dict.data <- pgca.data(df.1947, df.2007,
-#'                        col.mapping = c(gene.symbol = "Gene_Symbol"))
+#'                        col.mapping=c(gene.symbol="Gene_Symbol"))
 #'
 pgca <- function(dir, col.mapping, master.gene.identifier) {
     # Check parameter `dir`
@@ -84,23 +85,23 @@ pgca <- function(dir, col.mapping, master.gene.identifier) {
     }
 
     # Check if `dir` points to a populated directory
-    files <- dir(dir, full.names = TRUE)
+    files <- dir(dir, full.names=TRUE)
     if (length(files) == 0L) {
         stop(sprintf("Directory %s is empty", dir))
     }
 
     # Check if any of the items in the directory are directories itself and
     # remove them
-    dirs.in.dir <- list.dirs(dir, recursive = FALSE)
+    dirs.in.dir <- list.dirs(dir, recursive=FALSE)
     files <- setdiff(files, dirs.in.dir)
 
     ret.obj <- pgca.files(
         files,
-        col.mapping = col.mapping,
-        master.gene.identifier = master.gene.identifier
+        col.mapping=col.mapping,
+        master.gene.identifier=master.gene.identifier
     )
     ret.obj$directory <- dir
-    ret.obj$call <- match.call(expand.dots = FALSE)
+    ret.obj$call <- match.call(expand.dots=FALSE)
     return(ret.obj)
 }
 
@@ -108,7 +109,7 @@ pgca <- function(dir, col.mapping, master.gene.identifier) {
 #' @describeIn pgca Use data given as \code{data.frame}s.
 pgca.data <- function(..., col.mapping, master.gene.identifier) {
     # Validate the column mapping
-    col.mapping <- .get.col.mapping(col.mapping)
+    col.mapping <- .getColMapping(col.mapping)
     col.mapping.na <- col.mapping[!is.na(col.mapping) &
                                       names(col.mapping) != "img"]
 
@@ -121,7 +122,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
             return(df)
         }
         return(list(df))
-    }), recursive = FALSE, use.names = TRUE)
+    }), recursive=FALSE, use.names=TRUE)
 
     dfs.names <- if (!is.null(names(dfs))) {
         names(dfs)
@@ -149,7 +150,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
             stop(sprintf("Data set '%s' does not contain the column%s: '%s'",
                          name,
                          ifelse(sum(!present) > 1L, "s", ""),
-                         paste(col.mapping.na[!present], collapse = "', '")))
+                         paste(col.mapping.na[!present], collapse="', '")))
         }
 
         if (!is.character(df[[col.mapping["accession.nr"]]]) &&
@@ -199,7 +200,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
         }
 
         return(df)
-    }, dfs, dfs.names, SIMPLIFY = FALSE)
+    }, dfs, dfs.names, SIMPLIFY=FALSE)
 
     ##
     ## Work with a smaller data set since we only need to have
@@ -209,15 +210,15 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
         accs <- df[[col.mapping["accession.nr"]]]
         uq <- !duplicated(accs)
         rbind(
-            accs = accs[uq],
-            prot = df[[col.mapping["protein.name"]]][uq],
-            gene = df[[col.mapping["gene.symbol"]]][uq],
-            img = df[[col.mapping["img"]]][uq]
+            accs=accs[uq],
+            prot=df[[col.mapping["protein.name"]]][uq],
+            gene=df[[col.mapping["gene.symbol"]]][uq],
+            img=df[[col.mapping["img"]]][uq]
         )
     })
     all.accessions <- do.call(cbind, all.accessions)
     all.accessions <- all.accessions[ , sort.list(all.accessions["accs", ],
-                                                  method = "radix")]
+                                                  method="radix")]
 
     has.mgi <- (col.mapping["img"] %in% rownames(all.accessions))
 
@@ -234,14 +235,14 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
 
     stripped <- lapply(dfs, function(df) {
         accs <- factor(df[[col.mapping["accession.nr"]]],
-                       levels = all.accessions["accs", ])
+                       levels=all.accessions["accs", ])
         matrix(
             c(as.integer(df[[col.mapping["group.identifier"]]]),
               as.integer(accs),
               rep.int(NA_integer_, nrow(df))),
-            ncol = 3L,
-            byrow = FALSE,
-            dimnames = list(
+            ncol=3L,
+            byrow=FALSE,
+            dimnames=list(
                 NULL,
                 c("gid", "accs", "pg")
             )
@@ -252,7 +253,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
     ## Merge groups in individual files according to overlapping Acc#s
     ##
     merged <- lapply(stripped, function(x) {
-        accs.cont <- tabulate(x[ , "accs"], nbins = max(x[ , "accs"]))
+        accs.cont <- tabulate(x[ , "accs"], nbins=max(x[ , "accs"]))
         accs.ids <- which(accs.cont > 1L)
         if (length(accs.ids) > 0L) {
             for (k in accs.ids) {
@@ -261,14 +262,14 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
             }
         }
 
-        x <- x[sort.list(x[ , "gid"], method = "radix"), ]
-        x <- cbind(x, rank = x[ , "gid"])
+        x <- x[sort.list(x[ , "gid"], method="radix"), ]
+        x <- cbind(x, rank=x[ , "gid"])
         x[duplicated(x[, "rank"]), "rank"] <- 0L
 
         return(x)
     })
 
-    state.env <- new.env(size = 5L)
+    state.env <- new.env(size=5L)
     state.env$dict <- merged[[1L]][!duplicated(merged[[1L]][, "accs"]), ]
     state.env$pg.counter <- max(state.env$dict[ , "gid"])
 
@@ -340,7 +341,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
         return(NULL)
     }
 
-    lapply(merged[-1L], update.dict, state.env = state.env)
+    lapply(merged[-1L], update.dict, state.env=state.env)
 
     dict <- state.env$dict
     remove(state.env)
@@ -348,7 +349,7 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
     dict.df <- data.frame(
         dict[ , c("pg", "gid")],
         t(all.accessions[ , dict[ , "accs"]]),
-        stringsAsFactors = FALSE
+        stringsAsFactors=FALSE
     )
 
     if (has.mgi) {
@@ -358,10 +359,10 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
     }
 
     return(structure(list(
-        dictionary = dict.df,
-        col.mapping = col.mapping,
-        call = match.call(expand.dots = TRUE)
-    ), class = "pgca.dict"))
+        dictionary=dict.df,
+        col.mapping=col.mapping,
+        call=match.call(expand.dots=TRUE)
+    ), class="pgca_dict"))
 }
 
 
@@ -382,11 +383,11 @@ pgca.files <- function(..., col.mapping, master.gene.identifier) {
         stop(sprintf("File '%s' does not exist", files[missing.files]))
     } else if (sum(missing.files) > 1L) {
         stop(sprintf("Files '%s' do not exist", paste(files[missing.files],
-                                                      collapse = "', ")))
+                                                      collapse="', ")))
     }
 
     # Read in all files
-    dfs <- lapply(files, read.delim, header = TRUE, stringsAsFactors = FALSE)
+    dfs <- lapply(files, read.delim, header=TRUE, stringsAsFactors=FALSE)
 
     names(dfs) <- if (!is.null(names(files))) {
         names(files)
@@ -396,23 +397,22 @@ pgca.files <- function(..., col.mapping, master.gene.identifier) {
 
     ret.obj <- pgca.data(
         dfs,
-        col.mapping = col.mapping,
-        master.gene.identifier = master.gene.identifier
+        col.mapping=col.mapping,
+        master.gene.identifier=master.gene.identifier
     )
     ret.obj$files <- files
-    ret.obj$call <- match.call(expand.dots = TRUE)
+    ret.obj$call <- match.call(expand.dots=TRUE)
     return(ret.obj)
 }
 
-
 ## Helper function to merge the user-supplied column mapping
 ## with the default column mapping and validate the mapping.
-.get.col.mapping <- function(col.mapping) {
+.getColMapping <- function(col.mapping) {
     default.col.mapping <- c(
-        group.identifier = "N",
-        accession.nr = "Accession",
-        protein.name = "Protein_Name",
-        gene.symbol = NA_character_
+        group.identifier="N",
+        accession.nr="Accession",
+        protein.name="Protein_Name",
+        gene.symbol=NA_character_
     )
 
     if (!missing(col.mapping)) {
@@ -431,7 +431,7 @@ pgca.files <- function(..., col.mapping, master.gene.identifier) {
     while (img.col.name %in% default.col.mapping) {
         img.col.name <- sprintf("img_%05d", sample.int(99999L, 1L))
     }
-    default.col.mapping <- c(default.col.mapping, "img" = img.col.name)
+    default.col.mapping <- c(default.col.mapping, "img"=img.col.name)
 
     return (default.col.mapping)
 }

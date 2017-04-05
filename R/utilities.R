@@ -1,5 +1,5 @@
 #' @export
-print.pgca.dict <- function(x, ...) {
+print.pgca_dict <- function(x, ...) {
     cat(sprintf("Dictionary mapping %d proteins to %d protein groups",
                 nrow(x$dictionary), max(x$dictionary$pg)))
     if (!is.null(x$directory)) {
@@ -28,26 +28,27 @@ print.pgca.dict <- function(x, ...) {
 #' @importFrom utils write.table
 #'
 #' @seealso \code{\link{pgca}} to create the dictionary, and
-#'      \code{\link{translate}} to saved translated data files.
+#'      \code{\link{applyDict}} to apply the dictionary for translating
+#'      data files.
 #'
 #' @export
 #'
 #' @examples
 #' # Build accession dictionary from all files in a directory
 #' dict <- pgca(
-#'          system.file("extdata", package = "pgca"),
-#'          col.mapping = c(gene.symbol = "Gene_Symbol")
+#'          system.file("extdata", package="pgca"),
+#'          col.mapping=c(gene.symbol="Gene_Symbol")
 #' )
 #'
-#' \dontrun{
-#' # Save dictionary to a file
-#' save.dict(dict, file = "dictionary.txt")
+#' # Save dictionary to a temporary file
+#' dictOutFile <- tempfile()
+#' saveDict(dict, file=dictOutFile)
 #'
 #' # Change the separator string to a tab
-#' save.dict(dict, file = "dictionary.txt", sep = "\t")
-#' }
-save.dict <- function(dict, file = stop("`file` must be specified"), ...) {
-    if (class(dict) != "pgca.dict") {
+#' dictOutFile <- tempfile()
+#' saveDict(dict, file=dictOutFile, sep="\t")
+saveDict <- function(dict, file=stop("`file` must be specified"), ...) {
+    if (class(dict) != "pgca_dict") {
         stop("`dict` must be a PGCA dictionary")
     }
 
@@ -56,7 +57,7 @@ save.dict <- function(dict, file = stop("`file` must be specified"), ...) {
     d <- dict$dictionary
     colnames(d) <- c("PG", cn[!is.na(cn)])
 
-    write.table(dict$dictionary, file = file, row.names = FALSE, ...)
+    write.table(dict$dictionary, file=file, row.names=FALSE, ...)
     invisible(NULL)
 }
 
@@ -80,7 +81,7 @@ save.dict <- function(dict, file = stop("`file` must be specified"), ...) {
 #' In case the input is a list of \code{data.frame}s and no output
 #' directory is specified, the \code{data.frame}s will be translated and
 #' returned as a list. The function will also return the translated
-#' \code{data.frame}s as list if the \code{out.dir = NULL}.
+#' \code{data.frame}s as list if the \code{out.dir=NULL}.
 #'
 #' @param dict the PGCA dictionary to use.
 #' @param input input directory, files, or data (see details).
@@ -100,37 +101,37 @@ save.dict <- function(dict, file = stop("`file` must be specified"), ...) {
 #' @examples
 #' # Build PGCA dictionary from all files in a directory
 #' dict <- pgca(
-#'          system.file("extdata", package = "pgca"),
-#'          col.mapping = c(gene.symbol = "Gene_Symbol")
+#'          system.file("extdata", package="pgca"),
+#'          col.mapping=c(gene.symbol="Gene_Symbol")
 #' )
 #'
 #' # Translate all files in the directory and return as a list of data.frames
-#' trans <- translate(dict, input = system.file("extdata", package = "pgca"),
-#'                    out.dir = NULL)
+#' trans <- applyDict(dict, input=system.file("extdata", package="pgca"),
+#'                    out.dir=NULL)
 #'
 #' # Translate only some files in the directory and return as a list of
 #' # data.frames
-#' trans <- translate(dict, input = c(
+#' trans <- applyDict(dict, input=c(
 #'                        system.file("extdata", "accs_no_1947.txt",
-#'                                    package = "pgca"),
+#'                                    package="pgca"),
 #'                        system.file("extdata", "accs_no_2007.txt",
-#'                                    package = "pgca")
-#'                    ), out.dir = NULL)
+#'                                    package="pgca")
+#'                    ), out.dir=NULL)
 #' str(trans)
 #'
 #' \dontrun{
 #' # Translate all files in the directory and save to another directory
-#' translate(dict, input = system.file("extdata", package = "pgca"),
-#'           out.dir = "translated")
+#' translate(dict, input=system.file("extdata", package="pgca"),
+#'           out.dir="translated")
 #'
 #' # Translate all files in the directory, save to the same directory, but
 #' # add a prefix to the files
-#' translate(dict, input = system.file("extdata", package = "pgca"),
-#'           out.prefix = "translated_")
+#' translate(dict, input=system.file("extdata", package="pgca"),
+#'           out.prefix="translated_")
 #' }
 #'
-translate <- function(dict, input, out.dir, out.suffix = "", out.prefix = "",
-                      col.mapping, out.pg.col = "PGC") {
+applyDict <- function(dict, input, out.dir=NULL, out.suffix="",
+                      out.prefix="", col.mapping, out.pg.col="PGC") {
     # Validate the column mapping
     col.mapping <- if (missing(col.mapping)) {
         dict$col.mapping
@@ -155,15 +156,15 @@ translate <- function(dict, input, out.dir, out.suffix = "", out.prefix = "",
     }
 
     if (is.character(input)) {
-        input <- normalizePath(input, mustWork = TRUE)
-        input.finfo <- file.info(input, extra_cols = FALSE)
+        input <- normalizePath(input, mustWork=TRUE)
+        input.finfo <- file.info(input, extra_cols=FALSE)
 
         dirs <- input[input.finfo$isdir]
         files <- input[!input.finfo$isdir]
 
         files <- c(files, unlist(lapply(dirs, function(x) {
-            nodes <- dir(x, full.names = TRUE)
-            dirs.in.dir <- list.dirs(x, recursive = FALSE)
+            nodes <- dir(x, full.names=TRUE)
+            dirs.in.dir <- list.dirs(x, recursive=FALSE)
             setdiff(nodes, dirs.in.dir)
         })))
 
@@ -171,8 +172,8 @@ translate <- function(dict, input, out.dir, out.suffix = "", out.prefix = "",
             stop("`input` directory is empty")
         }
 
-        dfs <- lapply(files, read.delim, header = TRUE,
-                      stringsAsFactors = FALSE)
+        dfs <- lapply(files, read.delim, header=TRUE,
+                      stringsAsFactors=FALSE)
 
         names(dfs) <- if (!is.null(names(files))) {
             names(files)
@@ -213,7 +214,7 @@ translate <- function(dict, input, out.dir, out.suffix = "", out.prefix = "",
     ##
     ## Determine file names
     ##
-    if (missing(out.dir) && !is.null(files)) {
+    if (!is.null(files)) {
         out.dir <- dirname(files)
     }
     out.files <- if (!is.null(files)) {
@@ -230,8 +231,8 @@ translate <- function(dict, input, out.dir, out.suffix = "", out.prefix = "",
         stop("output files already exist and will not be overwritten")
     }
 
-    mapply(write.table, x = dfs, file = out.files, sep = "\t",
-           row.names = FALSE)
+    mapply(write.table, x=dfs, file=out.files, sep="\t",
+           row.names=FALSE)
 
     invisible(NULL)
 }
