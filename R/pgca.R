@@ -31,12 +31,11 @@
 #' default mapping, specifying \code{col.mapping=c(accession.nr="AccessionNr")}
 #' is sufficient.
 #'
-#' @param ... arbitrary number of \code{data.frame}s or filenames.
+#' @param ... arbitrary number of directory names, file names, or
+#'       \code{data.frame}s used as input.
 #' @param col.mapping column mapping (see Details).
 #' @param master.gene.identifier if given, genes with this value in the
 #'      column \code{group.identifier} are considered master genes.
-#' @param dir path to the directory.
-#'
 #'
 #' @return An object of type \code{pgca_dict}.
 #'
@@ -51,13 +50,13 @@
 #' @examples
 #' # Build the dictionary from all files in a directory
 #' # and specifying the column "Gene_Symbol" holds the `gene.symbol`.
-#' dict.dir <- pgca(
+#' dict.dir <- pgcaDict(
 #'          system.file("extdata", package="pgca"),
 #'          col.mapping=c(gene.symbol="Gene_Symbol")
 #' )
 #'
 #' # Build the dictionary from a list of files
-#' dict.files <- pgca.files(
+#' dict.files <- pgcaDict(
 #'      system.file("extdata", "accs_no_1947.txt", package="pgca"),
 #'      system.file("extdata", "accs_no_2007.txt", package="pgca"),
 #'      system.file("extdata", "accs_no_2047.txt", package="pgca"),
@@ -69,54 +68,62 @@
 #'                                   package="pgca"))
 #' df.2007 <- read.delim(system.file("extdata", "accs_no_2007.txt",
 #'                                   package="pgca"))
-#' dict.data <- pgca.data(df.1947, df.2007,
+#' dict.data <- pgcaDict(df.1947, df.2007,
 #'                        col.mapping=c(gene.symbol="Gene_Symbol"))
 #'
-pgca <- function(dir, col.mapping, master.gene.identifier) {
-    # Check parameter `dir`
-    if (length(dir) != 1L || anyNA(dir) || !is.character(dir)) {
-        stop("`dir` must be a single path")
+pgcaDict <- function(..., col.mapping, master.gene.identifier) {
+    ##
+    ## Get names of arguments
+    ##
+    cl <- match.call(expand.dots=TRUE)
+    # remove function name and known arguments
+    cl <- cl[!(names(cl) %in% names(formals()))][-1L]
+    argnames <- unlist(lapply(cl, deparse))
+    if (!is.null(names(argnames))) {
+        argnames <- ifelse(names(argnames) == "", argnames, names(argnames))
     }
 
-    # Check if `dir` points to an existing path
-    dir <- path.expand(dir)
-    if (!file.exists(dir)) {
-        stop(sprintf("Directory %s does not exist", dir))
-    }
+    args <- setNames(list(...), argnames)
 
-    # Check if `dir` points to a populated directory
-    files <- dir(dir, full.names=TRUE)
-    if (length(files) == 0L) {
-        stop(sprintf("Directory %s is empty", dir))
-    }
+    # Parse input to data.frames
+    dfs <- .toDataFrame(args)
 
-    # Check if any of the items in the directory are directories itself and
-    # remove them
-    dirs.in.dir <- list.dirs(dir, recursive=FALSE)
-    files <- setdiff(files, dirs.in.dir)
+    # Remove
+    directories <- unique(unlist(lapply(dfs, attr, "directory", exact=FALSE),
+                                 use.names = FALSE))
+    # Collect file names
+    files <- unlist(lapply(dfs, function (df) {
+        f <- attr(df, "file", exact=TRUE)
+        if (is.null(f)) {
+            f <- NA_character_
+        }
+        return(f)
+    }), use.names = FALSE)
 
-    ret.obj <- pgca.files(
-        files,
+    # Remove duplicated files
+    dfs <- dfs[is.na(files) | !duplicated(files)]
+    files <- unique(files[!is.na(files)])
+
+    # Validate column mapping
+    col.mapping <- .getColMapping(col.mapping)
+
+    ret.obj <- .buildDict(
+        dfs,
         col.mapping=col.mapping,
         master.gene.identifier=master.gene.identifier
     )
-    ret.obj$directory <- dir
-    ret.obj$call <- match.call(expand.dots=FALSE)
+    ret.obj$directories <- directories
+    ret.obj$files <- files
+    ret.obj$df.names <- names(dfs)
+    ret.obj$call <- match.call(expand.dots=TRUE)
     return(ret.obj)
 }
 
-#' @export
-#' @describeIn pgca Use data given as \code{data.frame}s.
-pgca.data <- function(..., col.mapping, master.gene.identifier) {
-    # Validate the column mapping
-    col.mapping <- .getColMapping(col.mapping)
-    col.mapping.na <- col.mapping[!is.na(col.mapping) &
-                                      names(col.mapping) != "img"]
-
+## Work-horse function to create the dictionary
+.buildDict <- function(dfs, col.mapping, master.gene.identifier) {
     ##
     ## Validate all data frames
     ##
-    dfs <- list(...)
     dfs <- unlist(lapply(dfs, function(df) {
         if (is.list(df) && !is.data.frame(df)) {
             return(df)
@@ -131,76 +138,24 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
     }
 
     has.mgi <- TRUE
+    mig.arg <- NULL
     if (missing(master.gene.identifier)) {
         has.mgi <- FALSE
+    } else{
+        mig.arg <- master.gene.identifier
     }
 
-    # Check that
-    #   - each item is a data.frame
-    #   - each data.frame has the correct columns
-    #   - each column has the correct type (we convert logical group
-    #     identifiers!)
-    dfs <- mapply(function(df, name) {
-        if (!is.data.frame(df)) {
-            stop(sprintf("Data set '%s' must be a data.frame", name))
-        }
-
-        present <- col.mapping.na %in% colnames(df)
-        if (!all(present)) {
-            stop(sprintf("Data set '%s' does not contain the column%s: '%s'",
-                         name,
-                         ifelse(sum(!present) > 1L, "s", ""),
-                         paste(col.mapping.na[!present], collapse="', '")))
-        }
-
-        if (!is.character(df[[col.mapping["accession.nr"]]]) &&
-            !is.factor(df[[col.mapping["accession.nr"]]])) {
-            warning(sprintf("Accession Nr. column '%s' in data set '%s' is not a character or a factor",
-                            col.mapping["accession.nr"], name))
-        }
-        if (!is.character(df[[col.mapping["accession.nr"]]])) {
-            df[[col.mapping["accession.nr"]]] <-
-                as.character(df[[col.mapping["accession.nr"]]])
-        }
-
-        # If the `master.gene.identifier` is given, the group.identifier
-        # is converted to logical by comparing to the given value
-        if (has.mgi) {
-            df[[col.mapping["group.identifier"]]] <-
-                df[[col.mapping["group.identifier"]]] == master.gene.identifier
-        }
-
-        # If the group identifier is a logical, we assume a "is master-gene"
-        # type of column
-        if (is.logical(df[[col.mapping["group.identifier"]]])) {
-            if (!isTRUE(df[[col.mapping["group.identifier"]]][1L])) {
-                stop(sprintf("The first 'is master-gene' value in column '%s' in data set '%s' must be `TRUE`",
-                     col.mapping["group.identifier"], name))
-            }
-
-            df[[col.mapping["img"]]] <- df[[col.mapping["group.identifier"]]]
-
-            df[[col.mapping["group.identifier"]]] <-
-                cumsum(df[[col.mapping["group.identifier"]]])
-        } else if (is.character(df[[col.mapping["group.identifier"]]])) {
-            df[[col.mapping["group.identifier"]]] <-
-                as.factor(df[[col.mapping["group.identifier"]]])
-        }
-
-        # If the gene.symbol or protein.name is a factor, convert it to
-        # character (otherwise the integer factor level would be converted to
-        # character)
-        if (is.factor(df[[col.mapping["protein.name"]]])) {
-            df[[col.mapping["protein.name"]]] <-
-                as.character(df[[col.mapping["protein.name"]]])
-        }
-        if (is.factor(df[[col.mapping["gene.symbol"]]])) {
-            df[[col.mapping["gene.symbol"]]] <-
-                as.character(df[[col.mapping["gene.symbol"]]])
-        }
-
-        return(df)
-    }, dfs, dfs.names, SIMPLIFY=FALSE)
+    ## Validate data frame structure
+    dfs <- mapply(
+        .validateInputDF,
+        df=dfs,
+        name=dfs.names,
+        MoreArgs=list(
+            col.mapping=col.mapping,
+            master.gene.identifier=mig.arg
+        ),
+        SIMPLIFY=FALSE
+    )
 
     ##
     ## Work with a smaller data set since we only need to have
@@ -365,44 +320,162 @@ pgca.data <- function(..., col.mapping, master.gene.identifier) {
     ), class="pgca_dict"))
 }
 
+## Helper function to validate a single input data frame
+## This functions checks that
+##   - each item is a data.frame
+##   - each data.frame has the correct columns
+##   - each column has the correct type
+.validateInputDF <- function(df, name, col.mapping,
+                             master.gene.identifier = NULL) {
+    col.mapping.na <- col.mapping[!is.na(col.mapping) &
+                                      names(col.mapping) != "img"]
 
-#' @describeIn pgca Read in data from the given files
+    has.mgi <- !is.null(master.gene.identifier)
+
+    if (!is.data.frame(df)) {
+        stop(sprintf("Data set '%s' must be a data.frame", name))
+    }
+
+    present <- col.mapping.na %in% colnames(df)
+    if (!all(present)) {
+        stop(sprintf("Data set '%s' does not contain the column%s: '%s'",
+                     name,
+                     ifelse(sum(!present) > 1L, "s", ""),
+                     paste(col.mapping.na[!present], collapse="', '")))
+    }
+
+    if (!is.character(df[[col.mapping["accession.nr"]]]) &&
+        !is.factor(df[[col.mapping["accession.nr"]]])) {
+        warning(sprintf("Accession Nr. column '%s' in data set '%s' is not a character or a factor",
+                        col.mapping["accession.nr"], name))
+    }
+    if (!is.character(df[[col.mapping["accession.nr"]]])) {
+        df[[col.mapping["accession.nr"]]] <-
+            as.character(df[[col.mapping["accession.nr"]]])
+    }
+
+    # If the `master.gene.identifier` is given, the group.identifier
+    # is converted to logical by comparing to the given value
+    if (has.mgi) {
+        df[[col.mapping["group.identifier"]]] <-
+            df[[col.mapping["group.identifier"]]] == master.gene.identifier
+    }
+
+    # If the group identifier is a logical, we assume a "is master-gene"
+    # type of column
+    if (is.logical(df[[col.mapping["group.identifier"]]])) {
+        if (!isTRUE(df[[col.mapping["group.identifier"]]][1L])) {
+            stop(sprintf("The first 'is master-gene' value in column '%s' in data set '%s' must be `TRUE`",
+                         col.mapping["group.identifier"], name))
+        }
+
+        df[[col.mapping["img"]]] <- df[[col.mapping["group.identifier"]]]
+
+        df[[col.mapping["group.identifier"]]] <-
+            cumsum(df[[col.mapping["group.identifier"]]])
+    } else if (is.character(df[[col.mapping["group.identifier"]]])) {
+        df[[col.mapping["group.identifier"]]] <-
+            as.factor(df[[col.mapping["group.identifier"]]])
+    }
+
+    # If the gene.symbol or protein.name is a factor, convert it to
+    # character (otherwise the integer factor level would be converted to
+    # character)
+    if (is.factor(df[[col.mapping["protein.name"]]])) {
+        df[[col.mapping["protein.name"]]] <-
+            as.character(df[[col.mapping["protein.name"]]])
+    }
+    if (is.factor(df[[col.mapping["gene.symbol"]]])) {
+        df[[col.mapping["gene.symbol"]]] <-
+            as.character(df[[col.mapping["gene.symbol"]]])
+    }
+
+    return(df)
+}
+
+## Helper function to convert a list of arguments
+## (can be data.frames, directory names, or file names)
+## into a flat list of data.frames
 #' @importFrom utils read.delim
-#' @export
-pgca.files <- function(..., col.mapping, master.gene.identifier) {
-    # Check all files
-    files <- c(...)
+.toDataFrame <- function(input.list) {
+    fun.envir <- environment()
+    dfs <- lapply(input.list, function (arg) {
+        if (is.data.frame(arg)) {
+            # data.frames are returned directly
+            return(arg)
+        } else if (is.list(arg)) {
+            # lists are recursively parsed
+            return(do.call(.toDataFrame, arg, envir = fun.envir))
+        } else if (is.character(arg)) {
+            # character strings can be either directory
+            # names or file names
 
-    if (length(files) == 0L || anyNA(files) || !is.character(files)) {
-        stop("A list of file names (characters) or vectors of file names ",
-             "must be supplied.")
+            # Check if `arg` points to an existing path
+            arg <- path.expand(arg)
+            if (!file.exists(arg)) {
+                stop(sprintf("File/directory %s does not exist", arg))
+            }
+
+            finfo <- file.info(arg)
+            files <- dir(arg, full.names=TRUE)
+
+            # Check if `arg` points to a (populated) directory
+            if (isTRUE(finfo$isdir)) {
+                if (length(files) == 0L) {
+                    stop(sprintf("Directory %s is empty", dir))
+                }
+                # Check if any of the items in the directory are directories itself and
+                # remove them
+                dirs.in.dir <- list.dirs(arg, recursive=FALSE)
+                files <- setdiff(files, dirs.in.dir)
+            } else {
+                files <- arg
+            }
+
+            dfs <- lapply(files, read.delim, header=TRUE, stringsAsFactors=FALSE,
+                          check.names=FALSE)
+
+            names(dfs) <- if (!is.null(names(files))) {
+                names(files)
+            } else {
+                 files
+            }
+
+            if (isTRUE(finfo$isdir)) {
+                attr(dfs[[1L]], "directory") <- arg
+            }
+
+            for (i in seq_along(dfs)) {
+                attr(dfs[[i]], "file") <- files[i]
+            }
+
+            return(dfs)
+        }
+    })
+
+    dfs <- .flattenDFList(dfs)
+
+    return(dfs)
+}
+
+## Helper function to flatten a (possibly nested)
+## list of data.frames into a flat list of data.frames
+.flattenDFList <- function(obj) {
+    out <- NULL
+    obj.names <- names(obj)
+
+    for (i in seq_along(obj)) {
+        if (is.data.frame(obj[[i]])) {
+            out <- c(out, setNames(
+                list(obj[[i]]),
+                obj.names[i]
+            ))
+        } else if (is.list(obj[[i]])) {
+            out <- c(out, .flattenDFList(obj[[i]]))
+        }
     }
 
-    missing.files <- !file.exists(files)
-    if (sum(missing.files) == 1L) {
-        stop(sprintf("File '%s' does not exist", files[missing.files]))
-    } else if (sum(missing.files) > 1L) {
-        stop(sprintf("Files '%s' do not exist", paste(files[missing.files],
-                                                      collapse="', ")))
-    }
-
-    # Read in all files
-    dfs <- lapply(files, read.delim, header=TRUE, stringsAsFactors=FALSE)
-
-    names(dfs) <- if (!is.null(names(files))) {
-        names(files)
-    } else {
-        files
-    }
-
-    ret.obj <- pgca.data(
-        dfs,
-        col.mapping=col.mapping,
-        master.gene.identifier=master.gene.identifier
-    )
-    ret.obj$files <- files
-    ret.obj$call <- match.call(expand.dots=TRUE)
-    return(ret.obj)
+    return(out)
 }
 
 ## Helper function to merge the user-supplied column mapping
