@@ -25,7 +25,7 @@ The algorithm is computationally inexpensive and enables the connection and
 analysis of lists of protein groups across runs needed in biomarkers studies.
 
 # Installation
-The package can be easily installed from BioConductor using the commands
+The package can be easily installed from Bioconductor using the commands
 ```{r, eval=FALSE}
 ## try http:// if https:// URLs are not supported
 source("https://bioconductor.org/biocLite.R")
@@ -43,7 +43,7 @@ library(pgca)
 ```
 
 We load a set of data created beforehand for illustration. Users can either load
-their own data or use those saved in the workspace. 
+their own data or use those saved in the workspace.
 ```{r}
 acc1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package = "pgca"))
 acc2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package = "pgca"))
@@ -51,7 +51,7 @@ acc2047 <- read.delim(system.file("extdata", "accs_no_2047.txt", package = "pgca
 acc2067 <- read.delim(system.file("extdata", "accs_no_2067.txt", package = "pgca"))
 ```
 The command loads 4 example MS/MS data sets `acc1947, acc2007, acc2047, acc2067`
-from this saved R data archive. 
+from this saved R data archive.
 
 [Back to Top](#TOC)
 
@@ -73,7 +73,7 @@ subset(acc2007, Gene_Symbol == 'FGG')
 In acc2047 protein pilot has chosen the same protein as the identifer, but
 a different local group. The group comprises 4 proteins. The protein identified
 by Accession ID 'IPI00877703.1' is also dectected in acc2067, however it is not
-selected as the top protein. 
+selected as the top protein.
 ```{r}
 subset(acc2047, Gene_Symbol == 'FGG')
 subset(acc2067, Gene_Symbol == 'FGG')
@@ -109,13 +109,13 @@ frames
 
 [Back to Top](#TOC)
 
-# Translation 
+# Translation
 ```{r}
-translated <- translate(dict, input = list(acc2007, acc2067), out.dir = NULL)
+translated <- applyDict(dict, input = list(acc2007, acc2067), out.dir = NULL)
 ```
 
 In the translated data files, a protein group code ('PGC') column is appended.
-We see that PGC 10 is used for FGG in both data files. 
+We see that PGC 10 is used for FGG in both data files.
 ```{r}
 subset(translated[[1]], PGC == 14)
 subset(translated[[2]], PGC == 14)
@@ -149,14 +149,14 @@ dict2 <- pgca(
 ```
 
 The resulting protein group code for FGG is now 10 and consists of a much
-larger protein group. 
+larger protein group.
 ```{r}
 subset(dict2$dictionary, pg == 10)
 ```
 With the addition of new files and the resulting new dictionary, all MS/MS files
-require another translation. 
+require another translation.
 ```{r}
-translated2 <- translate(dict2, input = list(acc2007, acc2067, acc2047,
+translated2 <- applyDict(dict2, input = list(acc2007, acc2067, acc2047,
 acc1947), out.dir = NULL)
 ```
 Re-translation of the files using the updated dictionary, provides updated
@@ -169,8 +169,9 @@ subset(translated2[[2]], Gene_Symbol == 'FGG')
 ## Additional Functions
 We save the dictionary we just generated to a tab separated (default) text file
 
-```{r, eval=FALSE}
-save.dict(dict, file = "dictionary.txt")
+```{r}
+dictOutFile <- tempfile()
+saveDict(dict, file = dictOutFile)
 ```
 
 [Back to Top](#TOC)
