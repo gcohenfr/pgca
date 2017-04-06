@@ -153,6 +153,10 @@ saveDict <- function(dict, file=stop("`file` must be specified"), ...) {
 #'
 applyDict <- function(..., dict, out.dir=NULL, out.suffix="",
                       out.prefix="", col.mapping, out.pg.col="PGC") {
+    if (class(dict) != "pgcaDict") {
+        stop("`dict` must be a PGCA dictionary")
+    }
+
     # Validate the column mapping
     col.mapping <- if (missing(col.mapping)) {
         dict$col.mapping
@@ -209,10 +213,18 @@ applyDict <- function(..., dict, out.dir=NULL, out.suffix="",
     ## Determine file names
     ##
     df.names <- names(dfs)
+    df.file.names <- unlist(lapply(dfs, function (df) {
+        fn <- attr(df, "file", exact=TRUE)
+        if (is.null(fn)) {
+            return(NA_character_)
+        }
+        return(sub("\\.[^\\.]+$", "", basename(fn)))
+    }))
+    df.names[!is.na(df.file.names)] <- df.file.names[!is.na(df.file.names)]
 
     out.files <-  file.path(
         out.dir,
-        sprintf("%s%s%s.txt", out.prefix, basename(names(dfs)), out.suffix)
+        sprintf("%s%s%s.txt", out.prefix, basename(df.names), out.suffix)
     )
 
     if (any(file.exists(out.files))) {
