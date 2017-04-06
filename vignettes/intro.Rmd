@@ -61,18 +61,18 @@ head(acc2007)
 head(acc2047)
 ```
 In these 2 files of MS/MS data, protein pilot has chosen different protein
-identifiers for the protein with the Gene Symbol HBB. In _acc2007_ the
-identifier Accession ID is 'IPI00877703.1' and the local group identifier is 92
+identifiers for the protein with the Gene Symbol PRSS2. In _acc2007_ the
+identifier Accession ID is 'IPI00011695.8' and the local group identifier is 250:
 ```{r}
-subset(acc2007, N %in% N[Gene_Symbol == 'HBB'])
+subset(acc2007, N %in% N[Gene_Symbol == 'PRSS2'])
 ```
 
 In _acc2047_ protein pilot has chosen a different protein as identifier and
-a different local group. The group comprises 3 proteins. The proteins identified
-by Accession IDs 'IPI00796636.9' and 'IPI00884107.1' are not detected in
+a different local group. The group comprises 2 proteins. The other protein
+identified by Accession IDs 'IPI00815665.1' is not detected in
 _acc2007_.
 ```{r}
-subset(acc2047, N %in% N[Gene_Symbol == 'HBB'])
+subset(acc2047, N %in% N[Gene_Symbol == 'PRSS2'])
 ```
 
 The pre-loaded data can be used directly as input to `pgcaDict()`. Since the
@@ -95,12 +95,12 @@ was built.
 dict
 ```
 
-In the resulting dictionary, HBB has now been assigned to protein group 92
-which contains all IPI accession ids from all the files included in the
-dictionary build, and all two local groups.
+In the resulting dictionary, PRSS2 has now been assigned to protein group 250
+which contains all IPI accession ids from the two files included in the
+dictionary build and both local groups.
 
 ```{r}
-subset(dict$dictionary, pg %in% pg[gene == 'HBB'])
+subset(dict$dictionary, pg %in% pg[gene == 'PRSS2'])
 ```
 
 [Back to Top](#TOC)
@@ -114,14 +114,14 @@ input our pre-loaded data frames and do not specify an output directory to get
 the results as a list of data frames.
 
 ```{r}
-translated <- applyDict(acc2007, acc2067, dict=dict)
+translated <- applyDict(acc2007, acc2047, dict=dict)
 ```
 
 In the translated data files, a protein group code (PGC) column is appended.
-We see that PGC 92 is used for HBB in both data files.
+We see that PGC 250 is used for PRSS2 in both data files.
 ```{r}
-subset(translated$acc2007, Gene_Symbol == "HBB")
-subset(translated$acc2067, Gene_Symbol == "HBB")
+subset(translated$acc2007, Gene_Symbol == "PRSS2")
+subset(translated$acc2047, Gene_Symbol == "PRSS2")
 ```
 
 [Back to Top](#TOC)
@@ -155,24 +155,24 @@ dict.from.dir <- pgcaDict(
 dict.from.dir
 ```
 
-The resulting protein group code for HBB is now 117 and we see the protein
+The resulting protein group code for PRSS2 is now 103 and we see the protein
 group is much larger now.
 ```{r}
-subset(dict.from.dir$dictionary, pg %in% pg[gene == "HBB"])
+subset(dict.from.dir$dictionary, pg %in% pg[gene == "PRSS2"])
 ```
 
 With the addition of new files and the resulting new dictionary, all MS/MS files
 require another translation.
 ```{r}
-translated2 <- applyDict(acc2007, acc2067, acc2047, acc1947,
+translated2 <- applyDict(acc1947, acc2007, acc2047, acc2067,
                          dict=dict.from.dir, out.dir=NULL)
 ```
 
 Re-translation of the files using the updated dictionary, provides updated
 protein groups for the MS/MS data
 ```{r}
-subset(translated2[[1]], Gene_Symbol == 'HBB')
-subset(translated2[[2]], Gene_Symbol == 'HBB')
+subset(translated2$acc1947, Gene_Symbol == 'PRSS2')
+subset(translated2$acc2007, Gene_Symbol == 'PRSS2')
 ```
 
 ## Additional Functions
