@@ -14,5 +14,6 @@ License: GPL (>= 2)
 Imports: utils, stats
 LazyData: FALSE
 VignetteBuilder: knitr
-Suggests: knitr
+Suggests: knitr,
+    testthat
 RoxygenNote: 6.0.1
