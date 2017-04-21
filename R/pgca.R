@@ -57,19 +57,15 @@
 #'
 #' # Build the dictionary from a list of files
 #' dict.files <- pgcaDict(
-#'      system.file("extdata", "accs_no_1947.txt", package="pgca"),
-#'      system.file("extdata", "accs_no_2007.txt", package="pgca"),
-#'      system.file("extdata", "accs_no_2047.txt", package="pgca"),
+#'      system.file("extdata", "BET1947_v339.txt", package="pgca"),
+#'      system.file("extdata", "BET2007_v339.txt", package="pgca"),
+#'      system.file("extdata", "BET2047_v339.txt", package="pgca"),
 #'      col.mapping=c(gene.symbol="Gene_Symbol")
 #' )
 #'
 #' # Build the dictionary from already read-in data.frames
-#' df.1947 <- read.delim(system.file("extdata", "accs_no_1947.txt",
-#'                                   package="pgca"))
-#' df.2007 <- read.delim(system.file("extdata", "accs_no_2007.txt",
-#'                                   package="pgca"))
-#' dict.data <- pgcaDict(df.1947, df.2007,
-#'                        col.mapping=c(gene.symbol="Gene_Symbol"))
+#' dict.data <- pgcaDict(BET1947_v339, BET2047_v339,
+#'                       col.mapping=c(gene.symbol="Gene_Symbol"))
 #'
 pgcaDict <- function(..., col.mapping, master.gene.identifier) {
     ##
