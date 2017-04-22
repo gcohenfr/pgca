@@ -1,9 +1,10 @@
 ---
 title: "Introduction to the PGCA Package"
-author: "Mandeep Sasaki, Gabriela Cohen Freue, David Kepplinger"
+author: "David Kepplinger, Mandeep Sasaki, Gabriela Cohen Freue"
 date: "March 31, 2017"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{utf-8}
   %\VignetteIndexEntry{Introduction}
 output:
     knitr:::html_vignette:
@@ -13,16 +14,55 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+options(width=120)
 knitr::opts_chunk$set(
     echo=TRUE
 )
-options(width=120)
 ```
+
 # Introduction
-Protein Group Code Algorithm (PGCA) is an algorithm to link groups from multiple
-experimental runs by forming global protein groups from connected local groups.
-The algorithm is computationally inexpensive and enables the connection and
-analysis of lists of protein groups across runs needed in biomarkers studies.
+Shotgun proteomic techniques have gained popularity in the last decades allowing
+a global and relatively high throughput identification and quantitation of
+proteins in complex samples.
+In a typical experimental workflow the protein mixture is first digested into
+peptides, which are then separated by liquid chromatography and sequenced by
+tandem mass spectrometry (MS/MS).
+As described in [[1]](#ref-1), one big challenge with shotgun proteomic
+techinques is that
+the set of proteins present in the sample before digestion needs to be recovered
+from the list of identified peptides. Since the same peptide sequences can be
+present in multiple proteins, the link between proteins originally present in
+the sample and proteins identified from observed peptides is often lost.
+
+Many software tools have been developed to process MS/MS data addressing the 
+protein identification problem, for instance ProteinPilot™ or Thermo Proteome
+Discoverer™.
+These software are used to identify the peptides and proteins original
+present in the sample as well as their to measuer their abundances (see
+[Example Data](#example-data) for more information about output data).
+To address the protein inference problem, most of them
+combine the set of all plausible protein identifiers matching a common set of
+peptides into a protein group.
+
+Moderate to large sutdies invovle the analysis of many samples thus requiring
+multiple batches or experimental runs to quantitate the proteins in all
+available samples, even when multiplex technologies are used.
+For example, only eight samples can be processed at a time using multiplex
+iTRAQ. The protein groups, however, are created for each experimental run
+separately. This pose a big challenge in comparing protein levels among
+different experiments.
+
+Protein Group Code Algorithm (PGCA) is a computationally inexpensive algorithm
+to merge protein summaries from multiple experimental quantitative proteomics
+data. The algorithm connects two or more groups with overlapping accession
+numbers. In some cases, pairwise groups are mutually exclusive but they may
+still be connected by another group (or set of groups) with overlapping
+accession numbers. Thus, groups created by PGCA from multiple experimental runs
+(i.e., global groups) are called "connected" groups [[1, 2]](#ref-1).
+These identified global protein groups enable the analysis of quantitative data
+available for protein groups instead of unique protein identifiers.
+
+[Back to Top](#TOC)
 
 # Installation
 The package can be easily installed from Bioconductor using the commands
@@ -32,72 +72,111 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("pgca")
 ```
 
-In the remainder of this documnet we will briefly go over the main functions,
+The main function provided by the package is `pgcaDict()` which builds a
+dictionary mapping local protein groups to global protein groups.
+This dictionary can be applied to experimental runs with `applyDict()`
+to assign a common protein group code (PGC) to all proteins in the
+same global protein group. Furthermore, the dictionary can be
+saved as a text file with `saveDict()`.
+
+In the remainder of this document we will briefly go over the main functions,
 see the basic operations and have a look at the outputs. Additional options
 are listed at the end and additional parameters for these functions are
 available in the help files.
 
-First, we load the `pgca` package:
+The first step is to load the `pgca` package:
 ```{r}
 library(pgca)
 ```
 
-We load a set of MS/MS data sets created beforehand for illustration and
-shipped with the package
+## Example Data
+The package ships MS/MS datasets from four experimental runs:
+`BET1947_v339`, `BET2007_v339`, `BET2047_v339`, and `BET2067_v339`.
+In all four runs, the raw MS/MS data was processed using ProteinPilot™ software
+v3.0 with the integrated Paragon™ Search and ProGroup™ algorithms and searching
+against the International Protein Index (IPI HUMAN v3.39) database.
+Within each run, ProteinPilot™ organizes the set of proteins matching
+the identified peptide list into a group identified by the local group
+identifier.
+
+The format of each dataset is identical. Each dataset contains the
+columns _N_ (the local group identifier), _Accession_ (the accession number),
+*Gene_Symbol* (the gene symbol), and *Protein_Name* (the protein name). As
+example, we can look at the first few rows of the dataset `BET2007_v339`:
+
 ```{r}
-acc1947 <- read.delim(system.file("extdata", "accs_no_1947.txt", package="pgca"))
-acc2007 <- read.delim(system.file("extdata", "accs_no_2007.txt", package="pgca"))
-acc2047 <- read.delim(system.file("extdata", "accs_no_2047.txt", package="pgca"))
-acc2067 <- read.delim(system.file("extdata", "accs_no_2067.txt", package="pgca"))
+head(BET2007_v339)
 ```
 
 [Back to Top](#TOC)
 
-# Build Dictionary
+# Algorithm
+The algorithm can be decomposed into two stages: (1) creating local groups
+and (2) updating the dictionary. In the first stage, local groups with
+overlapping accession numbers are merged. The second stage merges sets of local
+protein groups from different experimental runs with overlapping accession
+numbers by creating a set of global 
+protein groups. Each global protein group is built from the union of connected
+local groups across multiple runs. This corresponds to the algorithm
+_PGCA-All_ in the reference publication [[1]](#ref-1).
+
+[Back to Top](#TOC)
+
+# Building the Dictionary
 We build a dictionary for protein groups from 2 of the MS/MS data files. We will
-use _acc2007_ and _acc2047_ as examples.
+use *BET2007_v339* and *BET2047_v339* as examples.
+In these 2 runs, ProteinPilot™ matched the identified peptides to different
+protein identifiers from gene PRSS2 (IPI HUMAN v3.39).
+In *BET2007_v339* the
+identifier accession ID is 'IPI00011695.8' and the local group identifier is
+250:
 ```{r}
-head(acc2007)
-head(acc2047)
-```
-In these 2 files of MS/MS data, protein pilot has chosen different protein
-identifiers for the protein with the Gene Symbol PRSS2. In _acc2007_ the
-identifier Accession ID is 'IPI00011695.8' and the local group identifier is 250:
-```{r}
-subset(acc2007, N %in% N[Gene_Symbol == 'PRSS2'])
+subset(BET2007_v339, N %in% N[Gene_Symbol == 'PRSS2'])
 ```
 
-In _acc2047_ protein pilot has chosen a different protein as identifier and
-a different local group. The group comprises 2 proteins. The other protein
-identified by Accession IDs 'IPI00815665.1' is not detected in
-_acc2007_.
+In the other experimental run, *BET2047_v339*, ProteinPilot™ has chosen a
+different protein as identifier and a different local group. The group
+in this run comprises 2 proteins. The other protein
+identified by accession ID 'IPI00815665.1' is not detected in *BET2007_v339*.
 ```{r}
-subset(acc2047, N %in% N[Gene_Symbol == 'PRSS2'])
+subset(BET2047_v339, N %in% N[Gene_Symbol == 'PRSS2'])
 ```
 
-The pre-loaded data can be used directly as input to `pgcaDict()`. Since the
-data contains a column for the gene symbols, we may want to retain it by
-specifying the `col.mapping` argument.
+If we would only use the top-protein selected by the processing software
+within each run, we would not be able to compare PRSS2 between samples
+in these two experimental runs. PGCA, on the other
+hand, will create a new global protein group comprising PRSS1 and PRSS2.
+
+To build the dictionary, the datasets can be used directly as input to
+`pgcaDict()`. The function does not know about the column name for the gene
+symbol. If we want to retain that column in the dictionary, we need to specify
+its name via the `col.mapping` argument.
+
 ```{r}
 dict <- pgcaDict(
-    acc2007,
-    acc2047,
+    BET2007_v339,
+    BET2047_v339,
     col.mapping=c(gene.symbol="Gene_Symbol")
 )
 ```
 
+In the
+larger example below we will see how to build the dictionary from files or
+directories instead of data frames.
+
 When printing the dictionary, it will tell the user how many unique proteins
-have been identified in the input data and how many separate protein groups the
-algorithm detected. The output also lists from which input data the dictionary
-was built.
+have been identified in the input data and how many global protein groups the
+algorithm built. The output also lists the input data used to build the
+dictionary.
 
 ```{r}
 dict
 ```
 
-In the resulting dictionary, PRSS2 has now been assigned to protein group 250
-which contains all IPI accession ids from the two files included in the
-dictionary build and both local groups.
+We see that the local protein groups have been combined to 379 global
+protein groups. In the resulting dictionary, PRSS2 has now been assigned to
+protein group 250 which contains all IPI accession ids from the two files
+included in the dictionary build and both local groups.
 
 ```{r}
 subset(dict$dictionary, pg %in% pg[gene == 'PRSS2'])
@@ -105,39 +184,41 @@ subset(dict$dictionary, pg %in% pg[gene == 'PRSS2'])
 
 [Back to Top](#TOC)
 
-# Translation
-Now we have a mapping of protein group codes needed to translate our MS/MS
-files. We use the `applyDict()` function to apply the protein group codes to
+# Applying the Dictionary
+Now we have a mapping of protein group codes needed to translate the two MS/MS
+data sets. We use the `applyDict()` function to apply the protein group codes to
 our data files. This will translate the data files to ensure they
-contain comparable groups for use in downstream analyses. In this example we
-input our pre-loaded data frames and do not specify an output directory to get
-the results as a list of data frames.
+contain comparable group identifiers for use in downstream analyses. In this
+example we input our pre-loaded data frames and do not specify an output
+directory to get the results as a list of data frames.
 
 ```{r}
-translated <- applyDict(acc2007, acc2047, dict=dict)
+translated <- applyDict(BET2007_v339, BET2047_v339, dict=dict)
 ```
 
 In the translated data files, a protein group code (PGC) column is appended.
 We see that PGC 250 is used for PRSS2 in both data files.
 ```{r}
-subset(translated$acc2007, Gene_Symbol == "PRSS2")
-subset(translated$acc2047, Gene_Symbol == "PRSS2")
+subset(translated$BET2007_v339, Gene_Symbol == "PRSS2")
+subset(translated$BET2047_v339, Gene_Symbol == "PRSS2")
 ```
+
+This allows us to compare the protein levels for the group containing PRSS2
+across experiments.
 
 [Back to Top](#TOC)
 
-# Appendix
-## A larger example
-Now we use 4 MS/MS files to build our dictionary. We can again use the
+# A Larger Example
+Now we use 4 MS/MS data sets to build our dictionary. We can use the
 `pgcaDict()` function to read the data directly from the files.
 The files contain the gene symbol in the column `"Gene_Symbol"` and we want to
 retain it.
 ```{r}
 dict.from.files <- pgcaDict(
-    system.file("extdata", "accs_no_1947.txt", package="pgca"),
-    system.file("extdata", "accs_no_2007.txt", package="pgca"),
-    system.file("extdata", "accs_no_2047.txt", package="pgca"),
-    system.file("extdata", "accs_no_2067.txt", package="pgca"),
+    system.file("extdata", "BET1947_v339.txt", package="pgca"),
+    system.file("extdata", "BET2007_v339.txt", package="pgca"),
+    system.file("extdata", "BET2047_v339.txt", package="pgca"),
+    system.file("extdata", "BET2067_v339.txt", package="pgca"),
     col.mapping=c(gene.symbol="Gene_Symbol")
 )
 
@@ -156,7 +237,8 @@ dict.from.dir
 ```
 
 The resulting protein group code for PRSS2 is now 103 and we see the protein
-group is much larger now.
+group is much larger because the local protein group 103 in the dataset
+`BET1947_v339` contains three other proteins besides PRSS2.
 ```{r}
 subset(dict.from.dir$dictionary, pg %in% pg[gene == "PRSS2"])
 ```
@@ -164,23 +246,39 @@ subset(dict.from.dir$dictionary, pg %in% pg[gene == "PRSS2"])
 With the addition of new files and the resulting new dictionary, all MS/MS files
 require another translation.
 ```{r}
-translated2 <- applyDict(acc1947, acc2007, acc2047, acc2067,
-                         dict=dict.from.dir, out.dir=NULL)
+translated2 <- applyDict(BET1947_v339, BET2007_v339, BET2047_v339, BET2067_v339,
+                         dict=dict.from.dir)
 ```
 
-Re-translation of the files using the updated dictionary, provides updated
-protein groups for the MS/MS data
+Re-translation of the files using the updated dictionary provides updated
+protein groups for all four MS/MS datasets.
 ```{r}
-subset(translated2$acc1947, Gene_Symbol == 'PRSS2')
-subset(translated2$acc2007, Gene_Symbol == 'PRSS2')
+subset(translated2$BET1947_v339, Gene_Symbol == 'PRSS2')
+subset(translated2$BET2007_v339, Gene_Symbol == 'PRSS2')
 ```
 
-## Additional Functions
+## Saving the Dictionary
 We can also save the dictionary we just generated to a tab separated (default)
 text file
 ```{r}
 dictOutFile <- tempfile()
 saveDict(dict.from.dir, file=dictOutFile)
 ```
+
+# References
+<div style="margin-left: 2em;">
+```{r, echo=FALSE, results='asis'}
+cat('<span id="ref-1" style="margin-left: -2em; float: left;">[1]</span>')
+print(readCitationFile("../inst/CITATION"), style = "text")
+
+```
+<p>
+<span id="ref-2" style="margin-left: -2em; float: left;">[2]</span>
+Cohen Freue GV, Sasaki M, Meredith A, Günther OP, Bergman A, Takhar M
+et al. (2010) “Proteomic signatures in plasma during early acute renal
+allograft rejection.” <em>Molecular & Cellular Proteomics</em>.
+9(9):1954–1967.
+</p>
+</div>
 
 [Back to Top](#TOC)

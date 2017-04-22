@@ -1,18 +1,23 @@
 Package: pgca
 Type: Package
 Title: PGCA: An Algorithm to Link Protein Groups Created from MS/MS Data
-Version: 0.99.4
+Version: 0.99.5
 biocViews: WorkflowStep,AssayDomain,Proteomics,MassSpectrometry
 Author: Gabriela Cohen-Freue <gcohen@stat.ubc.ca>
 Maintainer: Gabriela Cohen-Freue <gcohen@stat.ubc.ca>
-Description: Protein Group Code Algorithm (PGCA) is an algorithm to link
-    groups from multiple experimental runs by forming global protein groups
-    from connected local groups. The algorithm is computationally inexpensive
-    and enables the connection and analysis of lists of protein groups across
-    runs needed in biomarkers studies.
+Description: Protein Group Code Algorithm (PGCA) is a computationally
+    inexpensive algorithm to merge protein summaries from multiple experimental
+    quantitative proteomics data. The algorithm connects two or more groups with
+    overlapping accession numbers. In some cases, pairwise groups are mutually
+    exclusive but they may still be connected by another group (or set of
+    groups) with overlapping accession numbers. Thus, groups created by PGCA
+    from multiple experimental runs (i.e., global groups) are called "connected"
+    groups. These identified global protein groups enable the analysis of
+    quantitative data available for protein groups instead of unique protein
+    identifiers.
 License: GPL (>= 2)
 Imports: utils, stats
-LazyData: FALSE
+LazyData: TRUE
 VignetteBuilder: knitr
 Suggests: knitr,
     testthat

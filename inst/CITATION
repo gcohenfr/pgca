@@ -6,6 +6,8 @@ bibentry(
     author = c(person("Mandeep", "Takhar"),
             person("Mayu", "Sasaki"),
             person("Zsuzsanna", "Hollander"),
+            person("David", "Kepplinger"),
+            person("Derek", "Smith"),
             person("Bruce", "McManus"),
             person("W. Robert", "McMaster"),
             person("Raymond T.", "Ng"),

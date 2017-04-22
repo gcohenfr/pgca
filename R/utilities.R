@@ -140,8 +140,8 @@ saveDict <- function(dict, file=stop("`file` must be specified"), ...) {
 #' # Translate only some files in the directory and return as a list of
 #' # data.frames
 #' trans <- applyDict(
-#'     system.file("extdata", "accs_no_1947.txt", package="pgca"),
-#'     system.file("extdata", "accs_no_2007.txt", package="pgca"),
+#'     system.file("extdata", "BET1947_v339.txt", package="pgca"),
+#'     system.file("extdata", "BET2047_v339.txt", package="pgca"),
 #'     dict=dict
 #' )
 #' str(trans)

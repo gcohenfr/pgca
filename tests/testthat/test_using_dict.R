@@ -68,37 +68,32 @@ test_that("Translating files", {
 
     # Using the filename
     applyDict(
-        system.file("extdata", "accs_no_1947.txt", package="pgca"),
+        system.file("extdata", "BET1947_v339.txt", package="pgca"),
         dict=dict,
         out.dir=out.dir
     )
 
     expect_identical(
-        dir(out.dir, pattern="accs_no_1947.txt"),
-        "accs_no_1947.txt"
+        dir(out.dir, pattern="BET1947_v339.txt"),
+        "BET1947_v339.txt"
     )
 
     # Using the variable name of the argument
-    acc1947.df <- read.delim(
-        system.file("extdata", "accs_no_1947.txt", package="pgca"),
-        header=TRUE,
-        stringsAsFactors=FALSE
-    )
-
+    my.df <- BET1947_v339
     applyDict(
-        acc1947.df,
+        my.df,
         dict=dict,
         out.dir=out.dir
     )
 
     expect_identical(
-        dir(out.dir, pattern="acc1947.df"),
-        "acc1947.df.txt"
+        dir(out.dir, pattern="my.df"),
+        "my.df.txt"
     )
 
     # Using the name of the argument
     applyDict(
-        myfile=acc1947.df,
+        myfile=BET1947_v339,
         dict=dict,
         out.dir=out.dir
     )
@@ -110,34 +105,34 @@ test_that("Translating files", {
 
     # Adding a prefix
     applyDict(
-        system.file("extdata", "accs_no_1947.txt", package="pgca"),
+        system.file("extdata", "BET1947_v339.txt", package="pgca"),
         dict=dict,
         out.dir=out.dir,
         out.prefix="translated-"
     )
 
     expect_identical(
-        dir(out.dir, pattern="translated-accs_no_1947"),
-        "translated-accs_no_1947.txt"
+        dir(out.dir, pattern="translated-BET1947_v339"),
+        "translated-BET1947_v339.txt"
     )
 
     # Adding a suffix
     applyDict(
-        system.file("extdata", "accs_no_1947.txt", package="pgca"),
+        system.file("extdata", "BET1947_v339.txt", package="pgca"),
         dict=dict,
         out.dir=out.dir,
         out.suffix="-translated"
     )
 
     expect_identical(
-        dir(out.dir, pattern="accs_no_1947-translated"),
-        "accs_no_1947-translated.txt"
+        dir(out.dir, pattern="BET1947_v339-translated"),
+        "BET1947_v339-translated.txt"
     )
 
     ## Test that we do not override existing files
     expect_error({
         applyDict(
-            myfile=acc1947.df,
+            myfile=BET1947_v339,
             dict=dict,
             out.dir=out.dir
         )
