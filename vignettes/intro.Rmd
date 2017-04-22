@@ -1,6 +1,6 @@
 ---
 title: "Introduction to the PGCA Package"
-author: "Mandeep Sasaki, Gabriela Cohen Freue, David Kepplinger"
+author: "David Kepplinger, Mandeep Sasaki, Gabriela Cohen Freue"
 date: "March 31, 2017"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
@@ -38,18 +38,17 @@ Many software tools have been developed to process MS/MS data addressing the
 protein identification problem, for instance ProteinPilot™ or Thermo Proteome
 Discoverer™.
 These software are used to identify the peptides and proteins original
-present in the sample as well as their abundances (see
+present in the sample as well as their to measuer their abundances (see
 [Example Data](#example-data) for more information about output data).
-To address the protein inference, most of them
+To address the protein inference problem, most of them
 combine the set of all plausible protein identifiers matching a common set of
 peptides into a protein group.
 
-Some multiplex proteomics technologies allow to process many experimental
-samples simultaneously. For example, using iTRAQ we can simultaneously identify
-and quantitate proteins present in eight samples. However, moderate to large
-studies require the analysis of more than eight samples thus requiring multiple
-batches or experimental runs to quantitate the proteins in all available
-samples. The protein groups, however, are created for each experimental run
+Moderate to large sutdies invovle the analysis of many samples thus requiring
+multiple batches or experimental runs to quantitate the proteins in all
+available samples, even when multiplex technologies are used.
+For example, only eight samples can be processed at a time using multiplex
+iTRAQ. The protein groups, however, are created for each experimental run
 separately. This pose a big challenge in comparing protein levels among
 different experiments.
 
@@ -59,7 +58,7 @@ data. The algorithm connects two or more groups with overlapping accession
 numbers. In some cases, pairwise groups are mutually exclusive but they may
 still be connected by another group (or set of groups) with overlapping
 accession numbers. Thus, groups created by PGCA from multiple experimental runs
-(i.e., global groups) are called "connected" groups.
+(i.e., global groups) are called "connected" groups [[1, 2]](#ref-1).
 These identified global protein groups enable the analysis of quantitative data
 available for protein groups instead of unique protein identifiers.
 
@@ -127,7 +126,7 @@ _PGCA-All_ in the reference publication [[1]](#ref-1).
 We build a dictionary for protein groups from 2 of the MS/MS data files. We will
 use *BET2007_v339* and *BET2047_v339* as examples.
 In these 2 runs, ProteinPilot™ matched the identified peptides to different
-protein identifiers from gene PRSS2 (UniPort was not used).
+protein identifiers from gene PRSS2 (IPI HUMAN v3.39).
 In *BET2007_v339* the
 identifier accession ID is 'IPI00011695.8' and the local group identifier is
 250:
@@ -271,7 +270,15 @@ saveDict(dict.from.dir, file=dictOutFile)
 ```{r, echo=FALSE, results='asis'}
 cat('<span id="ref-1" style="margin-left: -2em; float: left;">[1]</span>')
 print(readCitationFile("../inst/CITATION"), style = "text")
+
 ```
+<p>
+<span id="ref-2" style="margin-left: -2em; float: left;">[2]</span>
+Cohen Freue GV, Sasaki M, Meredith A, Günther OP, Bergman A, Takhar M
+et al. (2010) “Proteomic signatures in plasma during early acute renal
+allograft rejection.” <em>Molecular & Cellular Proteomics</em>.
+9(9):1954–1967.
+</p>
 </div>
 
 [Back to Top](#TOC)
