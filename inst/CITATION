@@ -1,0 +1,18 @@
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(
+    bibtype = "Article",
+    title = "PGCA: An Algorithm to Link Protein Groups Created from MS/MS Data",
+    author = c(person("Mandeep", "Takhar"),
+            person("Mayu", "Sasaki"),
+            person("Zsuzsanna", "Hollander"),
+            person("David", "Kepplinger"),
+            person("Derek", "Smith"),
+            person("Bruce", "McManus"),
+            person("W. Robert", "McMaster"),
+            person("Raymond T.", "Ng"),
+            person("Gabriela V.", "Cohen Freue")),
+    journal = "PLOS ONE",
+    year = "Under revision",
+    note = note
+)
