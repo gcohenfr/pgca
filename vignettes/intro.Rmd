@@ -68,8 +68,9 @@ available for protein groups instead of unique protein identifiers.
 The package can be easily installed from Bioconductor using the commands
 ```{r, eval=FALSE}
 ## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("pgca")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("pgca")
 ```
 
 The main function provided by the package is `pgcaDict()` which builds a
