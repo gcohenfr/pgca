@@ -2,8 +2,8 @@ Package: pgca
 Type: Package
 Title: PGCA: An Algorithm to Link Protein Groups Created from MS/MS
         Data
-Version: 1.7.0
-biocViews: WorkflowStep,AssayDomain,Proteomics,MassSpectrometry
+Version: 1.7.1
+biocViews: WorkflowStep,AssayDomain,Proteomics,MassSpectrometry,ImmunoOncology
 Author: Gabriela Cohen-Freue <gcohen@stat.ubc.ca>
 Maintainer: Gabriela Cohen-Freue <gcohen@stat.ubc.ca>
 Description: Protein Group Code Algorithm (PGCA) is a computationally
