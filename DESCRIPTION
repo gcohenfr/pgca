@@ -1,24 +1,25 @@
 Package: pgca
 Type: Package
-Title: PGCA: An Algorithm to Link Protein Groups Created from MS/MS Data
-Version: 0.99.5
-biocViews: WorkflowStep,AssayDomain,Proteomics,MassSpectrometry
+Title: PGCA: An Algorithm to Link Protein Groups Created from MS/MS
+        Data
+Version: 1.17.0
+biocViews: WorkflowStep,AssayDomain,Proteomics,MassSpectrometry,ImmunoOncology
 Author: Gabriela Cohen-Freue <gcohen@stat.ubc.ca>
 Maintainer: Gabriela Cohen-Freue <gcohen@stat.ubc.ca>
 Description: Protein Group Code Algorithm (PGCA) is a computationally
-    inexpensive algorithm to merge protein summaries from multiple experimental
-    quantitative proteomics data. The algorithm connects two or more groups with
-    overlapping accession numbers. In some cases, pairwise groups are mutually
-    exclusive but they may still be connected by another group (or set of
-    groups) with overlapping accession numbers. Thus, groups created by PGCA
-    from multiple experimental runs (i.e., global groups) are called "connected"
-    groups. These identified global protein groups enable the analysis of
-    quantitative data available for protein groups instead of unique protein
-    identifiers.
+        inexpensive algorithm to merge protein summaries from multiple
+        experimental quantitative proteomics data. The algorithm
+        connects two or more groups with overlapping accession numbers.
+        In some cases, pairwise groups are mutually exclusive but they
+        may still be connected by another group (or set of groups) with
+        overlapping accession numbers. Thus, groups created by PGCA
+        from multiple experimental runs (i.e., global groups) are
+        called "connected" groups. These identified global protein
+        groups enable the analysis of quantitative data available for
+        protein groups instead of unique protein identifiers.
 License: GPL (>= 2)
 Imports: utils, stats
 LazyData: TRUE
 VignetteBuilder: knitr
-Suggests: knitr,
-    testthat
+Suggests: knitr, testthat, rmarkdown
 RoxygenNote: 6.0.1
